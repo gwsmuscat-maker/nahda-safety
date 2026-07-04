@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nahda Safety & Health | Premium Safety Consultancy Oman</title>
+  <meta name="description" content="Nahda Safety & Health provides premium health, safety and AI consulting across Oman. Bilingual English/Arabic website with safety videos, project showcase, testimonials, FAQ and instant WhatsApp assistance." />
+  <meta name="keywords" content="Nahda Safety, Oman safety consultant, health and safety, HSE consulting, AI safety advisory, bilingual website, construction safety, hospital safety" />
+  <link rel="canonical" href="https://www.nahdasafety.com/" />
+  <meta property="og:title" content="Nahda Safety & Health | Premium Safety Consultancy Oman" />
+  <meta property="og:description" content="Bilingual digital presence for Nahda Safety & Health with AI safety advisory, compliance consulting, training, and project support in Oman." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/hero-1.jpg" />
+  <meta property="og:url" content="https://www.nahdasafety.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Nahda Safety & Health",
+    "url": "https://www.nahdasafety.com",
+    "logo": "https://www.nahdasafety.com/assets/nahda-logo.jpeg",
+    "sameAs": ["https://www.facebook.com/","https://www.linkedin.com/","https://www.youtube.com/"]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0f766e',
+            accent: '#f97316',
+            surface: '#f8fafc'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root{
+      --primary: #0f766e;
+      --accent: #f97316;
+      --surface: #f8fafc;
+      --gem1: #06b6d4;
+      --gem2: #7c3aed;
+      --gem3: #f97316;
+      --glass-1: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.06);
+    }
+
+    /* Hero with glossy sheen */
+    .hero-background {
+      background-image: linear-gradient(180deg, rgba(6, 15, 45, 0.54), rgba(12, 32, 60, 0.58)), url('assets/hero-1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-blend-mode: multiply;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-background::after{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 25%), radial-gradient(circle at 80% 80%, rgba(248,156,33,0.08), transparent 24%), linear-gradient(180deg, transparent 50%, rgba(8, 16, 38, 0.52) 100%);
+      pointer-events: none;
+      opacity: 0.45;
+    }
+    .hero-background h1,
+    .hero-background p,
+    .hero-background .inline-flex {
+      text-shadow: 0 1px 12px rgba(0,0,0,0.18);
+    }
+
+    @keyframes sheen{ 0%{ transform: translateX(-120%) rotate(20deg);} 100%{ transform: translateX(220%) rotate(20deg);} }
+
+    .rtl * { direction: rtl; text-align: right; }
+    .rtl .nav-link { margin-left: 0; margin-right: 1rem; }
+    .lang-switcher button.active { background: linear-gradient(90deg, var(--accent), #fb923c); color: white; }
+
+    .video-card{ position:relative; overflow:hidden }
+    .video-card::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 40%); pointer-events:none; }
+
+    /* Glassy cards with animated gradient border */
+    .glass-card, .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 12px; padding: 1rem; position: relative; overflow: hidden;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.45); border: 1px solid var(--glass-1);
+    }
+    .glass-card::after, .card::after { content:''; position:absolute; inset:0; background: linear-gradient(120deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); mix-blend-mode: overlay; pointer-events:none; }
+
+    .gradient-border{ position:relative; border-radius:14px; }
+    .gradient-border::before{ content:''; position:absolute; inset:-2px; background: linear-gradient(90deg,var(--gem1),var(--gem2),var(--gem3),var(--gem1)); z-index:-1; filter: blur(18px); opacity:0.95; border-radius:16px; animation: hueShift 6s linear infinite; }
+
+    @keyframes hueShift{ 0%{filter:hue-rotate(0deg);}50%{filter:hue-rotate(30deg);}100%{filter:hue-rotate(0deg);} }
+
+    /* Buttons - glossy gradient with sliding highlight */
+    .btn-gradient{ background: linear-gradient(90deg,var(--accent),#fb923c); color:white; padding:.75rem 1rem; border-radius:10px; box-shadow: 0 8px 30px rgba(249,115,22,0.16); transition: transform .22s, box-shadow .22s; position:relative; overflow:hidden; }
+    .btn-gradient:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(249,115,22,0.22); }
+    .btn-gradient::before{ content:''; position:absolute; inset:-30% -10% -30% -10%; background: linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02)); transform: rotate(25deg) translateX(-120%); transition: transform .8s; }
+    .btn-gradient:hover::before{ transform: rotate(25deg) translateX(20%); }
+
+    #ai { position: relative; overflow: hidden; opacity: 0; transform: translateY(28px); transition: opacity .85s ease, transform .85s ease; }
+    #ai.ai-visible { opacity: 1; transform: translateY(0); }
+    #ai::before { content:''; position:absolute; right:-4rem; top:-4rem; width:18rem; height:18rem; background: radial-gradient(circle at center, rgba(56,189,248,0.18), transparent 52%); filter: blur(56px); pointer-events:none; }
+    #ai::after { content:''; position:absolute; left:-6rem; bottom:-5rem; width:20rem; height:20rem; background: radial-gradient(circle at center, rgba(16,185,129,0.18), transparent 48%); filter: blur(72px); pointer-events:none; }
+    .ai-card { position: relative; overflow: visible; width: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-self: start; border: 1px solid rgba(56,189,248,0.14); background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95)); box-shadow: 0 32px 90px rgba(15,23,42,0.08); }
+    .ai-card::before{ content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 22%), radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 24%); pointer-events:none; }
+    .ai-card::after { content:''; position:absolute; top:0; left:50%; width:16rem; height:16rem; transform: translateX(-50%); background: radial-gradient(circle at center, rgba(56,189,248,0.22), transparent 60%); pointer-events:none; filter: blur(54px); opacity:0.9; }
+    .ai-card > * { position: relative; z-index:1; }
+    .ai-card-body { display: flex; flex-direction: column; gap: 1.5rem; max-width: 44rem; width: 100%; margin: 0 auto; }
+    .ai-input-row { min-width: 0; }
+    .ai-input-row input { box-shadow: inset 0 2px 16px rgba(15,23,42,0.08); border-color: rgba(14,165,233,0.16); min-width: 0; }
+    .ai-input-row button, .ai-input-row a { min-width: 12rem; }
+    .ai-golden-badge { white-space: nowrap; z-index: 2; padding: .75rem 1.15rem; font-size: 0.82rem; }
+    .ai-section-notice { width: 100%; display: flex; justify-content: center; }
+    .ai-response-card { position: relative; border-radius: 1.75rem; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)); border: 1px solid rgba(56,189,248,0.18); box-shadow: 0 16px 40px rgba(56,189,248,0.08); }
+    .ai-feature { display: inline-flex; align-items:center; gap:0.5rem; padding:1rem 1.15rem; border-radius:1.5rem; background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(59,130,246,0.08)); color: #065f46; font-size:0.95rem; font-weight:700; border: 1px solid rgba(59,130,246,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.48); }
+    .ai-feature::before{ content:'•'; color:#0ea5e9; font-size:1.2rem; line-height:1; }
+    .ai-hero-pill { display:inline-flex; align-items:center; gap:.75rem; padding:1rem 1.25rem; border-radius:1.75rem; background: linear-gradient(135deg, rgba(14,165,233,0.14), rgba(16,185,129,0.12)); border: 1px solid rgba(14,165,233,0.2); color: #075985; font-weight:700; box-shadow: 0 18px 40px rgba(14,165,233,0.08); max-width: min(38rem,100%); }
+    .ai-hero-pill span { width:2.25rem; height:2.25rem; display:grid; place-items:center; border-radius:9999px; background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(14,165,233,0.25)); color: #0c4a6e; font-size:1rem; }
+    .ai-score-panel { display:flex; align-items:center; gap:1.5rem; padding: 1.35rem 1.5rem; min-height: 13rem; border-radius: 1.75rem; background: rgba(255,255,255,0.98); border: 1px solid rgba(245,158,11,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 26px rgba(245,158,11,0.08); flex-wrap: wrap; }
+    .ai-score-panel .ai-score-badge { width:3.75rem; height:3.75rem; display:grid; place-items:center; flex-shrink:0; border-radius:1.75rem; background: linear-gradient(135deg, #f59e0b, #d97706); color:white; font-size:1.25rem; font-weight:800; letter-spacing:0.04em; box-shadow: 0 18px 42px rgba(245, 158, 11, 0.32); transition: transform .3s ease, box-shadow .3s ease; animation: pulseGlow 4s ease-in-out infinite; }
+    .ai-score-panel .ai-score-badge:hover { transform: scale(1.1); box-shadow: 0 24px 44px rgba(245, 158, 11, 0.38); }
+    .ai-score-details { flex: 1 1 0; min-width: 0; }
+    .ai-score-details p { margin: 0; }
+    .ai-score-details p + p { margin-top: 0.75rem; }
+    .ai-score-details p:first-child { letter-spacing: 0.24em; text-transform: uppercase; color: #ca8a04; font-size: 0.75rem; }
+    .ai-golden-badge { position: relative; overflow: hidden; display:inline-flex; align-items:center; justify-content:center; padding:.85rem 1.3rem; border-radius:999px; background: linear-gradient(135deg, rgba(255,210,76,0.22), rgba(245, 158, 11, 0.18)); color: #92400e; font-size:0.84rem; font-weight:800; text-transform: uppercase; letter-spacing:0.14em; border: 1px solid rgba(245, 158, 11, 0.24); box-shadow: 0 20px 30px rgba(245,158,11,0.14), inset 0 1px 0 rgba(255,255,255,0.6); }
+    .ai-golden-badge::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 45%); pointer-events:none; }
+    .ai-golden-badge::after { content:''; position:absolute; right:-25%; top:-25%; width:70%; height:120%; background: radial-gradient(circle, rgba(255,255,255,0.32), transparent 60%); transform: rotate(25deg); pointer-events:none; }
+    .ai-badge { display:inline-flex; align-items:center; gap:0.4rem; padding:0.55rem 0.95rem; border-radius:9999px; background: linear-gradient(90deg, rgba(16,185,129,0.16), rgba(14,165,233,0.12)); color: #0f766e; font-size:0.78rem; font-weight:700; text-transform: uppercase; letter-spacing:0.12em; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
+    .ai-stat { font-weight:700; color:#0f172a; }
+    .ai-stat span { display:inline-block; background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(56,189,248,0.18)); padding:0.35rem 0.65rem; border-radius:999px; }
+    .ai-stat strong { color: #0f172a; }
+    .ai-stat span { display:inline-block; background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(56,189,248,0.18)); padding:0.35rem 0.65rem; border-radius:999px; }
+    .ai-stat strong { color: #0f172a; }
+    @keyframes pulseGlow { 0%, 100% { transform: scale(1); box-shadow: 0 12px 24px rgba(14,165,233,0.24); } 50% { transform: scale(1.02); box-shadow: 0 18px 32px rgba(14,165,233,0.32); } }
+    .ai-heading-gradient { background: linear-gradient(90deg, #0ea5e9, #34d399); -webkit-background-clip: text; color: transparent; }
+    .ai-extra { display:inline-flex; align-items:center; gap:0.5rem; padding:0.9rem 1rem; border-radius:1.5rem; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.18); color: #0f577b; font-weight:700; }
+    .ai-section-notice { display: inline-flex; align-items:center; gap:0.65rem; padding: 0.85rem 1rem; border-radius: 1.75rem; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.16); color: #0c4a6e; font-weight: 700; }
+    .footer-badge { display:inline-flex; align-items:center; gap:.55rem; padding:.7rem 1rem; border-radius:999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; font-size:.78rem; letter-spacing:.06em; text-transform: uppercase; }
+    .footer-client-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(10rem,1fr)); gap:1rem; }
+    .footer-client-card { min-height:5rem; display:flex; align-items:center; justify-content:center; border-radius:1.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; text-align:center; font-weight:600; padding:1rem; }
+    .footer-quick-link { color: #cbd5e1; transition: color .2s ease; }
+    .footer-quick-link:hover { color: white; }
+    .footer-small { color: #94a3b8; }
+    @media (max-width: 1024px) {
+      .ai-card { padding: 2rem; min-height: auto; }
+      .ai-hero-pill { max-width: 100%; }
+      .ai-score-panel { justify-content: center; padding: 1.25rem 1.25rem; }
+      .ai-score-panel .ai-score-badge { margin: 0; }
+      .ai-section-notice { font-size: 0.95rem; padding: 0.85rem 1rem; }
+      .ai-feature { min-height: 4rem; }
+      .ai-score-panel > div { min-width: 0; }
+    }
+    @media (max-width: 768px) {
+      .ai-card { padding: 1.75rem; }
+      .ai-card h3 { font-size: 1.55rem; }
+      .ai-input-row { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+      .ai-input-row button, .ai-input-row a { width: 100%; min-width: auto; justify-self: stretch; }
+      .ai-feature { width: 100%; justify-content: center; }
+      .grid.sm\:grid-cols-3 { grid-template-columns: repeat(1, minmax(0,1fr)); }
+      .grid.sm\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0,1fr)); }
+      .ai-card { width: 100%; }
+      .ai-section-notice { justify-content: center; }
+      .ai-score-panel { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+      .ai-score-panel .ai-score-badge { margin: 0 auto; }
+      .ai-extra { justify-self: center; }
+    }
+
+    /* Animated multicolor line (gemini-like) */
+    .multiline{ position:relative; overflow:hidden; }
+    .multiline::before{ content:''; position:absolute; left:-25%; right:-25%; top:50%; height:4px; background: linear-gradient(90deg,var(--gem1),var(--gem2),var(--gem3),var(--gem1)); background-size:200% 100%; filter: blur(6px); opacity:0.98; animation: slideLine 4s linear infinite; }
+    @keyframes slideLine{ 0%{background-position:0% 0;} 100%{background-position:200% 0;} }
+
+    .video-slider { position:relative; }
+    .video-slider::before, .video-slider::after { display:none; }
+    .slider-track { display:flex; gap:1.5rem; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; touch-action:pan-x; scroll-behavior:smooth; padding-bottom:0.25rem; }
+    .slider-track::-webkit-scrollbar { display:none; }
+    .slider-card { scroll-snap-align:start; min-width:320px; width:320px; flex-shrink:0; cursor:pointer; position:relative; border:1.5px solid rgba(148,163,184,0.18); border-radius:1.5rem; background:#fff; overflow:hidden; transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+    .slider-card::before { content:''; position:absolute; inset:-3px; border-radius:1.75rem; background:linear-gradient(135deg, rgba(56,189,248,0.95), rgba(124,58,237,0.9), rgba(236,72,153,0.85)); opacity:0; filter:blur(10px); transition:opacity .3s ease; pointer-events:none; z-index:-1; }
+    .slider-card:hover::before { opacity:1; }
+    .slider-card:hover { transform:translateY(-6px); border-color:rgba(56,189,248,0.5); box-shadow:0 24px 60px rgba(15,23,42,0.12); }
+    .slider-card .card-media { position:relative; height:13rem; overflow:hidden; background:#0f172a; }
+    .slider-card video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .28s ease; }
+    .slider-card:hover video { opacity:1; }
+    .slider-card .card-poster { position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(0.82); transition:transform .35s ease; }
+    .slider-card:hover .card-poster { transform:scale(1.03); }
+    .slider-card .card-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(15,23,42,0.24), rgba(15,23,42,0.65)); transition:background .3s ease; }
+    .slider-card:hover .card-overlay { background: linear-gradient(180deg, rgba(15,23,42,0.18), rgba(15,23,42,0.55)); }
+    .play-circle { width:3.5rem; height:3.5rem; min-width:3.5rem; border-radius:9999px; background:linear-gradient(135deg, rgba(56,189,248,0.95), rgba(59,130,246,0.95)); display:flex; align-items:center; justify-content:center; color:white; font-size:1.25rem; box-shadow:0 14px 35px rgba(15,23,42,0.22); transition:transform .25s ease, background .25s ease; }
+    .slider-card:hover .play-circle { transform:scale(1.06); background:linear-gradient(135deg, rgba(37,99,235,0.95), rgba(14,165,233,0.95)); }
+    .slider-card .bg-white { border-top:1px solid rgba(15,23,42,0.06); }
+    .video-slider .slider-nav,
+    .project-slider-nav { position:absolute; inset:0; pointer-events:none; display:flex; align-items:center; justify-content:space-between; padding:0 0.75rem; }
+    .slider-arrow, .project-arrow { pointer-events:auto; position:relative; top:auto; transform:none; width:3.4rem; height:3.4rem; border:none; border-radius:9999px; background:radial-gradient(circle at 22% 22%, #38bdf8 0%, #7c3aed 40%, #0f172a 95%); color:white; font-size:1.4rem; display:flex; align-items:center; justify-content:center; box-shadow:0 18px 30px rgba(59,130,246,0.32), 0 0 22px rgba(168,85,247,0.18); cursor:pointer; transition:background .25s ease, transform .2s ease, box-shadow .2s ease; z-index:1; }
+    .slider-arrow::before, .project-arrow::before { content:''; position:absolute; inset:0; border-radius:9999px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.48), transparent 42%); opacity:0.95; pointer-events:none; z-index:-1; }
+    .slider-arrow:hover, .project-arrow:hover { background:radial-gradient(circle at 22% 22%, #7dd3fc 0%, #8b5cf6 40%, #22d3ee 75%); transform:scale(1.12); box-shadow:0 20px 38px rgba(59,130,246,0.42), 0 0 26px rgba(168,85,247,0.25); }
+    .slider-arrow.left, .project-arrow.left { left:auto; right:auto; }
+    .slider-arrow.right, .project-arrow.right { left:auto; right:auto; }
+    .project-arrow { pointer-events:auto; width:3.4rem; height:3.4rem; margin:0; box-shadow:0 18px 30px rgba(59,130,246,0.32), 0 0 22px rgba(168,85,247,0.18); }
+    @media (max-width: 1200px) {
+      .project-grid-wrapper { padding-inline: 3rem; }
+      .project-slider-nav { padding:0 0.75rem; }
+      .project-card { min-width:20rem; max-width:22rem; }
+    }
+    @media (max-width: 1024px) {
+      .project-grid-wrapper { padding-inline: 2rem; }
+      .project-card { min-width:18rem; max-width:20rem; }
+      .project-slider-nav { padding:0 0.5rem; }
+    }
+    @media (max-width: 768px) {
+      .project-grid-wrapper { padding-inline: 1rem; }
+      .project-grid-wrapper::after,
+      .project-grid-wrapper::before { display:none; }
+      .project-slider-nav { padding:0 0.5rem; }
+      .project-card { min-width:calc(100vw - 2rem); max-width:calc(100vw - 2rem); }
+    }
+    @media (max-width: 640px) {
+      .project-grid-wrapper { padding-inline: 0.75rem; }
+    }
+    .slider-track.dragging { cursor:grabbing; }
+    @media (max-width: 1024px) {
+      .slider-arrow { width:3rem; height:3rem; font-size:1.25rem; }
+    }
+    @media (max-width: 768px) {
+      .slider-track { gap:1rem; }
+      .slider-card { min-width:calc(90vw - 2rem); width:calc(90vw - 2rem); }
+      .slider-arrow { width:2.6rem; height:2.6rem; font-size:1.1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { .slider-track { animation: none; } }
+
+    /* (AI visual grid removed) */
+
+    /* subtle section glow */
+    .section-glow{ position:relative; }
+    .section-glow::before{ content:''; position:absolute; inset:-30px; background: radial-gradient(ellipse at center, rgba(15,118,110,0.06), transparent 40%); z-index:-1; filter: blur(20px); }
+
+    .badge{ background: linear-gradient(90deg,var(--gem2),var(--gem1)); color:white; padding:6px 10px; border-radius:999px; box-shadow:0 6px 18px rgba(124,58,237,0.12); }
+
+    .contact-gradient { background: linear-gradient(135deg, rgba(6, 182, 212, 0.88), rgba(14, 165, 233, 0.88), rgba(16, 185, 129, 0.92)); }
+    .contact-panel { position: relative; overflow: hidden; }
+    .contact-panel::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(255,255,255,0.24), transparent 28%), radial-gradient(circle at bottom right, rgba(255,255,255,0.16), transparent 30%); pointer-events:none; }
+    .contact-panel > .contact-gradient { position: relative; z-index: 1; height: 100%; }
+    .contact-form-card { position: relative; }
+    .contact-form-card .decor-dot { position:absolute; border-radius:9999px; filter: blur(30px); opacity:0.55; pointer-events:none; }
+    .contact-form-card .decor-dot.one { top:-2.5rem; left:-2.5rem; width:10rem; height:10rem; background: rgba(16, 185, 129, 0.16); }
+    .contact-form-card .decor-dot.two { bottom:-2rem; right:-2rem; width:8rem; height:8rem; background: rgba(56, 189, 248, 0.16); }
+    .contact-form-card .field-input { border-color: rgba(15,23,42,0.12); transition: border-color .2s ease, box-shadow .2s ease; }
+    .contact-form-card .field-input:focus { border-color: rgba(16,185,129,0.35); box-shadow: 0 0 0 4px rgba(16,185,129,0.12); outline: none; }
+    .contact-form-card .field-input,[class*="field-input"] { width: 100%; }
+    .contact-form-card .form-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-form-card .form-actions p { margin: 0; }
+    @media (min-width: 640px) {
+      .contact-form-card .form-actions { flex-direction: row; align-items: center; justify-content: space-between; }
+      .contact-form-card { padding: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .contact-panel { border-radius: 1.5rem; }
+      .contact-form-card { border-radius: 1.5rem; padding: 1.75rem; }
+      .contact-panel .contact-gradient { padding: 1.5rem; }
+      .contact-panel .contact-gradient > .relative { padding: 1.5rem; }
+    }
+
+    /* projects carousel */
+    #projects-track {
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(18rem,24rem);
+      gap:2.5rem;
+      scroll-snap-type:x mandatory;
+      padding:1rem 0 0.5rem;
+    }
+    .project-grid-wrapper {
+      position:relative;
+      overflow:hidden;
+      padding-inline: 4rem;
+      padding-block: 2rem;
+    }
+    .project-grid-wrapper.dragging { cursor:grabbing; }
+    .project-grid-wrapper::before,
+    .project-grid-wrapper::after {
+      content:'';
+      position:absolute;
+      top:0;
+      width:5rem;
+      height:100%;
+      pointer-events:none;
+      z-index:2;
+    }
+    .project-grid-wrapper::before {
+      left:0;
+      background: linear-gradient(90deg, rgba(248,250,252,1), rgba(248,250,252,0));
+    }
+    .project-grid-wrapper::after {
+      right:0;
+      background: linear-gradient(270deg, rgba(248,250,252,1), rgba(248,250,252,0));
+    }
+    #projects-track { position:relative; z-index:3; }
+    #projects-track.slider-track {
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(18rem,24rem);
+      gap:2.5rem;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      touch-action:pan-x;
+      scroll-behavior:smooth;
+      padding-bottom:0.25rem;
+    }
+    #projects-track.slider-track {
+      scrollbar-color: rgba(15,23,42,0.18) rgba(226,232,240,0.6);
+      scrollbar-width: thin;
+    }
+    #projects-track.slider-track::-webkit-scrollbar { height:0.75rem; }
+    #projects-track.slider-track::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.18); border-radius:999px; }
+    #projects-track.slider-track::-webkit-scrollbar-track { background: rgba(226,232,240,0.55); border-radius:999px; }
+    @media (max-width: 1024px) {
+      #projects-track.slider-track::-webkit-scrollbar { display:none; }
+    }
+    .slider-track.dragging, .project-grid-wrapper.dragging { cursor:grabbing; }
+    .project-grid-wrapper::-webkit-scrollbar { height:0.75rem; }
+    .project-grid-wrapper::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.18); border-radius:999px; }
+    .project-grid-wrapper::-webkit-scrollbar-track { background: transparent; }
+    .animate-slide { display:grid; gap:1.5rem; }
+    .project-card { scroll-snap-align:start; min-width:20rem; max-width:22rem; border:1.5px solid rgba(148,163,184,0.18); border-radius:1.75rem; overflow:hidden; background:#fff; position:relative; transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+    .project-card::before { content:''; position:absolute; inset:-3px; border-radius:2rem; background:linear-gradient(135deg, rgba(124,58,237,0.22), rgba(139,92,246,0.18), rgba(59,130,246,0.12)); opacity:0; filter:blur(16px); transition:opacity .3s ease; pointer-events:none; z-index:-1; }
+    .project-card:hover::before { opacity:1; }
+    .project-card:hover { transform:translateY(-8px); border-color:rgba(124,58,237,0.35); box-shadow:0 28px 70px rgba(15,23,42,0.14); }
+    .project-card img { width:100%; height:15rem; object-fit:cover; transition:transform .35s ease; }
+    .project-card:hover img { transform:scale(1.03); }
+    .project-card .project-body { padding:1.35rem 1.5rem 1.6rem; }
+    .project-card .project-tag-row { display:flex; flex-wrap:wrap; gap:0.55rem; margin-bottom:1rem; }
+    .project-card h4 { font-size:1.15rem; font-weight:700; margin-bottom:.7rem; }
+    .project-card p { color:#475569; font-size:.98rem; line-height:1.8; }
+    .project-card .project-tag-row { display:flex; flex-wrap:wrap; gap:0.55rem; margin-bottom:1rem; }
+    .project-card h4 { font-size:1.1rem; font-weight:700; margin-bottom:.65rem; }
+    .project-card p { color:#475569; font-size:.975rem; line-height:1.75; }
+    #testimonials blockquote {
+      position:relative;
+      background:#ffffff;
+      border:1px solid rgba(148,163,184,0.18);
+      box-shadow:0 18px 36px rgba(15,23,42,0.05);
+      border-radius:1.75rem;
+      padding:1.5rem 1.5rem 1.65rem;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    #testimonials blockquote:hover { transform:translateY(-4px); border-color:rgba(56,189,248,0.35); box-shadow:0 24px 60px rgba(15,23,42,0.11); }
+    #testimonials blockquote::before {
+      content:'“';
+      position:absolute;
+      top:1.1rem;
+      left:1.2rem;
+      font-size:3rem;
+      color:rgba(56,189,248,0.16);
+      line-height:1;
+    }
+    #testimonials blockquote p { color:#334155; font-size:1rem; line-height:1.85; margin:0; }
+    #testimonials blockquote footer { display:block; margin-top:1.2rem; color:#64748b; font-weight:600; }
+    @media (prefers-reduced-motion: reduce) { .animate-slide, .hero-background::after, .gradient-border::before, .multiline::before { animation: none; } }
+  </style>
+</head>
+<body class="bg-surface text-slate-900 antialiased" id="page-root">
+  <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6 lg:px-8">
+      <a href="#home" class="flex items-center gap-3 text-slate-900">
+        <div class="h-14 w-14 overflow-hidden rounded-3xl bg-slate-100 shadow-inner">
+          <img src="assets/nahda-logo.jpeg" alt="Nahda Safety logo" class="h-full w-full object-cover" />
+        </div>
+        <div>
+          <p class="text-sm font-bold uppercase tracking-[0.28em] text-slate-700">Nahda Safety</p>
+          <p class="text-xs text-slate-500">Health & AI Consulting</p>
+        </div>
+      </a>
+      <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-700 md:flex" id="main-nav">
+        <a href="#home" class="nav-link transition hover:text-primary" data-key="navHome"></a>
+        <a href="#about" class="nav-link transition hover:text-primary" data-key="navAbout"></a>
+        <a href="#services" class="nav-link transition hover:text-primary" data-key="navServices"></a>
+        <a href="#projects" class="nav-link transition hover:text-primary" data-key="navProjects"></a>
+        <a href="#ai" class="nav-link transition hover:text-primary" data-key="navAI"></a>
+        <a href="#contact" class="nav-link transition hover:text-primary" data-key="navContact"></a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <div class="lang-switcher inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-sm">
+          <button id="lang-en" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('en')">EN</button>
+          <button id="lang-ar" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('ar')">ع</button>
+        </div>
+        <a href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="hero-background relative overflow-hidden py-24">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div class="space-y-8">
+            <p class="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-cyan-500/10" data-key="heroBadge"></p>
+            <h1 class="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl" data-key="heroHeading"></h1>
+            <p class="max-w-2xl text-lg leading-8 text-slate-100/90" data-key="heroCopy"></p>
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <a href="#contact" class="inline-flex min-w-[200px] items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-orange-500/20" data-key="heroPrimaryButton"></a>
+              <a href="#video" class="inline-flex min-w-[200px] items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-white/10" data-key="heroSecondaryButton"></a>
+            </div>
+          </div>
+          <div>
+            <div class="rounded-[2rem] border border-white/15 bg-slate-950/85 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+              <p class="text-sm uppercase tracking-[0.24em] text-amber-300" data-key="heroPanelTitle"></p>
+              <p class="mt-3 text-slate-200" data-key="heroPanelCopy"></p>
+              <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                <div class="rounded-[1.25rem] bg-slate-900/80 p-4">
+                  <p class="text-sm uppercase tracking-[0.24em] text-amber-200" data-key="heroBenefit1"></p>
+                </div>
+                <div class="rounded-[1.25rem] bg-slate-900/80 p-4">
+                  <p class="text-sm uppercase tracking-[0.24em] text-amber-200" data-key="heroBenefit2"></p>
+                </div>
+              </div>
+            </div>
+            <!-- CEO placeholder (temporary SVG) -->
+            <div class="mt-6 rounded-[2rem] border border-white/10 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <img src="assets/ceo-placeholder.jpg" alt="CEO foto" class="h-20 w-20 rounded-3xl object-cover ring-2 ring-orange-400/30" />
+                <div>
+                  <p class="text-sm uppercase tracking-[0.32em] text-amber-300" data-key="heroQuoteTitle"></p>
+                </div>
+              </div>
+              <p class="mt-5 text-slate-200 leading-7" data-key="heroQuoteText"></p>
+              <p class="mt-4 text-sm text-slate-400" data-key="heroQuoteAuthor"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-950/95 py-12">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="grid gap-5 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-cyan-200">Trusted by Oman teams</p>
+            <h2 class="mt-4 text-3xl font-bold tracking-tight text-white">Safety metrics that build trust and keep teams moving.</h2>
+            <p class="mt-3 max-w-2xl text-slate-400">From compliance audits to employee training, these results show how Nahda turns safety promises into practical outcomes for local businesses.</p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-[1.75rem] border border-cyan-500/20 bg-slate-900/85 p-7 text-white shadow-2xl shadow-cyan-500/15 transition-transform duration-300 hover:-translate-y-1">
+              <p class="text-xs uppercase tracking-[0.28em] text-cyan-200" data-key="statTitle1"></p>
+              <p class="mt-6 text-4xl font-black" data-key="statValue1"></p>
+              <p class="mt-3 text-sm leading-6 text-slate-300" data-key="statCopy1"></p>
+            </div>
+            <div class="rounded-[1.75rem] border border-amber-500/20 bg-slate-900/85 p-7 text-white shadow-2xl shadow-amber-500/15 transition-transform duration-300 hover:-translate-y-1">
+              <p class="text-xs uppercase tracking-[0.28em] text-amber-200" data-key="statTitle2"></p>
+              <p class="mt-6 text-4xl font-black" data-key="statValue2"></p>
+              <p class="mt-3 text-sm leading-6 text-slate-300" data-key="statCopy2"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="bg-slate-50 py-16">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">About Us</p>
+          <h2 class="mt-3 text-3xl font-bold">Nahda Safety & Health: Local expertise with modern AI advantage</h2>
+          <p class="mx-auto mt-4 max-w-3xl text-slate-600">We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.</p>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-3">
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600">Our mission</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900">Make Oman workplaces safer now</h3>
+            <p class="mt-3 text-slate-600">We combine on-the-ground safety expertise with easy-to-use systems and clear guidance so every client can improve performance, reduce risk, and stay compliant without extra complexity.</p>
+          </div>
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600">Why choose us</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900">Trusted, responsive, Oman-based</h3>
+            <p class="mt-3 text-slate-600">Our local team understands Omani regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.</p>
+          </div>
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <p class="text-sm uppercase tracking-[0.24em] text-violet-600">How we help</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900">Practical consulting, training, and AI insight</h3>
+            <p class="mt-3 text-slate-600">From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video gallery (autoplay-friendly embed suggestions) -->
+    <section id="video" class="bg-slate-50 py-16">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">Safety Videos</p>
+          <h2 class="mt-3 text-3xl font-bold">Sector safety briefings</h2>
+          <p class="mt-2 text-slate-600">Short, focused safety videos for schools, hospitals, construction and oil & gas.</p>
+        </div>
+        <div class="video-slider">
+          <div class="slider-track">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=hotel+safety+legal+compliance+consultant">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Hotel Safety & Legal Compliance</h3>
+                <p class="mt-2 text-sm text-slate-600">Top hospitality safety consulting and legal documentation for hotels in Oman.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=construction+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Construction Safety Consultants</h3>
+                <p class="mt-2 text-sm text-slate-600">Expert site safety, toolbox talks, and contractor compliance programs.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=school+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1523580846011-d3a5bc25703b?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1523580846011-d3a5bc25703b?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">School Safety Consulting</h3>
+                <p class="mt-2 text-sm text-slate-600">Child safety plans, evacuation training, and school risk audits.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=oil+and+gas+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1504712598893-24159a89200e?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1504712598893-24159a89200e?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Oil & Gas Safety Consulting</h3>
+                <p class="mt-2 text-sm text-slate-600">Energy sector HSE training, permits, and Iranian regulatory support.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=hospital+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1580281657521-7f7db0fce801?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1580281657521-7f7db0fce801?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Hospital & Clinical Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Clinical safety audits, infection control, and patient protection strategies.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=restaurant+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Restaurant & Kitchen Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Food safety, kitchen hazard control, and restaurant staff training.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=manufacturing+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Manufacturing Plant Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Machine guarding, process safety, and industrial risk reduction.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=warehouse+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1519337265831-281ec6cc8514?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1519337265831-281ec6cc8514?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Warehouse & Logistics Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Loading, storage, and forklift safety for efficient warehouse operations.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=retail+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Retail & Commercial Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Floor safety, emergency exits, and customer-facing risk prevention.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=hse+compliance+documentation+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">HSE Compliance Documentation</h3>
+                <p class="mt-2 text-sm text-slate-600">Safety manuals, legal reports, and documentation for Oman regulators.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=chemical+plant+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Chemical Plant & Hazard Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Process hazard reviews, emergency response and chemical handling best practices.</p>
+              </div>
+            </div>
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=office+safety+consultant+oman">
+              <div class="card-media">
+                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1491897554428-130a60dd4757?auto=format&fit=crop&w=1200&q=80')"></div>
+                <video playsinline muted loop preload="metadata" poster="https://images.unsplash.com/photo-1491897554428-130a60dd4757?auto=format&fit=crop&w=1200&q=80">
+                  <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+                </video>
+                <div class="card-overlay"><div class="play-circle">▶</div></div>
+              </div>
+              <div class="bg-white p-4">
+                <h3 class="font-semibold text-slate-900">Office & Facilities Safety</h3>
+                <p class="mt-2 text-sm text-slate-600">Ergonomics, office hazard checks, and facility evacuation planning.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-nav">
+            <button class="slider-arrow left" data-dir="left" aria-label="Previous video">‹</button>
+            <button class="slider-arrow right" data-dir="right" aria-label="Next video">›</button>
+          </div>
+        </div>
+       
+      </div>
+    </section>
+
+    <section id="services" class="py-16 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">Our Services</p>
+          <h3 class="mt-3 text-3xl font-bold">Health, safety and compliance services for every sector.</h3>
+          <p class="mx-auto mt-3 max-w-3xl text-slate-600">From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600">Audit & Inspection</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">Safety audit programs</h4>
+            <p class="mt-3 text-slate-600">Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.</p>
+          </article>
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600">Compliance Support</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">Documentation & systems</h4>
+            <p class="mt-3 text-slate-600">Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.</p>
+          </article>
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-violet-600">Training</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">Workplace training</h4>
+            <p class="mt-3 text-slate-600">Hands-on staff training, emergency drills and awareness workshops for safer operations.</p>
+          </article>
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-600">AI Advisory</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">AI-driven risk review</h4>
+            <p class="mt-3 text-slate-600">Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.</p>
+          </article>
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-amber-600">Emergency Planning</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">Evacuation & crisis</h4>
+            <p class="mt-3 text-slate-600">Emergency response plans, evacuation drills and crisis management support for fast recovery.</p>
+          </article>
+          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-600">Industry Safety</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900">Sector-specific programs</h4>
+            <p class="mt-3 text-slate-600">Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects carousel -->
+    <section id="projects" class="py-12 bg-white">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-6">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">Projects</p>
+          <h3 class="mt-2 text-3xl font-bold">Major safety consultancy sectors delivered</h3>
+          <p class="mx-auto mt-3 max-w-3xl text-slate-600">Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by static HD visuals for stronger SEO and visitor trust.</p>
+        </div>
+        <div class="overflow-hidden rounded-[2rem] bg-surface p-6 project-grid-wrapper">
+          <div class="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-sky-100/20 via-transparent to-transparent pointer-events-none"></div>
+          <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-violet-100/18 via-transparent to-transparent pointer-events-none"></div>
+          <div id="projects-track" class="slider-track animate-slide">
+            <article class="project-card">
+              <img src="assets/oilgas.jpg" alt="Oil and gas safety audit for a field site" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">HSE Audit</span><span class="badge">Field Operations</span></div>
+                <h4>Oil & Gas Safety Audit</h4>
+                <p>Regulatory-ready HSE program development and hazard control for energy operations.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/school.jpg" alt="School safety program for student protection" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Education Safety</span><span class="badge">Training</span></div>
+                <h4>School Safety Program</h4>
+                <p>Child protection risk assessments, lockdown plans, and teacher training.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/construction.jpg" alt="Construction site safety inspection and contractor onboarding" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Construction</span><span class="badge">Contractor Safety</span></div>
+                <h4>Construction Site Control</h4>
+                <p>Site inspections, toolbox talks and permit-to-work systems for safe builds.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/project-2.jpg" alt="Hospital clinical safety improvement project" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Healthcare</span><span class="badge">Clinical HSE</span></div>
+                <h4>Hospital Safety Improvements</h4>
+                <p>Clinical safety audits, infection control, and patient protection strategies.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/hero-10.jpg" alt="Hotel fire and emergency safety planning" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Hospitality</span><span class="badge">Fire Safety</span></div>
+                <h4>Hotel Fire & Emergency Planning</h4>
+                <p>Emergency evacuation paths and hospitality safety compliance for hotels.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/project-1.jpg" alt="Warehouse and logistics safety management" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Logistics</span><span class="badge">Material Handling</span></div>
+                <h4>Warehouse & Logistics Safety</h4>
+                <p>Forklift safety, storage risk controls and loading dock process improvements.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/hero-1.jpg" alt="Manufacturing plant safety upgrade" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Manufacturing</span><span class="badge">Process Safety</span></div>
+                <h4>Manufacturing Plant Safety</h4>
+                <p>Machine guarding, process hazard analysis and industrial safety systems.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/nahda-logo.jpeg" alt="Office building safety systems and ergonomics" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Office Safety</span><span class="badge">Ergonomics</span></div>
+                <h4>Office & Facilities Safety</h4>
+                <p>Ergonomics, office hazard checks and facility evacuation planning.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/hero-10.jpg" alt="Retail safety program for customer areas" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Retail</span><span class="badge">Customer Safety</span></div>
+                <h4>Retail & Hospitality Safety</h4>
+                <p>Customer zone safety, food hygiene checks and public area crowd control.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/construction.jpg" alt="Chemical plant and hazard safety review" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Chemical Safety</span><span class="badge">Hazard Control</span></div>
+                <h4>Chemical Plant & Hazard Safety</h4>
+                <p>Process safety reviews, emergency response plans and hazardous materials control.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/hero-1.jpg" alt="Emergency response planning and training" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Emergency Response</span><span class="badge">Drills</span></div>
+                <h4>Emergency Response Planning</h4>
+                <p>Evacuation drills and crisis response procedures for faster incident recovery.</p>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="assets/project-1.jpg" alt="Industrial hygiene and exposure monitoring" loading="lazy" />
+              <div class="project-body">
+                <div class="project-tag-row"><span class="badge">Industrial Hygiene</span><span class="badge">Exposure Monitoring</span></div>
+                <h4>Industrial Hygiene Monitoring</h4>
+                <p>Air quality surveys, chemical exposure checks and worker health protection.</p>
+              </div>
+            </article>
+          </div>
+          <div class="project-slider-nav">
+            <button class="slider-arrow project-arrow left" data-dir="left" aria-label="Scroll projects left">‹</button>
+            <button class="slider-arrow project-arrow right" data-dir="right" aria-label="Scroll projects right">›</button>
+          </div>
+          <p class="mt-6 text-center text-sm text-slate-500">Slide pause on hover. Discover the full range of HSE sector services with visual project highlights.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-12 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-6">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">Client Testimonials</p>
+          <h3 class="mt-2 text-2xl font-bold">What our clients say</h3>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <!-- 10 SEO-friendly testimonials -->
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Nahda Safety provided a clear, practical safety plan and helped our hospital pass the regulatory audit."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Healthcare Compliance Manager</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Their construction site audits prevented major incidents and reduced our insurance costs."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Site Operations Lead</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Professional, fast and local expertise — great for SMEs needing affordable support."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Small Business Owner</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Their AI risk reports helped prioritise our training agenda effectively."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Safety Officer</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Clear documentation and friendly support during government inspections."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Facility Manager</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"The training sessions were engaging and immediately useful for our staff."</p>
+            <footer class="mt-4 text-sm text-slate-500">– School Principal</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Highly recommended for oilfield contractors needing specific HSE guidance."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Oil & Gas Supervisor</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"The training sessions were engaging and immediately useful for our teams."</p>
+            <footer class="mt-4 text-sm text-slate-500">– HR & Training Lead</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Reliable safety audits with clear corrective actions and timelines."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Operations Director</footer>
+          </blockquote>
+          <blockquote class="rounded-lg border p-6 shadow-sm">
+            <p class="text-lg">"Great value packages for small hotels and restaurants in Muscat."</p>
+            <footer class="mt-4 text-sm text-slate-500">– Hotel Manager</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (6 SEO-focused items) -->
+    <section id="faq" class="py-12 bg-white">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="text-center mb-6">
+          <p class="text-sm uppercase tracking-[0.28em] text-primary">FAQ</p>
+          <h3 class="mt-2 text-2xl font-bold">Common questions about our HSE services</h3>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">What services does Nahda Safety offer?</summary>
+            <p class="mt-3 text-slate-600">We offer audits, compliance documentation, training, emergency planning, and AI-enabled risk advisory tailored for schools, hospitals, construction and oil & gas sites.</p>
+          </details>
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">How do you support hospital safety?</summary>
+            <p class="mt-3 text-slate-600">We provide infection control audits, patient handling guidance, clinical area risk assessments and staff training to improve patient and staff safety.</p>
+          </details>
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">Can you help with construction site safety?</summary>
+            <p class="mt-3 text-slate-600">Yes. We perform site inspections, toolbox talks, PPE selection, and permit-to-work systems for safe site operations.</p>
+          </details>
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">Do you provide emergency & evacuation planning?</summary>
+            <p class="mt-3 text-slate-600">We develop evacuation plans, run drills, and prepare emergency response procedures aligned with Omani regulations.</p>
+          </details>
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">How do your AI safety insights work?</summary>
+            <p class="mt-3 text-slate-600">Our AI tools analyse incident trends, compliance gaps and training needs to generate prioritised recommendations and action plans.</p>
+          </details>
+          <details class="rounded-lg border p-6">
+            <summary class="cursor-pointer text-lg font-semibold">How can I get a quotation?</summary>
+            <p class="mt-3 text-slate-600">Contact us via WhatsApp or email with your site details and we will provide a tailored proposal and timeline.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Consultant mini-app -->
+    <section id="ai" class="py-20 bg-slate-50">
+      <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(340px,0.9fr)] items-start lg:gap-14">
+          <div class="space-y-8">
+            <span class="text-sm uppercase tracking-[0.3em] text-emerald-600">AI Consultant</span>
+            <h2 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"><span class="ai-heading-gradient">Convert safety questions into faster decisions and stronger sales.</span></h2>
+            <div class="ai-hero-pill max-w-xl">
+              <span>⚡</span>
+              Oman-first AI safety scoring with WhatsApp-ready action plans.
+            </div>
+            <p class="max-w-3xl text-lg leading-8 text-slate-600">Our AI assistant turns urgent safety queries into practical recommendations, compliance checkpoints, and sales-ready WhatsApp follow-up—so your team can close more clients with confidence.</p>
+            <div class="grid gap-4">
+              <div class="ai-extra max-w-2xl rounded-[1.75rem] bg-sky-50 border border-sky-100 p-5 text-slate-900 shadow-sm">
+                Integrated score, action and WhatsApp follow-up for faster client closing.
+              </div>
+              <div class="ai-score-panel rounded-[1.75rem] p-6">
+                <div class="ai-score-badge">94</div>
+                <div class="ai-score-details">
+                  <p>AI Safety Score</p>
+                  <p class="text-lg font-semibold text-slate-900">Risk-rated safety advice in seconds</p>
+                  <p class="mt-2 text-sm text-slate-600">A quick AI score plus a clear next-step safety action plan.</p>
+                </div>
+              </div>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              <div class="ai-feature">Instant risk guidance</div>
+              <div class="ai-feature">WhatsApp-ready safety replies</div>
+              <div class="ai-feature">Trusted by Oman teams</div>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="rounded-3xl bg-slate-100 p-5 text-center">
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Speed</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat"><span class="text-emerald-600">10x</span> faster</span></p>
+              </div>
+              <div class="rounded-3xl bg-slate-100 p-5 text-center">
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Response</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat">24h</span> follow-up</p>
+              </div>
+              <div class="rounded-3xl bg-slate-100 p-5 text-center">
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Confidence</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat">100%</span> compliant insight</p>
+              </div>
+            </div>
+          </div>
+          <div class="ai-card self-start rounded-[2.25rem] bg-white/95 p-8 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-200/90">
+            <div class="ai-card-body flex flex-col gap-6">
+              <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="text-sm uppercase tracking-[0.3em] text-slate-500">AI risk assistant</p>
+                  <h3 class="mt-2 text-2xl font-bold text-slate-900">Ask a safety question, get a sales-ready recommendation.</h3>
+                </div>
+                <span class="ai-golden-badge">Fast estimate</span>
+              </div>
+              <div class="ai-section-notice">Instant risk score, local HSE guidance, and WhatsApp-ready action steps in one answer.</div>
+              <div class="grid gap-5 mt-6">
+              <div class="ai-input-row grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] items-center">
+                <input id="ai-query" placeholder="e.g. fire drill frequency, PPE audit, hospital safety" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" />
+                <button id="ai-ask" class="justify-self-end inline-flex h-14 min-w-[10rem] items-center justify-center rounded-3xl bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600">Ask now</button>
+              </div>
+              <div class="grid gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] items-center">
+                <button type="button" id="ai-reset" class="inline-flex h-14 items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Reset</button>
+                <a id="ai-wa" href="https://wa.me/96892500747?text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex h-14 items-center justify-center rounded-3xl bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-700" target="_blank" rel="noopener noreferrer">Discuss on WhatsApp</a>
+              </div>
+              <div id="ai-response" class="ai-response-card hidden p-5">
+                <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
+                  <div>
+                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500">Instant insight</p>
+                    <p class="mt-2 text-slate-900">Our assistant has reviewed your query and prepared a practical safety recommendation.</p>
+                  </div>
+                  <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">Recommended</span>
+                </div>
+                <div id="ai-response-text" class="mt-4 text-slate-700 leading-7"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact / Footer CTAs -->
+    <section id="contact" class="py-16 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="grid gap-8 lg:grid-cols-[1.05fr_minmax(360px,0.95fr)] lg:items-stretch">
+          <div class="contact-panel rounded-[2rem] bg-white shadow-2xl shadow-slate-900/5 overflow-hidden h-full">
+            <div class="contact-gradient p-8 sm:p-10 h-full">
+              <div class="relative rounded-[1.75rem] border border-white/20 bg-white/10 p-8 text-white shadow-2xl shadow-teal-500/10">
+                <div class="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.28),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.16),_transparent_30%)]"></div>
+                <div class="relative space-y-6">
+                  <span class="inline-flex rounded-full bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/85">Contact & support</span>
+                  <div class="space-y-3">
+                    <h3 class="text-3xl font-bold">Contact Nahda Safety</h3>
+                    <p class="max-w-2xl text-slate-100/90">Reach our health and safety team for fast compliance guidance, onsite risk checks, or AI-driven safety planning. We respond promptly on WhatsApp and email.</p>
+                  </div>
+                  <div class="grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/15">
+                      <p class="text-xs uppercase tracking-[0.3em] text-white/70">Email</p>
+                      <p class="mt-3 text-lg font-semibold">contact@nahdasafety.com</p>
+                    </div>
+                    <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/15">
+                      <p class="text-xs uppercase tracking-[0.3em] text-white/70">WhatsApp</p>
+                      <p class="mt-3 text-lg font-semibold">+968 9250 0747</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-3">
+                    <a id="contact-wa" href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/10 transition hover:bg-slate-100">Chat on WhatsApp</a>
+                    <a id="contact-email" href="mailto:contact@nahdasafety.com" class="inline-flex items-center justify-center rounded-full bg-white/20 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 transition hover:bg-white/30">Email us</a>
+                  </div>
+                  <div class="grid gap-3 sm:grid-cols-3">
+                    <a href="https://www.facebook.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">Facebook</a>
+                    <a href="https://www.linkedin.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">LinkedIn</a>
+                    <a href="https://www.youtube.com/channel/" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">YouTube</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form action="mailto:contact@nahdasafety.com" method="post" class="contact-form-card relative overflow-hidden rounded-[2rem] border border-slate-200/70 bg-white/95 p-8 shadow-2xl shadow-slate-900/5 backdrop-blur-sm">
+            <div class="decor-dot one"></div>
+            <div class="decor-dot two"></div>
+            <div class="space-y-6">
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-700">Send a message</p>
+                <h4 class="mt-2 text-2xl font-bold text-slate-900">Share your project details</h4>
+              </div>
+              <div class="grid gap-4">
+                <label class="block text-sm font-semibold text-slate-700">Name</label>
+                <input name="name" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
+                <label class="block text-sm font-semibold text-slate-700">Email</label>
+                <input type="email" name="email" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
+                <label class="block text-sm font-semibold text-slate-700">Message</label>
+                <textarea name="message" rows="5" class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600">Send message</button>
+                <p class="text-sm text-slate-500">We typically reply within one business day.</p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="bg-slate-900 text-slate-100 py-16">
+    <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-4 rounded-full bg-emerald-600/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-emerald-200">Trusted by Oman enterprises</div>
+          <div>
+            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">ISO Certified Safety</p>
+            <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl">ISO-certified quality built into every consultation.</h2>
+            <p class="mt-4 max-w-2xl text-slate-300">Nahda Safety & Health follows ISO 45001 health and safety management best practices for risk control, incident reduction, and operational compliance—so your organization can move faster, safer, and with greater client trust.</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-3">
+            <span class="footer-badge">ISO 45001</span>
+            <span class="footer-badge">ISO 9001</span>
+            <span class="footer-badge">ISO 14001</span>
+          </div>
+          <div class="mt-4">
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-400">Representative clients</p>
+            <div class="footer-client-grid mt-4">
+              <div class="footer-client-card">Oman Hospital Group</div>
+              <div class="footer-client-card">National Construction Firm</div>
+              <div class="footer-client-card">International School Network</div>
+              <div class="footer-client-card">Logistics & Warehousing</div>
+              <div class="footer-client-card">Hotel & Hospitality Chain</div>
+              <div class="footer-client-card">Oil & Gas Operations</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 shadow-2xl shadow-slate-950/20">
+          <p class="text-sm uppercase tracking-[0.28em] text-emerald-300">Quick Links</p>
+          <div class="mt-6 grid gap-3">
+            <a href="#home" class="footer-quick-link">Home</a>
+            <a href="#about" class="footer-quick-link">About Us</a>
+            <a href="#services" class="footer-quick-link">Services</a>
+            <a href="#projects" class="footer-quick-link">Projects</a>
+            <a href="#ai" class="footer-quick-link">AI Consultant</a>
+            <a href="#contact" class="footer-quick-link">Contact</a>
+          </div>
+          <div class="mt-8 border-t border-white/10 pt-6">
+            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">Contact channel</p>
+            <div class="mt-4 space-y-3">
+              <a href="mailto:contact@nahdasafety.com" class="block rounded-2xl bg-slate-900/80 px-4 py-3 text-sm text-slate-100 transition hover:bg-slate-800">Email: contact@nahdasafety.com</a>
+              <a href="https://wa.me/96892500747" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">WhatsApp: +968 9250 0747</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-slate-950 text-slate-400">
+    <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 border-t border-slate-800 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <p class="footer-small">© <span id="year"></span> Nahda Safety & Health. All rights reserved.</p>
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="#home" class="footer-quick-link">Home</a>
+          <a href="#services" class="footer-quick-link">Services</a>
+          <a href="#projects" class="footer-quick-link">Projects</a>
+          <a href="#contact" class="footer-quick-link">Contact</a>
+          <a href="assets/Nahda_Catalogue.pdf" target="_blank" rel="noopener noreferrer" class="footer-quick-link">Brochure</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp welcome popup -->
+  <div id="wa-welcome" class="fixed bottom-6 right-6 z-50 hidden">
+    <div class="max-w-xs rounded-2xl bg-white p-4 shadow-lg">
+      <div class="flex items-start gap-3">
+        <img src="assets/nahda-logo.jpeg" class="h-10 w-10 rounded" alt="Nahda" />
+        <div>
+          <p class="font-semibold" id="wa-title">Welcome to Nahda Safety</p>
+          <p class="text-sm text-slate-600 mt-1" id="wa-msg">Hello! How can we help?</p>
+          <div class="mt-3 flex gap-2">
+            <a id="wa-open" class="inline-flex items-center gap-2 rounded bg-green-600 px-3 py-2 text-sm text-white" target="_blank">Chat on WhatsApp</a>
+            <button id="wa-close" class="rounded bg-slate-100 px-3 py-2 text-sm">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        navHome: 'Home', navAbout: 'About Us', navServices: 'Services', navProjects: 'Projects', navAI: 'AI Consultant', navContact: 'Contact',
+        heroBadge: 'Trusted Oman Safety Partner', heroHeading: 'Premium safety and health consultancy for Oman businesses.', heroCopy: 'Nahda Safety & Health combines AI-driven insights with expert compliance support for schools, hospitals, construction, oil & gas and hospitality companies.', heroPrimaryButton: 'Get a Free Consultation', heroSecondaryButton: 'Watch Safety Video', heroPanelTitle: 'Built for modern teams', heroPanelCopy: 'High-impact safety plans, regulatory documents, and AI-assisted hazard reviews tailored to Oman markets.', heroBenefit1: 'On-site safety inspections', heroBenefit2: 'Compliance and training support', heroQuoteTitle: 'CEO Talks', heroQuoteText: 'At Nahda Safety, we believe every inspection, every training session, and every dialogue should make Oman safer today — not just on paper. We deliver practical, local safety solutions that work in real workplaces.', heroQuoteAuthor: '— CEO - Ali Al Balushi', statTitle1: 'Active Projects', statValue1: '42+', statCopy1: 'Local safety programs in schools, hospitals, and construction sites.', statTitle2: 'Happy Clients', statValue2: '120+', statCopy2: 'Trusted by quality teams across Oman for reliable HSE services.', statTitle3: 'Fast Response', statValue3: '24h', statCopy3: 'Rapid safety advice and estimates when you need immediate support.', statTitle4: 'Expert Hours', statValue4: '2500+', statCopy4: 'Combined safety experience from certified Oman-based professionals.'
+      },
+      ar: {
+        navHome: 'الرئيسية', navAbout: 'من نحن', navServices: 'الخدمات', navProjects: 'المشاريع', navAI: 'استشاري الذكاء', navContact: 'تواصل',
+        heroBadge: 'شريك السلامة الموثوق في عمان', heroHeading: 'استشارات سلامة وصحة متميزة للشركات في عمان.', heroCopy: 'نهضة للسلامة والصحة تقدم حلول استشارية مدعومة بالذكاء الاصطناعي.', heroPrimaryButton: 'احصل على استشارة مجانية', heroSecondaryButton: 'شاهد فيديو السلامة', heroPanelTitle: 'مصمم للفرق الحديثة', heroPanelCopy: 'خطط سلامة فعالة ووثائق امتثال ومراجعات مخاطر ذكية.', heroBenefit1: 'تفتيشات في الموقع', heroBenefit2: 'دعم الامتثال والتدريب', heroQuoteTitle: 'كلام الرئيس التنفيذي', heroQuoteText: 'في نهضة للسلامة، نؤمن أن كل تفتيش، وكل تدريب، وكل حوار يجب أن يجعل عمان أكثر أماناً اليوم ــ وليس فقط على الورق. نقدم حلولًا عملية ومحلية تعمل في بيئات العمل الحقيقية.', heroQuoteAuthor: '— الرئيس التنفيذي، نهضة السلامة والصحة', statTitle1: 'المشاريع النشطة', statValue1: '42+', statCopy1: 'برامج السلامة المحلية في المدارس والمستشفيات ومواقع البناء.', statTitle2: 'عملاء راضون', statValue2: '120+', statCopy2: 'موثوق بها من قبل فرق الجودة في جميع أنحاء عمان.', statTitle3: 'استجابة سريعة', statValue3: '24 ساعة', statCopy3: 'نصائح وسرعات تقدير فورية عندما تحتاج إلى دعم عاجل.', statTitle4: 'ساعات خبرة', statValue4: '2500+', statCopy4: 'خبرة سلامة مجمعة من محترفين معتمدين في عمان.'
+      }
+    };
+
+    function setLanguage(lang='en'){
+      const root = document.documentElement;
+      const body = document.body;
+      const locale = translations[lang] ? lang : 'en';
+      const dict = translations[locale];
+      root.lang = locale; body.classList.toggle('rtl', locale === 'ar'); root.dir = locale === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-key]').forEach(el=>{ const k = el.getAttribute('data-key'); if(dict[k]) el.textContent = dict[k]; });
+      document.getElementById('lang-en').classList.toggle('active', locale==='en');
+      document.getElementById('lang-ar').classList.toggle('active', locale==='ar');
+      // WhatsApp welcome text and link
+      const waTitle = locale === 'ar' ? 'مرحباً في نهضة للسلامة' : 'Welcome to Nahda Safety';
+      const waMsg = locale === 'ar' ? 'أهلاً! كيف نساعدك اليوم؟' : 'Hello! How can we help today?';
+      document.getElementById('wa-title').textContent = waTitle; document.getElementById('wa-msg').textContent = waMsg + ' \nEmail: contact@nahdasafety.com';
+      const pre = encodeURIComponent(locale === 'ar' ? 'مرحباً، أحتاج معلومات عن خدمات السلامة.' : 'Hello, I need information about your safety services.');
+      document.getElementById('wa-open').href = `https://wa.me/96892500747?text=${pre}`;
+      localStorage.setItem('siteLanguage', locale);
+    }
+
+    // AI consultant simple keyword responder
+    const aiResponses = [
+      { q:['fire','evacuation'], a:'A strong fire safety system includes a clear evacuation plan, marked escape routes, fire drill schedules, and easy access to extinguishers. For a fast, site-specific review, contact Nahda Safety on WhatsApp.'},
+      { q:['ppe','personal protective'], a:'PPE must match the actual hazards on site and include training, inspection checks, and fit testing. For quick advice and a practical PPE checklist, message Nahda Safety on WhatsApp.'},
+      { q:['construction','site'], a:'Construction safety relies on daily hazard walk-throughs, toolbox talks, permit-to-work controls, and supervision. For immediate support tailored to your project, chat with Nahda Safety on WhatsApp.'},
+      { q:['hospital','clinical'], a:'Hospital safety requires patient flow controls, infection prevention, emergency response plans, and clear waste handling procedures. For faster guidance on your facility, reach out to Nahda Safety on WhatsApp.'},
+      { q:['school','students'], a:'School safety should cover entry/exit management, playground supervision, lockdown drills, and staff awareness. For quick school safety recommendations, connect with Nahda Safety on WhatsApp.'}
+    ];
+    function aiConsult(query){ const q = (query||'').toLowerCase(); for(const it of aiResponses){ if(it.q.some(k=>q.includes(k))) return it.a; } return 'This is a general safety guideline. For a rapid, customized response and next-step recommendations, contact Nahda Safety directly on WhatsApp at +968 9250 0747.'; }
+
+    window.addEventListener('DOMContentLoaded', ()=>{
+      const saved = localStorage.getItem('siteLanguage') || 'en'; setLanguage(saved);
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // show WA welcome once
+      setTimeout(()=>{ if(!localStorage.getItem('nahda_wa_shown')){ document.getElementById('wa-welcome').classList.remove('hidden'); localStorage.setItem('nahda_wa_shown','1'); } }, 2000);
+      document.getElementById('wa-close').addEventListener('click', ()=>document.getElementById('wa-welcome').classList.add('hidden'));
+      document.getElementById('wa-open').addEventListener('click', ()=> window.open(document.getElementById('wa-open').href,'_blank'));
+
+      function isMobileDevice(){
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        return mobileRegex.test(ua) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+      }
+
+      function getWhatsAppUrl(text){
+        const encoded = encodeURIComponent(text);
+        if(isMobileDevice()){
+          return `https://wa.me/96892500747?text=${encoded}`;
+        }
+        return `https://web.whatsapp.com/send?phone=96892500747&text=${encoded}`;
+      }
+
+      function getEmailUrl(){
+        return 'mailto:contact@nahdasafety.com?subject=' + encodeURIComponent('Request for Safety Consulting');
+      }
+
+      function setupContactButtons(){
+        const contactWa = document.getElementById('contact-wa');
+        const contactEmail = document.getElementById('contact-email');
+        const aiWa = document.getElementById('ai-wa');
+        const defaultText = 'Hello, I need information about your safety services.';
+        if(contactWa){ contactWa.href = getWhatsAppUrl(defaultText); }
+        if(contactEmail){ contactEmail.href = getEmailUrl(); }
+        if(aiWa){ aiWa.href = getWhatsAppUrl(defaultText); }
+      }
+
+      setupContactButtons();
+
+      // AI consultant handlers
+      document.getElementById('ai-ask').addEventListener('click', ()=>{
+        const q = document.getElementById('ai-query').value.trim();
+        if(!q) return;
+        const resp = aiConsult(q);
+        const wrapper = document.getElementById('ai-response');
+        const text = document.getElementById('ai-response-text');
+        text.textContent = resp;
+        wrapper.classList.remove('hidden');
+        const pre = `Safety question: ${q}\nRecommendation: ${resp}`;
+        document.getElementById('ai-wa').href = getWhatsAppUrl(pre);
+      });
+      document.getElementById('ai-reset').addEventListener('click', ()=>{
+        document.getElementById('ai-query').value = '';
+        document.getElementById('ai-response-text').textContent = '';
+        document.getElementById('ai-response').classList.add('hidden');
+        document.getElementById('ai-wa').href = getWhatsAppUrl('Hello, I need information about your safety services.');
+      });
+
+      const sliderTrack = document.querySelector('.video-slider .slider-track');
+      if(sliderTrack){
+        let isDown = false, startX = 0, scrollLeft = 0;
+        sliderTrack.addEventListener('pointerdown', e=>{
+          isDown = true;
+          sliderTrack.classList.add('dragging');
+          startX = e.pageX - sliderTrack.offsetLeft;
+          scrollLeft = sliderTrack.scrollLeft;
+          sliderTrack.setPointerCapture(e.pointerId);
+        });
+        sliderTrack.addEventListener('pointermove', e=>{
+          if(!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - sliderTrack.offsetLeft;
+          const walk = (x - startX) * 1.25;
+          sliderTrack.scrollLeft = scrollLeft - walk;
+        });
+        sliderTrack.addEventListener('pointerup', ()=>{ isDown = false; sliderTrack.classList.remove('dragging'); });
+        sliderTrack.addEventListener('pointerleave', ()=>{ isDown = false; sliderTrack.classList.remove('dragging'); });
+      }
+
+      document.querySelectorAll('.slider-arrow').forEach(btn=>{
+        let autoScrollId = null;
+        const direction = btn.dataset.dir === 'left' ? -1 : 1;
+        const scrollStep = 8;
+        const scrollInterval = 16;
+
+        const startAutoScroll = ()=>{
+          if(!sliderTrack || autoScrollId) return;
+          autoScrollId = setInterval(()=>{
+            sliderTrack.scrollBy({ left: direction * scrollStep, behavior: 'auto' });
+          }, scrollInterval);
+        };
+
+        const stopAutoScroll = ()=>{
+          if(autoScrollId){ clearInterval(autoScrollId); autoScrollId = null; }
+        };
+
+        btn.addEventListener('click', ()=>{
+          if(!sliderTrack) return;
+          sliderTrack.scrollBy({ left: direction * 340, behavior: 'smooth' });
+        });
+
+        btn.addEventListener('pointerenter', startAutoScroll);
+        btn.addEventListener('pointerleave', stopAutoScroll);
+        btn.addEventListener('pointercancel', stopAutoScroll);
+      });
+
+      const projectTrack = document.querySelector('#projects-track');
+      if(projectTrack){
+        let projectIsDown = false, projectStartX = 0, projectScrollLeft = 0;
+        projectTrack.addEventListener('pointerdown', e=>{
+          projectIsDown = true;
+          projectTrack.classList.add('dragging');
+          projectStartX = e.pageX - projectTrack.offsetLeft;
+          projectScrollLeft = projectTrack.scrollLeft;
+          projectTrack.setPointerCapture(e.pointerId);
+        });
+        projectTrack.addEventListener('pointermove', e=>{
+          if(!projectIsDown) return;
+          e.preventDefault();
+          const x = e.pageX - projectTrack.offsetLeft;
+          const walk = (x - projectStartX) * 1.25;
+          projectTrack.scrollLeft = projectScrollLeft - walk;
+        });
+        projectTrack.addEventListener('pointerup', ()=>{ projectIsDown = false; projectTrack.classList.remove('dragging'); });
+        projectTrack.addEventListener('pointerleave', ()=>{ projectIsDown = false; projectTrack.classList.remove('dragging'); });
+      }
+
+      document.querySelectorAll('.project-arrow').forEach(btn=>{
+        let autoScrollId = null;
+        const direction = btn.dataset.dir === 'left' ? -1 : 1;
+        const scrollStep = 8;
+        const scrollInterval = 16;
+
+        const startAutoScroll = ()=>{
+          if(!projectTrack || autoScrollId) return;
+          autoScrollId = setInterval(()=>{
+            projectTrack.scrollBy({ left: direction * scrollStep, behavior: 'auto' });
+          }, scrollInterval);
+        };
+
+        const stopAutoScroll = ()=>{
+          if(autoScrollId){ clearInterval(autoScrollId); autoScrollId = null; }
+        };
+
+        btn.addEventListener('click', ()=>{
+          if(!projectTrack) return;
+          projectTrack.scrollBy({ left: direction * 340, behavior: 'smooth' });
+        });
+
+        btn.addEventListener('pointerenter', startAutoScroll);
+        btn.addEventListener('pointerleave', stopAutoScroll);
+        btn.addEventListener('pointercancel', stopAutoScroll);
+      });
+
+      const aiSection = document.getElementById('ai');
+      if(aiSection){
+        const observer = new IntersectionObserver((entries, obs)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              aiSection.classList.add('ai-visible');
+              obs.unobserve(aiSection);
+            }
+          });
+        }, { threshold: 0.18 });
+        observer.observe(aiSection);
+      }
+
+      document.querySelectorAll('.slider-card').forEach(card=>{
+        const video = card.querySelector('video');
+        card.addEventListener('pointerenter', ()=>{
+          document.querySelectorAll('.slider-card video').forEach(v=>{ v.pause(); v.currentTime = 0; });
+          if(video){ video.play().catch(()=>{}); }
+        });
+        card.addEventListener('pointerleave', ()=>{ if(video){ video.pause(); video.currentTime = 0; } });
+        card.addEventListener('click', ()=>{
+          const fullUrl = card.dataset.fullUrl;
+          if(fullUrl) window.open(fullUrl, '_blank');
+        });
+      });
+
+      // AI visual grid removed — no DOM building required
+    });
+  </script>
+</body>
+</html>
