@@ -36,6 +36,19 @@
         }
       }
     };
+
+    // Ensure Arabic translations include all keys present in English to avoid missing keys
+    (function ensureArKeys(){
+      try{
+        if(translations.en && translations.ar){
+          Object.keys(translations.en).forEach(k=>{
+            if(!(k in translations.ar)){
+              translations.ar[k] = translations.en[k];
+            }
+          });
+        }
+      }catch(e){ console.warn('translation normalization failed', e); }
+    })();
   </script>
   <style>
     :root{
@@ -93,6 +106,23 @@
     .gradient-border{ position:relative; border-radius:14px; }
     .gradient-border::before{ content:''; position:absolute; inset:-2px; background: linear-gradient(90deg,var(--gem1),var(--gem2),var(--gem3),var(--gem1)); z-index:-1; filter: blur(18px); opacity:0.95; border-radius:16px; animation: hueShift 6s linear infinite; }
 
+    .service-card{ position:relative; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.14); }
+    .service-card::before{ content:''; position:absolute; inset:0; background: linear-gradient(120deg, rgba(2,132,199,0.8), rgba(139,92,246,0.75), rgba(251,146,60,0.7), rgba(34,197,94,0.75)); opacity:0.75; filter: blur(16px); transform: scale(1.03); transition: opacity .4s ease, transform .4s ease; }
+    .service-card::after{ content:''; position:absolute; inset:1px; background:#ffffff; border-radius:2rem; z-index:0; }
+    .service-card > *{ position:relative; z-index:1; }
+    .service-card:hover::before{ opacity:1; transform: scale(1.01); }
+    .service-card p:first-child{ text-transform: uppercase; letter-spacing: .25em; }
+    .service-card h4{ margin-top:1rem; margin-bottom:0.75rem; }
+
+    .testimonial-card{ position:relative; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.16); }
+    .testimonial-card::before{ content:''; position:absolute; inset:0; background: linear-gradient(135deg, rgba(56,189,248,0.22), rgba(16,185,129,0.22), rgba(124,58,237,0.22), rgba(245,158,11,0.22)); opacity:0.75; filter: blur(16px); transform: scale(1.02); transition: opacity .35s ease, transform .35s ease; }
+    .testimonial-card::after{ content:''; position:absolute; inset:1px; background:#ffffff; border-radius:1.75rem; z-index:0; }
+    .testimonial-card > *{ position:relative; z-index:1; }
+    .testimonial-card:hover::before{ opacity:1; transform: scale(1.005); }
+    .testimonial-card p{ color:#0f172a; }
+    .testimonial-card footer{ color:#475569; }
+    .testimonial-card p::first-letter{ font-size:1.1em; }
+
     @keyframes hueShift{ 0%{filter:hue-rotate(0deg);}50%{filter:hue-rotate(30deg);}100%{filter:hue-rotate(0deg);} }
 
     /* Buttons - glossy gradient with sliding highlight */
@@ -118,8 +148,10 @@
     .ai-response-card { position: relative; border-radius: 1.75rem; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)); border: 1px solid rgba(56,189,248,0.18); box-shadow: 0 16px 40px rgba(56,189,248,0.08); }
     .ai-feature { display: inline-flex; align-items:center; gap:0.5rem; padding:1rem 1.15rem; border-radius:1.5rem; background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(59,130,246,0.08)); color: #065f46; font-size:0.95rem; font-weight:700; border: 1px solid rgba(59,130,246,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.48); }
     .ai-feature::before{ content:'•'; color:#0ea5e9; font-size:1.2rem; line-height:1; }
-    .ai-hero-pill { display:inline-flex; align-items:center; gap:.75rem; padding:1rem 1.25rem; border-radius:1.75rem; background: linear-gradient(135deg, rgba(14,165,233,0.14), rgba(16,185,129,0.12)); border: 1px solid rgba(14,165,233,0.2); color: #075985; font-weight:700; box-shadow: 0 18px 40px rgba(14,165,233,0.08); max-width: min(38rem,100%); }
-    .ai-hero-pill span { width:2.25rem; height:2.25rem; display:grid; place-items:center; border-radius:9999px; background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(14,165,233,0.25)); color: #0c4a6e; font-size:1rem; }
+    .ai-hero-pill { display:flex; flex-wrap:wrap; align-items:center; gap:.85rem; padding:1rem 1.25rem; border-radius:1.75rem; background: linear-gradient(135deg, rgba(14,165,233,0.14), rgba(16,185,129,0.12)); border: 1px solid rgba(14,165,233,0.2); color: #075985; font-weight:700; box-shadow: 0 18px 40px rgba(14,165,233,0.08); max-width: min(38rem,100%); }
+    .ai-hero-pill span:first-child { width:2.25rem; height:2.25rem; display:grid; place-items:center; border-radius:9999px; background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(14,165,233,0.25)); color: #0c4a6e; font-size:1rem; }
+    .ai-hero-pill span:last-child { flex: 1 1 auto; min-width: 0; display:block; }
+    .ai-golden-badge { white-space: nowrap; position: relative; overflow: hidden; display: inline-flex; align-items: center; align-self: flex-start; }
     .ai-score-panel { display:flex; align-items:center; gap:1.5rem; padding: 1.35rem 1.5rem; min-height: 13rem; border-radius: 1.75rem; background: rgba(255,255,255,0.98); border: 1px solid rgba(245,158,11,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 26px rgba(245,158,11,0.08); flex-wrap: wrap; }
     .ai-score-panel .ai-score-badge { width:3.75rem; height:3.75rem; display:grid; place-items:center; flex-shrink:0; border-radius:1.75rem; background: linear-gradient(135deg, #f59e0b, #d97706); color:white; font-size:1.25rem; font-weight:800; letter-spacing:0.04em; box-shadow: 0 18px 42px rgba(245, 158, 11, 0.32); transition: transform .3s ease, box-shadow .3s ease; animation: pulseGlow 4s ease-in-out infinite; }
     .ai-score-panel .ai-score-badge:hover { transform: scale(1.1); box-shadow: 0 24px 44px rgba(245, 158, 11, 0.38); }
@@ -137,13 +169,34 @@
     .ai-stat span { display:inline-block; background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(56,189,248,0.18)); padding:0.35rem 0.65rem; border-radius:999px; }
     .ai-stat strong { color: #0f172a; }
     @keyframes pulseGlow { 0%, 100% { transform: scale(1); box-shadow: 0 12px 24px rgba(14,165,233,0.24); } 50% { transform: scale(1.02); box-shadow: 0 18px 32px rgba(14,165,233,0.32); } }
-    .ai-heading-gradient { background: linear-gradient(90deg, #0ea5e9, #34d399); -webkit-background-clip: text; color: transparent; }
+    .ai-heading-gradient { background: linear-gradient(90deg, #0ea5e9, #34d399); background-clip: text; -webkit-background-clip: text; color: transparent; }
     .ai-extra { display:inline-flex; align-items:center; gap:0.5rem; padding:0.9rem 1rem; border-radius:1.5rem; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.18); color: #0f577b; font-weight:700; }
     .ai-section-notice { display: inline-flex; align-items:center; gap:0.65rem; padding: 0.85rem 1rem; border-radius: 1.75rem; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.16); color: #0c4a6e; font-weight: 700; }
     .footer-badge { display:inline-flex; align-items:center; gap:.55rem; padding:.7rem 1rem; border-radius:999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; font-size:.78rem; letter-spacing:.06em; text-transform: uppercase; }
+    @media (max-width: 640px) {
+      header .mx-auto { flex-wrap: wrap; row-gap: .75rem; }
+      header .brand-link { flex: 1 1 100%; }
+      header .header-actions { width: 100%; justify-content: flex-end; }
+      .hero-buttons { width: 100%; }
+      .hero-buttons > a { width: 100%; min-width: 0; justify-content: center; }
+      .hero-background { padding-top: 5rem; padding-bottom: 5rem; }
+      .contact-panel .contact-gradient > .relative { padding: 1.25rem; }
+    }
     .footer-client-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(10rem,1fr)); gap:1rem; }
-    .footer-client-card { min-height:5rem; display:flex; align-items:center; justify-content:center; border-radius:1.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; text-align:center; font-weight:600; padding:1rem; }
+    .footer-client-card { min-height:5rem; display:flex; align-items:center; justify-content:center; border-radius:1.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; text-align:center; font-weight:600; padding:1rem; max-width: 22rem; width: 100%; }
     .footer-quick-link { color: #cbd5e1; transition: color .2s ease; }
+    .footer-quick-link:hover { color: white; }
+    .footer-trusted-wrap { display:flex; flex-wrap:wrap; gap:1rem; align-items:center; margin-bottom: 2rem; }
+    .footer-trusted-wrap .footer-badge { margin-bottom: 0; }
+    .footer-trusted-panel { display:grid; gap:1.5rem; }
+    .footer-trusted-panel .grid { gap:1rem; }
+    @media (min-width: 1024px) {
+      .footer-trusted-wrap { justify-content: flex-start; }
+      .footer-trusted-panel { grid-template-columns: 1fr; }
+      .footer-client-card { max-width: 18rem; }
+      .footer-client-card.justify-self-center { justify-self: start; }
+      .footer-trusted-overflow-fix { margin-bottom: 1rem; }
+    }
     .footer-quick-link:hover { color: white; }
     .footer-small { color: #94a3b8; }
     @media (max-width: 1024px) {
@@ -369,13 +422,13 @@
 <body class="bg-surface text-slate-900 antialiased" id="page-root">
   <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6 lg:px-8">
-      <a href="#home" class="flex items-center gap-3 text-slate-900">
+      <a href="#home" class="brand-link flex items-center gap-3 text-slate-900">
         <div class="h-14 w-14 overflow-hidden rounded-3xl bg-slate-100 shadow-inner">
           <img src="assets/nahda-logo.jpeg" alt="Nahda Safety logo" class="h-full w-full object-cover" />
         </div>
         <div>
-          <p class="text-sm font-bold uppercase tracking-[0.28em] text-slate-700">Nahda Safety</p>
-          <p class="text-xs text-slate-500">Health & AI Consulting</p>
+          <p class="text-sm font-bold uppercase tracking-[0.28em] text-slate-700" data-key="brandName">Nahda Safety</p>
+          <p class="text-xs text-slate-500" data-key="brandSubtitle">Health & AI Consulting</p>
         </div>
       </a>
       <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-700 md:flex" id="main-nav">
@@ -386,12 +439,12 @@
         <a href="#ai" class="nav-link transition hover:text-primary" data-key="navAI"></a>
         <a href="#contact" class="nav-link transition hover:text-primary" data-key="navContact"></a>
       </nav>
-      <div class="flex items-center gap-2">
+      <div class="header-actions flex items-center gap-2">
         <div class="lang-switcher inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-sm">
           <button id="lang-en" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('en')">EN</button>
           <button id="lang-ar" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('ar')">ع</button>
         </div>
-        <a href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">WhatsApp</a>
+        <a href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg" data-key="headerWaButton">WhatsApp</a>
       </div>
     </div>
   </header>
@@ -405,7 +458,7 @@
             <p class="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-cyan-500/10" data-key="heroBadge"></p>
             <h1 class="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl" data-key="heroHeading"></h1>
             <p class="max-w-2xl text-lg leading-8 text-slate-100/90" data-key="heroCopy"></p>
-            <div class="flex flex-col gap-4 sm:flex-row">
+            <div class="hero-buttons flex flex-col gap-4 sm:flex-row">
               <a href="#contact" class="inline-flex min-w-[200px] items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-orange-500/20" data-key="heroPrimaryButton"></a>
               <a href="#video" class="inline-flex min-w-[200px] items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-white/10" data-key="heroSecondaryButton"></a>
             </div>
@@ -443,9 +496,9 @@
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="grid gap-5 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <div>
-            <p class="text-sm uppercase tracking-[0.32em] text-cyan-200">Trusted by Oman teams</p>
-            <h2 class="mt-4 text-3xl font-bold tracking-tight text-white">Safety metrics that build trust and keep teams moving.</h2>
-            <p class="mt-3 max-w-2xl text-slate-400">From compliance audits to employee training, these results show how Nahda turns safety promises into practical outcomes for local businesses.</p>
+            <p class="text-sm uppercase tracking-[0.32em] text-cyan-200" data-key="statsSectionTitle">Trusted by Oman teams</p>
+            <h2 class="mt-4 text-3xl font-bold tracking-tight text-white" data-key="statsSectionHeading">Safety metrics that build trust and keep teams moving.</h2>
+            <p class="mt-3 max-w-2xl text-slate-400" data-key="statsSectionCopy">From compliance audits to employee training, these results show how Nahda turns safety promises into practical outcomes for local businesses.</p>
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="rounded-[1.75rem] border border-cyan-500/20 bg-slate-900/85 p-7 text-white shadow-2xl shadow-cyan-500/15 transition-transform duration-300 hover:-translate-y-1">
@@ -466,25 +519,25 @@
     <section id="about" class="bg-slate-50 py-16">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">About Us</p>
-          <h2 class="mt-3 text-3xl font-bold">Nahda Safety & Health: Local expertise with modern AI advantage</h2>
-          <p class="mx-auto mt-4 max-w-3xl text-slate-600">We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.</p>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="aboutSectionTitle">About Us</p>
+          <h2 class="mt-3 text-3xl font-bold" data-key="aboutSectionHeading">Nahda Safety & Health: Local expertise with modern AI advantage</h2>
+          <p class="mx-auto mt-4 max-w-3xl text-slate-600" data-key="aboutSectionCopy">We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.</p>
         </div>
         <div class="grid gap-6 lg:grid-cols-3">
           <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600">Our mission</p>
-            <h3 class="mt-4 text-xl font-semibold text-slate-900">Make Oman workplaces safer now</h3>
-            <p class="mt-3 text-slate-600">We combine on-the-ground safety expertise with easy-to-use systems and clear guidance so every client can improve performance, reduce risk, and stay compliant without extra complexity.</p>
+            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600" data-key="aboutCard1Label">Our mission</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900" data-key="aboutCard1Heading">Make Oman workplaces safer now</h3>
+            <p class="mt-3 text-slate-600" data-key="aboutCard1Copy">We combine on-the-ground safety expertise with easy-to-use systems and clear guidance so every client can improve performance, reduce risk, and stay compliant without extra complexity.</p>
           </div>
           <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600">Why choose us</p>
-            <h3 class="mt-4 text-xl font-semibold text-slate-900">Trusted, responsive, Oman-based</h3>
-            <p class="mt-3 text-slate-600">Our local team understands Omani regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.</p>
+            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600" data-key="aboutCard2Label">Why choose us</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900" data-key="aboutCard2Heading">Trusted, responsive, Oman-based</h3>
+            <p class="mt-3 text-slate-600" data-key="aboutCard2Copy">Our local team understands Omani regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.</p>
           </div>
           <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.24em] text-violet-600">How we help</p>
-            <h3 class="mt-4 text-xl font-semibold text-slate-900">Practical consulting, training, and AI insight</h3>
-            <p class="mt-3 text-slate-600">From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.</p>
+            <p class="text-sm uppercase tracking-[0.24em] text-violet-600" data-key="aboutCard3Label">How we help</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900" data-key="aboutCard3Heading">Practical consulting, training, and AI insight</h3>
+            <p class="mt-3 text-slate-600" data-key="aboutCard3Copy">From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.</p>
           </div>
         </div>
       </div>
@@ -494,9 +547,9 @@
     <section id="video" class="bg-slate-50 py-16">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">Safety Videos</p>
-          <h2 class="mt-3 text-3xl font-bold">Sector safety briefings</h2>
-          <p class="mt-2 text-slate-600">Short, focused safety videos for schools, hospitals, construction and oil & gas.</p>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="videoSectionTitle">Safety Videos</p>
+          <h2 class="mt-3 text-3xl font-bold" data-key="videoSectionHeading">Sector safety briefings</h2>
+          <p class="mt-2 text-slate-600" data-key="videoSectionCopy">Short, focused safety videos for schools, hospitals, construction and oil & gas.</p>
         </div>
         <div class="video-slider">
           <div class="slider-track">
@@ -509,8 +562,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Hotel Safety & Legal Compliance</h3>
-                <p class="mt-2 text-sm text-slate-600">Top hospitality safety consulting and legal documentation for hotels in Oman.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard1Heading">Hotel Safety & Legal Compliance</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard1Copy">Top hospitality safety consulting and legal documentation for hotels in Oman.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=construction+safety+consultant+oman">
@@ -522,8 +575,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Construction Safety Consultants</h3>
-                <p class="mt-2 text-sm text-slate-600">Expert site safety, toolbox talks, and contractor compliance programs.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard2Heading">Construction Safety Consultants</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard2Copy">Expert site safety, toolbox talks, and contractor compliance programs.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=school+safety+consultant+oman">
@@ -535,8 +588,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">School Safety Consulting</h3>
-                <p class="mt-2 text-sm text-slate-600">Child safety plans, evacuation training, and school risk audits.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard3Heading">School Safety Consulting</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard3Copy">Child safety plans, evacuation training, and school risk audits.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=oil+and+gas+safety+consultant+oman">
@@ -548,8 +601,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Oil & Gas Safety Consulting</h3>
-                <p class="mt-2 text-sm text-slate-600">Energy sector HSE training, permits, and Iranian regulatory support.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard4Heading">Oil & Gas Safety Consulting</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard4Copy">Energy sector HSE training, permits, and Iranian regulatory support.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=hospital+safety+consultant+oman">
@@ -561,8 +614,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Hospital & Clinical Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Clinical safety audits, infection control, and patient protection strategies.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard5Heading">Hospital & Clinical Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard5Copy">Clinical safety audits, infection control, and patient protection strategies.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=restaurant+safety+consultant+oman">
@@ -574,8 +627,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Restaurant & Kitchen Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Food safety, kitchen hazard control, and restaurant staff training.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard6Heading">Restaurant & Kitchen Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard6Copy">Food safety, kitchen hazard control, and restaurant staff training.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=manufacturing+safety+consultant+oman">
@@ -587,8 +640,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Manufacturing Plant Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Machine guarding, process safety, and industrial risk reduction.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard7Heading">Manufacturing Plant Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard7Copy">Machine guarding, process safety, and industrial risk reduction.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=warehouse+safety+consultant+oman">
@@ -600,8 +653,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Warehouse & Logistics Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Loading, storage, and forklift safety for efficient warehouse operations.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard8Heading">Warehouse & Logistics Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard8Copy">Loading, storage, and forklift safety for efficient warehouse operations.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=retail+safety+consultant+oman">
@@ -613,8 +666,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Retail & Commercial Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Floor safety, emergency exits, and customer-facing risk prevention.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard9Heading">Retail & Commercial Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard9Copy">Floor safety, emergency exits, and customer-facing risk prevention.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=hse+compliance+documentation+consultant+oman">
@@ -626,8 +679,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">HSE Compliance Documentation</h3>
-                <p class="mt-2 text-sm text-slate-600">Safety manuals, legal reports, and documentation for Oman regulators.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard10Heading">HSE Compliance Documentation</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard10Copy">Safety manuals, legal reports, and documentation for Oman regulators.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=chemical+plant+safety+consultant+oman">
@@ -639,8 +692,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Chemical Plant & Hazard Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Process hazard reviews, emergency response and chemical handling best practices.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard11Heading">Chemical Plant & Hazard Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard11Copy">Process hazard reviews, emergency response and chemical handling best practices.</p>
               </div>
             </div>
             <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/results?search_query=office+safety+consultant+oman">
@@ -652,8 +705,8 @@
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
-                <h3 class="font-semibold text-slate-900">Office & Facilities Safety</h3>
-                <p class="mt-2 text-sm text-slate-600">Ergonomics, office hazard checks, and facility evacuation planning.</p>
+                <h3 class="font-semibold text-slate-900" data-key="videoCard12Heading">Office & Facilities Safety</h3>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard12Copy">Ergonomics, office hazard checks, and facility evacuation planning.</p>
               </div>
             </div>
           </div>
@@ -669,40 +722,40 @@
     <section id="services" class="py-16 bg-slate-50">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">Our Services</p>
-          <h3 class="mt-3 text-3xl font-bold">Health, safety and compliance services for every sector.</h3>
-          <p class="mx-auto mt-3 max-w-3xl text-slate-600">From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.</p>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="servicesSectionTitle">Our Services</p>
+          <h3 class="mt-3 text-3xl font-bold" data-key="servicesSectionHeading">Health, safety and compliance services for every sector.</h3>
+          <p class="mx-auto mt-3 max-w-3xl text-slate-600" data-key="servicesSectionCopy">From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600">Audit & Inspection</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">Safety audit programs</h4>
-            <p class="mt-3 text-slate-600">Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600" data-key="serviceCard1Label">Audit & Inspection</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard1Heading">Safety audit programs</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard1Copy">Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.</p>
           </article>
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600">Compliance Support</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">Documentation & systems</h4>
-            <p class="mt-3 text-slate-600">Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600" data-key="serviceCard2Label">Compliance Support</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard2Heading">Documentation & systems</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard2Copy">Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.</p>
           </article>
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-violet-600">Training</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">Workplace training</h4>
-            <p class="mt-3 text-slate-600">Hands-on staff training, emergency drills and awareness workshops for safer operations.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-violet-600" data-key="serviceCard3Label">Training</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard3Heading">Workplace training</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard3Copy">Hands-on staff training, emergency drills and awareness workshops for safer operations.</p>
           </article>
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-slate-600">AI Advisory</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">AI-driven risk review</h4>
-            <p class="mt-3 text-slate-600">Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-600" data-key="serviceCard4Label">AI Advisory</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard4Heading">AI-driven risk review</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard4Copy">Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.</p>
           </article>
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-amber-600">Emergency Planning</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">Evacuation & crisis</h4>
-            <p class="mt-3 text-slate-600">Emergency response plans, evacuation drills and crisis management support for fast recovery.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-amber-600" data-key="serviceCard5Label">Emergency Planning</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard5Heading">Evacuation & crisis</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard5Copy">Emergency response plans, evacuation drills and crisis management support for fast recovery.</p>
           </article>
-          <article class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-slate-600">Industry Safety</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900">Sector-specific programs</h4>
-            <p class="mt-3 text-slate-600">Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.</p>
+          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-600" data-key="serviceCard6Label">Industry Safety</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard6Heading">Sector-specific programs</h4>
+            <p class="mt-3 text-slate-600" data-key="serviceCard6Copy">Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.</p>
           </article>
         </div>
       </div>
@@ -712,9 +765,9 @@
     <section id="projects" class="py-12 bg-white">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-6">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">Projects</p>
-          <h3 class="mt-2 text-3xl font-bold">Major safety consultancy sectors delivered</h3>
-          <p class="mx-auto mt-3 max-w-3xl text-slate-600">Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by static HD visuals for stronger SEO and visitor trust.</p>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="projectsSectionTitle">Projects</p>
+          <h3 class="mt-2 text-3xl font-bold" data-key="projectsSectionHeading">Major safety consultancy sectors delivered</h3>
+          <p class="mx-auto mt-3 max-w-3xl text-slate-600" data-key="projectsSectionCopy">Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by static HD visuals for stronger SEO and visitor trust.</p>
         </div>
         <div class="overflow-hidden rounded-[2rem] bg-surface p-6 project-grid-wrapper">
           <div class="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-sky-100/20 via-transparent to-transparent pointer-events-none"></div>
@@ -723,97 +776,97 @@
             <article class="project-card">
               <img src="assets/oilgas.jpg" alt="Oil and gas safety audit for a field site" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">HSE Audit</span><span class="badge">Field Operations</span></div>
-                <h4>Oil & Gas Safety Audit</h4>
-                <p>Regulatory-ready HSE program development and hazard control for energy operations.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project1Badge1">HSE Audit</span><span class="badge" data-key="project1Badge2">Field Operations</span></div>
+                <h4 data-key="project1Heading">Oil & Gas Safety Audit</h4>
+                <p data-key="project1Copy">Regulatory-ready HSE program development and hazard control for energy operations.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/school.jpg" alt="School safety program for student protection" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Education Safety</span><span class="badge">Training</span></div>
-                <h4>School Safety Program</h4>
-                <p>Child protection risk assessments, lockdown plans, and teacher training.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project2Badge1">Education Safety</span><span class="badge" data-key="project2Badge2">Training</span></div>
+                <h4 data-key="project2Heading">School Safety Program</h4>
+                <p data-key="project2Copy">Child protection risk assessments, lockdown plans, and teacher training.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/construction.jpg" alt="Construction site safety inspection and contractor onboarding" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Construction</span><span class="badge">Contractor Safety</span></div>
-                <h4>Construction Site Control</h4>
-                <p>Site inspections, toolbox talks and permit-to-work systems for safe builds.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project3Badge1">Construction</span><span class="badge" data-key="project3Badge2">Contractor Safety</span></div>
+                <h4 data-key="project3Heading">Construction Site Control</h4>
+                <p data-key="project3Copy">Site inspections, toolbox talks and permit-to-work systems for safe builds.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/project-2.jpg" alt="Hospital clinical safety improvement project" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Healthcare</span><span class="badge">Clinical HSE</span></div>
-                <h4>Hospital Safety Improvements</h4>
-                <p>Clinical safety audits, infection control, and patient protection strategies.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project4Badge1">Healthcare</span><span class="badge" data-key="project4Badge2">Clinical HSE</span></div>
+                <h4 data-key="project4Heading">Hospital Safety Improvements</h4>
+                <p data-key="project4Copy">Clinical safety audits, infection control, and patient protection strategies.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/hero-10.jpg" alt="Hotel fire and emergency safety planning" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Hospitality</span><span class="badge">Fire Safety</span></div>
-                <h4>Hotel Fire & Emergency Planning</h4>
-                <p>Emergency evacuation paths and hospitality safety compliance for hotels.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project5Badge1">Hospitality</span><span class="badge" data-key="project5Badge2">Fire Safety</span></div>
+                <h4 data-key="project5Heading">Hotel Fire & Emergency Planning</h4>
+                <p data-key="project5Copy">Emergency evacuation paths and hospitality safety compliance for hotels.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/project-1.jpg" alt="Warehouse and logistics safety management" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Logistics</span><span class="badge">Material Handling</span></div>
-                <h4>Warehouse & Logistics Safety</h4>
-                <p>Forklift safety, storage risk controls and loading dock process improvements.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project6Badge1">Logistics</span><span class="badge" data-key="project6Badge2">Material Handling</span></div>
+                <h4 data-key="project6Heading">Warehouse & Logistics Safety</h4>
+                <p data-key="project6Copy">Forklift safety, storage risk controls and loading dock process improvements.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/hero-1.jpg" alt="Manufacturing plant safety upgrade" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Manufacturing</span><span class="badge">Process Safety</span></div>
-                <h4>Manufacturing Plant Safety</h4>
-                <p>Machine guarding, process hazard analysis and industrial safety systems.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project7Badge1">Manufacturing</span><span class="badge" data-key="project7Badge2">Process Safety</span></div>
+                <h4 data-key="project7Heading">Manufacturing Plant Safety</h4>
+                <p data-key="project7Copy">Machine guarding, process hazard analysis and industrial safety systems.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/nahda-logo.jpeg" alt="Office building safety systems and ergonomics" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Office Safety</span><span class="badge">Ergonomics</span></div>
-                <h4>Office & Facilities Safety</h4>
-                <p>Ergonomics, office hazard checks and facility evacuation planning.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project8Badge1">Office Safety</span><span class="badge" data-key="project8Badge2">Ergonomics</span></div>
+                <h4 data-key="project8Heading">Office & Facilities Safety</h4>
+                <p data-key="project8Copy">Ergonomics, office hazard checks and facility evacuation planning.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/hero-10.jpg" alt="Retail safety program for customer areas" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Retail</span><span class="badge">Customer Safety</span></div>
-                <h4>Retail & Hospitality Safety</h4>
-                <p>Customer zone safety, food hygiene checks and public area crowd control.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project9Badge1">Retail</span><span class="badge" data-key="project9Badge2">Customer Safety</span></div>
+                <h4 data-key="project9Heading">Retail & Hospitality Safety</h4>
+                <p data-key="project9Copy">Customer zone safety, food hygiene checks and public area crowd control.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/construction.jpg" alt="Chemical plant and hazard safety review" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Chemical Safety</span><span class="badge">Hazard Control</span></div>
-                <h4>Chemical Plant & Hazard Safety</h4>
-                <p>Process safety reviews, emergency response plans and hazardous materials control.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project10Badge1">Chemical Safety</span><span class="badge" data-key="project10Badge2">Hazard Control</span></div>
+                <h4 data-key="project10Heading">Chemical Plant & Hazard Safety</h4>
+                <p data-key="project10Copy">Process safety reviews, emergency response plans and hazardous materials control.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/hero-1.jpg" alt="Emergency response planning and training" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Emergency Response</span><span class="badge">Drills</span></div>
-                <h4>Emergency Response Planning</h4>
-                <p>Evacuation drills and crisis response procedures for faster incident recovery.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project11Badge1">Emergency Response</span><span class="badge" data-key="project11Badge2">Drills</span></div>
+                <h4 data-key="project11Heading">Emergency Response Planning</h4>
+                <p data-key="project11Copy">Evacuation drills and crisis response procedures for faster incident recovery.</p>
               </div>
             </article>
             <article class="project-card">
               <img src="assets/project-1.jpg" alt="Industrial hygiene and exposure monitoring" loading="lazy" />
               <div class="project-body">
-                <div class="project-tag-row"><span class="badge">Industrial Hygiene</span><span class="badge">Exposure Monitoring</span></div>
-                <h4>Industrial Hygiene Monitoring</h4>
-                <p>Air quality surveys, chemical exposure checks and worker health protection.</p>
+                <div class="project-tag-row"><span class="badge" data-key="project12Badge1">Industrial Hygiene</span><span class="badge" data-key="project12Badge2">Exposure Monitoring</span></div>
+                <h4 data-key="project12Heading">Industrial Hygiene Monitoring</h4>
+                <p data-key="project12Copy">Air quality surveys, chemical exposure checks and worker health protection.</p>
               </div>
             </article>
           </div>
@@ -821,7 +874,7 @@
             <button class="slider-arrow project-arrow left" data-dir="left" aria-label="Scroll projects left">‹</button>
             <button class="slider-arrow project-arrow right" data-dir="right" aria-label="Scroll projects right">›</button>
           </div>
-          <p class="mt-6 text-center text-sm text-slate-500">Slide pause on hover. Discover the full range of HSE sector services with visual project highlights.</p>
+          <p class="mt-6 text-center text-sm text-slate-500" data-key="projectsSectionFooter">Slide pause on hover. Discover the full range of HSE sector services with visual project highlights.</p>
         </div>
       </div>
     </section>
@@ -830,50 +883,50 @@
     <section id="testimonials" class="py-12 bg-slate-50">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-6">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">Client Testimonials</p>
-          <h3 class="mt-2 text-2xl font-bold">What our clients say</h3>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="testimonialsSectionTitle">Client Testimonials</p>
+          <h3 class="mt-2 text-2xl font-bold" data-key="testimonialsSectionHeading">What our clients say</h3>
         </div>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <!-- 10 SEO-friendly testimonials -->
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Nahda Safety provided a clear, practical safety plan and helped our hospital pass the regulatory audit."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Healthcare Compliance Manager</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial1Text">"Nahda Safety provided a clear, practical safety plan and helped our hospital pass the regulatory audit."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial1Author">– Healthcare Compliance Manager</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Their construction site audits prevented major incidents and reduced our insurance costs."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Site Operations Lead</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial2Text">"Their construction site audits prevented major incidents and reduced our insurance costs."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial2Author">– Site Operations Lead</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Professional, fast and local expertise — great for SMEs needing affordable support."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Small Business Owner</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial3Text">"Professional, fast and local expertise — great for SMEs needing affordable support."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial3Author">– Small Business Owner</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Their AI risk reports helped prioritise our training agenda effectively."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Safety Officer</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial4Text">"Their AI risk reports helped prioritise our training agenda effectively."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial4Author">– Safety Officer</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Clear documentation and friendly support during government inspections."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Facility Manager</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial5Text">"Clear documentation and friendly support during government inspections."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial5Author">– Facility Manager</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"The training sessions were engaging and immediately useful for our staff."</p>
-            <footer class="mt-4 text-sm text-slate-500">– School Principal</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial6Text">"The training sessions were engaging and immediately useful for our staff."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial6Author">– School Principal</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Highly recommended for oilfield contractors needing specific HSE guidance."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Oil & Gas Supervisor</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial7Text">"Highly recommended for oilfield contractors needing specific HSE guidance."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial7Author">– Oil & Gas Supervisor</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"The training sessions were engaging and immediately useful for our teams."</p>
-            <footer class="mt-4 text-sm text-slate-500">– HR & Training Lead</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial8Text">"The training sessions were engaging and immediately useful for our teams."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial8Author">– HR & Training Lead</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Reliable safety audits with clear corrective actions and timelines."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Operations Director</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial9Text">"Reliable safety audits with clear corrective actions and timelines."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial9Author">– Operations Director</footer>
           </blockquote>
-          <blockquote class="rounded-lg border p-6 shadow-sm">
-            <p class="text-lg">"Great value packages for small hotels and restaurants in Muscat."</p>
-            <footer class="mt-4 text-sm text-slate-500">– Hotel Manager</footer>
+          <blockquote class="testimonial-card rounded-[1.75rem] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+            <p class="text-lg leading-8" data-key="testimonial10Text">"Great value packages for small hotels and restaurants in Muscat."</p>
+            <footer class="mt-4 text-sm text-slate-500" data-key="testimonial10Author">– Hotel Manager</footer>
           </blockquote>
         </div>
       </div>
@@ -883,33 +936,33 @@
     <section id="faq" class="py-12 bg-white">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-6">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary">FAQ</p>
-          <h3 class="mt-2 text-2xl font-bold">Common questions about our HSE services</h3>
+          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="faqSectionTitle">FAQ</p>
+          <h3 class="mt-2 text-2xl font-bold" data-key="faqSectionHeading">Common questions about our HSE services</h3>
         </div>
         <div class="grid gap-4 md:grid-cols-2">
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">What services does Nahda Safety offer?</summary>
-            <p class="mt-3 text-slate-600">We offer audits, compliance documentation, training, emergency planning, and AI-enabled risk advisory tailored for schools, hospitals, construction and oil & gas sites.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion1">What services does Nahda Safety offer?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer1">We offer audits, compliance documentation, training, emergency planning, and AI-enabled risk advisory tailored for schools, hospitals, construction and oil & gas sites.</p>
           </details>
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">How do you support hospital safety?</summary>
-            <p class="mt-3 text-slate-600">We provide infection control audits, patient handling guidance, clinical area risk assessments and staff training to improve patient and staff safety.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion2">How do you support hospital safety?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer2">We provide infection control audits, patient handling guidance, clinical area risk assessments and staff training to improve patient and staff safety.</p>
           </details>
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">Can you help with construction site safety?</summary>
-            <p class="mt-3 text-slate-600">Yes. We perform site inspections, toolbox talks, PPE selection, and permit-to-work systems for safe site operations.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion3">Can you help with construction site safety?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer3">Yes. We perform site inspections, toolbox talks, PPE selection, and permit-to-work systems for safe site operations.</p>
           </details>
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">Do you provide emergency & evacuation planning?</summary>
-            <p class="mt-3 text-slate-600">We develop evacuation plans, run drills, and prepare emergency response procedures aligned with Omani regulations.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion4">Do you provide emergency & evacuation planning?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer4">We develop evacuation plans, run drills, and prepare emergency response procedures aligned with Omani regulations.</p>
           </details>
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">How do your AI safety insights work?</summary>
-            <p class="mt-3 text-slate-600">Our AI tools analyse incident trends, compliance gaps and training needs to generate prioritised recommendations and action plans.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion5">How do your AI safety insights work?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer5">Our AI tools analyse incident trends, compliance gaps and training needs to generate prioritised recommendations and action plans.</p>
           </details>
           <details class="rounded-lg border p-6">
-            <summary class="cursor-pointer text-lg font-semibold">How can I get a quotation?</summary>
-            <p class="mt-3 text-slate-600">Contact us via WhatsApp or email with your site details and we will provide a tailored proposal and timeline.</p>
+            <summary class="cursor-pointer text-lg font-semibold" data-key="faqQuestion6">How can I get a quotation?</summary>
+            <p class="mt-3 text-slate-600" data-key="faqAnswer6">Contact us via WhatsApp or email with your site details and we will provide a tailored proposal and timeline.</p>
           </details>
         </div>
       </div>
@@ -920,72 +973,72 @@
       <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
         <div class="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(340px,0.9fr)] items-start lg:gap-14">
           <div class="space-y-8">
-            <span class="text-sm uppercase tracking-[0.3em] text-emerald-600">AI Consultant</span>
-            <h2 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"><span class="ai-heading-gradient">Convert safety questions into faster decisions and stronger sales.</span></h2>
+            <span class="text-sm uppercase tracking-[0.3em] text-emerald-600" data-key="aiSectionTitle">AI Consultant</span>
+            <h2 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"><span class="ai-heading-gradient" data-key="aiSectionHeading">Convert safety questions into faster decisions and stronger sales.</span></h2>
             <div class="ai-hero-pill max-w-xl">
               <span>⚡</span>
-              Oman-first AI safety scoring with WhatsApp-ready action plans.
+              <span data-key="aiHeroPillText">Oman-first AI safety scoring with WhatsApp-ready action plans.</span>
             </div>
-            <p class="max-w-3xl text-lg leading-8 text-slate-600">Our AI assistant turns urgent safety queries into practical recommendations, compliance checkpoints, and sales-ready WhatsApp follow-up—so your team can close more clients with confidence.</p>
+            <p class="max-w-3xl text-lg leading-8 text-slate-600" data-key="aiSectionCopy">Our AI assistant turns urgent safety queries into practical recommendations, compliance checkpoints, and sales-ready WhatsApp follow-up—so your team can close more clients with confidence.</p>
             <div class="grid gap-4">
-              <div class="ai-extra max-w-2xl rounded-[1.75rem] bg-sky-50 border border-sky-100 p-5 text-slate-900 shadow-sm">
+              <div class="ai-extra max-w-2xl rounded-[1.75rem] bg-sky-50 border border-sky-100 p-5 text-slate-900 shadow-sm" data-key="aiExtraText">
                 Integrated score, action and WhatsApp follow-up for faster client closing.
               </div>
               <div class="ai-score-panel rounded-[1.75rem] p-6">
                 <div class="ai-score-badge">94</div>
                 <div class="ai-score-details">
-                  <p>AI Safety Score</p>
-                  <p class="text-lg font-semibold text-slate-900">Risk-rated safety advice in seconds</p>
-                  <p class="mt-2 text-sm text-slate-600">A quick AI score plus a clear next-step safety action plan.</p>
+                  <p data-key="aiScoreLabel">AI Safety Score</p>
+                  <p class="text-lg font-semibold text-slate-900" data-key="aiScoreHeading">Risk-rated safety advice in seconds</p>
+                  <p class="mt-2 text-sm text-slate-600" data-key="aiScoreCopy">A quick AI score plus a clear next-step safety action plan.</p>
                 </div>
               </div>
             </div>
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              <div class="ai-feature">Instant risk guidance</div>
-              <div class="ai-feature">WhatsApp-ready safety replies</div>
-              <div class="ai-feature">Trusted by Oman teams</div>
+              <div class="ai-feature" data-key="aiFeature1">Instant risk guidance</div>
+              <div class="ai-feature" data-key="aiFeature2">WhatsApp-ready safety replies</div>
+              <div class="ai-feature" data-key="aiFeature3">Trusted by Oman teams</div>
             </div>
             <div class="grid gap-4 sm:grid-cols-3">
               <div class="rounded-3xl bg-slate-100 p-5 text-center">
-                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Speed</p>
-                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat"><span class="text-emerald-600">10x</span> faster</span></p>
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500" data-key="aiMetric1Label">Speed</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat" data-key="aiMetric1Value"><span class="text-emerald-600">10x</span> faster</span></p>
               </div>
               <div class="rounded-3xl bg-slate-100 p-5 text-center">
-                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Response</p>
-                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat">24h</span> follow-up</p>
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500" data-key="aiMetric2Label">Response</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat" data-key="aiMetric2Value">24h</span> <span data-key="aiMetric2Suffix">follow-up</span></p>
               </div>
               <div class="rounded-3xl bg-slate-100 p-5 text-center">
-                <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Confidence</p>
-                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat">100%</span> compliant insight</p>
+                <p class="text-sm uppercase tracking-[0.24em] text-slate-500" data-key="aiMetric3Label">Confidence</p>
+                <p class="mt-3 text-2xl font-semibold text-slate-900"><span class="ai-stat" data-key="aiMetric3Value">100%</span> <span data-key="aiMetric3Suffix">compliant insight</span></p>
               </div>
             </div>
           </div>
           <div class="ai-card self-start rounded-[2.25rem] bg-white/95 p-8 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-200/90">
             <div class="ai-card-body flex flex-col gap-6">
-              <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <p class="text-sm uppercase tracking-[0.3em] text-slate-500">AI risk assistant</p>
-                  <h3 class="mt-2 text-2xl font-bold text-slate-900">Ask a safety question, get a sales-ready recommendation.</h3>
+                  <p class="text-sm uppercase tracking-[0.3em] text-slate-500" data-key="aiRiskLabel">AI risk assistant</p>
+                  <h3 class="mt-2 text-2xl font-bold text-slate-900" data-key="aiRiskHeading">Ask a safety question, get a sales-ready recommendation.</h3>
                 </div>
-                <span class="ai-golden-badge">Fast estimate</span>
+                <span class="ai-golden-badge" data-key="aiGoldenBadge">Fast estimate</span>
               </div>
-              <div class="ai-section-notice">Instant risk score, local HSE guidance, and WhatsApp-ready action steps in one answer.</div>
+              <div class="ai-section-notice" data-key="aiSectionNotice">Instant risk score, local HSE guidance, and WhatsApp-ready action steps in one answer.</div>
               <div class="grid gap-5 mt-6">
               <div class="ai-input-row grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] items-center">
-                <input id="ai-query" placeholder="e.g. fire drill frequency, PPE audit, hospital safety" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" />
-                <button id="ai-ask" class="justify-self-end inline-flex h-14 min-w-[10rem] items-center justify-center rounded-3xl bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600">Ask now</button>
+                <input id="ai-query" data-key="aiQueryPlaceholder" placeholder="e.g. fire drill frequency, PPE audit, hospital safety" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" />
+                <button id="ai-ask" class="justify-self-end inline-flex h-14 min-w-[10rem] items-center justify-center rounded-3xl bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600" data-key="aiAskButton">Ask now</button>
               </div>
               <div class="grid gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] items-center">
-                <button type="button" id="ai-reset" class="inline-flex h-14 items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Reset</button>
-                <a id="ai-wa" href="https://wa.me/96892500747?text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex h-14 items-center justify-center rounded-3xl bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-700" target="_blank" rel="noopener noreferrer">Discuss on WhatsApp</a>
+                <button type="button" id="ai-reset" class="inline-flex h-14 items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" data-key="aiResetButton">Reset</button>
+                <a id="ai-wa" href="https://wa.me/96892500747?text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex h-14 items-center justify-center rounded-3xl bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-700" target="_blank" rel="noopener noreferrer" data-key="aiWaButton">Discuss on WhatsApp</a>
               </div>
               <div id="ai-response" class="ai-response-card hidden p-5">
                 <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
                   <div>
-                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500">Instant insight</p>
-                    <p class="mt-2 text-slate-900">Our assistant has reviewed your query and prepared a practical safety recommendation.</p>
+                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500" data-key="aiResponseTitle">Instant insight</p>
+                    <p class="mt-2 text-slate-900" data-key="aiResponseIntro">Our assistant has reviewed your query and prepared a practical safety recommendation.</p>
                   </div>
-                  <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">Recommended</span>
+                  <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700" data-key="aiResponseRecommended">Recommended</span>
                 </div>
                 <div id="ai-response-text" class="mt-4 text-slate-700 leading-7"></div>
               </div>
@@ -1004,29 +1057,29 @@
               <div class="relative rounded-[1.75rem] border border-white/20 bg-white/10 p-8 text-white shadow-2xl shadow-teal-500/10">
                 <div class="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.28),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.16),_transparent_30%)]"></div>
                 <div class="relative space-y-6">
-                  <span class="inline-flex rounded-full bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/85">Contact & support</span>
+                  <span class="inline-flex rounded-full bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/85" data-key="contactBadge">Contact & support</span>
                   <div class="space-y-3">
-                    <h3 class="text-3xl font-bold">Contact Nahda Safety</h3>
-                    <p class="max-w-2xl text-slate-100/90">Reach our health and safety team for fast compliance guidance, onsite risk checks, or AI-driven safety planning. We respond promptly on WhatsApp and email.</p>
+                    <h3 class="text-3xl font-bold" data-key="contactPanelHeading">Contact Nahda Safety</h3>
+                    <p class="max-w-2xl text-slate-100/90" data-key="contactPanelCopy">Reach our health and safety team for fast compliance guidance, onsite risk checks, or AI-driven safety planning. We respond promptly on WhatsApp and email.</p>
                   </div>
                   <div class="grid gap-3 sm:grid-cols-2">
                     <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/15">
-                      <p class="text-xs uppercase tracking-[0.3em] text-white/70">Email</p>
+                      <p class="text-xs uppercase tracking-[0.3em] text-white/70" data-key="contactLabelEmail">Email</p>
                       <p class="mt-3 text-lg font-semibold">contact@nahdasafety.com</p>
                     </div>
                     <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/15">
-                      <p class="text-xs uppercase tracking-[0.3em] text-white/70">WhatsApp</p>
+                      <p class="text-xs uppercase tracking-[0.3em] text-white/70" data-key="contactLabelWhatsApp">WhatsApp</p>
                       <p class="mt-3 text-lg font-semibold">+968 9250 0747</p>
                     </div>
                   </div>
                   <div class="flex flex-wrap items-center gap-3">
-                    <a id="contact-wa" href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/10 transition hover:bg-slate-100">Chat on WhatsApp</a>
-                    <a id="contact-email" href="mailto:contact@nahdasafety.com" class="inline-flex items-center justify-center rounded-full bg-white/20 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 transition hover:bg-white/30">Email us</a>
+                    <a id="contact-wa" href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/10 transition hover:bg-slate-100" data-key="contactWaButton">Chat on WhatsApp</a>
+                    <a id="contact-email" href="mailto:contact@nahdasafety.com" class="inline-flex items-center justify-center rounded-full bg-white/20 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 transition hover:bg-white/30" data-key="contactEmailButton">Email us</a>
                   </div>
                   <div class="grid gap-3 sm:grid-cols-3">
-                    <a href="https://www.facebook.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">Facebook</a>
-                    <a href="https://www.linkedin.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">LinkedIn</a>
-                    <a href="https://www.youtube.com/channel/" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20">YouTube</a>
+                    <a href="https://www.facebook.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20" data-key="socialFacebook">Facebook</a>
+                    <a href="https://www.linkedin.com" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20" data-key="socialLinkedIn">LinkedIn</a>
+                    <a href="https://www.youtube.com/channel/" target="_blank" class="rounded-3xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/20" data-key="socialYouTube">YouTube</a>
                   </div>
                 </div>
               </div>
@@ -1037,20 +1090,20 @@
             <div class="decor-dot two"></div>
             <div class="space-y-6">
               <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-700">Send a message</p>
-                <h4 class="mt-2 text-2xl font-bold text-slate-900">Share your project details</h4>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-700" data-key="contactFormTitle">Send a message</p>
+                <h4 class="mt-2 text-2xl font-bold text-slate-900" data-key="contactFormHeading">Share your project details</h4>
               </div>
               <div class="grid gap-4">
-                <label class="block text-sm font-semibold text-slate-700">Name</label>
-                <input name="name" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
-                <label class="block text-sm font-semibold text-slate-700">Email</label>
-                <input type="email" name="email" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
-                <label class="block text-sm font-semibold text-slate-700">Message</label>
+                <label class="block text-sm font-semibold text-slate-700" data-key="formLabelName">Name</label>
+                <input name="name" data-key="formNamePlaceholder" placeholder="Your name" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
+                <label class="block text-sm font-semibold text-slate-700" data-key="formLabelEmail">Email</label>
+                <input type="email" name="email" data-key="formEmailPlaceholder" placeholder="Your email" required class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900" />
+                <label class="block text-sm font-semibold text-slate-700" data-key="formLabelMessage">Message</label>
                 <textarea name="message" rows="5" class="field-input mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-slate-900"></textarea>
               </div>
               <div class="form-actions">
-                <button type="submit" class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600">Send message</button>
-                <p class="text-sm text-slate-500">We typically reply within one business day.</p>
+                <button type="submit" class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600" data-key="contactFormSubmit">Send message</button>
+                <p class="text-sm text-slate-500" data-key="contactFormReply">We typically reply within one business day.</p>
               </div>
             </div>
           </form>
@@ -1060,48 +1113,56 @@
 
   </main>
 
-  <section class="bg-slate-900 text-slate-100 py-16">
+  <section class="bg-slate-900 text-slate-100 pt-16 pb-20 lg:pb-24">
     <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
       <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
         <div class="space-y-6">
-          <div class="inline-flex items-center gap-4 rounded-full bg-emerald-600/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-emerald-200">Trusted by Oman enterprises</div>
-          <div>
-            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">ISO Certified Safety</p>
-            <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl">ISO-certified quality built into every consultation.</h2>
-            <p class="mt-4 max-w-2xl text-slate-300">Nahda Safety & Health follows ISO 45001 health and safety management best practices for risk control, incident reduction, and operational compliance—so your organization can move faster, safer, and with greater client trust.</p>
-          </div>
-          <div class="grid gap-3 sm:grid-cols-3">
-            <span class="footer-badge">ISO 45001</span>
-            <span class="footer-badge">ISO 9001</span>
-            <span class="footer-badge">ISO 14001</span>
-          </div>
-          <div class="mt-4">
-            <p class="text-sm uppercase tracking-[0.24em] text-slate-400">Representative clients</p>
-            <div class="footer-client-grid mt-4">
-              <div class="footer-client-card">Oman Hospital Group</div>
-              <div class="footer-client-card">National Construction Firm</div>
-              <div class="footer-client-card">International School Network</div>
-              <div class="footer-client-card">Logistics & Warehousing</div>
-              <div class="footer-client-card">Hotel & Hospitality Chain</div>
-              <div class="footer-client-card">Oil & Gas Operations</div>
+          <div class="footer-trusted-wrap footer-trusted-overflow-fix">
+            <div class="inline-flex items-center gap-4 rounded-full bg-emerald-600/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-emerald-200" data-key="footerTrusted">Trusted by Oman enterprises</div>
+            <div class="grid gap-3 sm:grid-cols-3">
+              <span class="footer-badge" data-key="footerBadge1">ISO 45001</span>
+              <span class="footer-badge" data-key="footerBadge2">ISO 9001</span>
+              <span class="footer-badge" data-key="footerBadge3">ISO 14001</span>
             </div>
+          </div>
+          <div class="footer-trusted-panel">
+            <div>
+              <p class="text-sm uppercase tracking-[0.28em] text-slate-400" data-key="footerIsoLabel">ISO Certified Safety</p>
+              <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl" data-key="footerIsoHeading">ISO-certified quality built into every consultation.</h2>
+              <p class="mt-4 max-w-2xl text-slate-300" data-key="footerIsoCopy">Nahda Safety & Health follows ISO 45001 health and safety management best practices for risk control, incident reduction, and operational compliance—so your organization can move faster, safer, and with greater client trust.</p>
+            </div>
+          <div class="mt-4">
+            <h3 class="font-semibold text-slate-900" data-key="videoCard1Heading">Hotel Safety & Legal Compliance</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard1Copy">Top hospitality safety consulting and legal documentation for hotels in Oman.</p>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+              <div class="footer-client-card justify-self-center max-w-xl" data-key="footerClient1">Oman Hospital Group</div>
+              <div class="footer-client-card justify-self-center max-w-xl" data-key="footerClient2">National Construction Firm</div>
+            </div>
+            <h3 class="mt-6 font-semibold text-slate-900" data-key="videoCard2Heading">Construction Safety Consultants</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard2Copy">Expert site safety, toolbox talks, and contractor compliance programs.</p>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+              <div class="footer-client-card justify-self-center max-w-xl" data-key="footerClient3">Hotel & Hospitality Chain</div>
+              <div class="footer-client-card justify-self-center max-w-xl" data-key="footerClient4">Oil & Gas Operations</div>
+            </div>
+            <h3 class="mt-6 font-semibold text-slate-900" data-key="videoCard3Heading">School Safety Consulting</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard3Copy">Child safety plans, evacuation training, and school risk audits.</p>
           </div>
         </div>
         <div class="rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 shadow-2xl shadow-slate-950/20">
-          <p class="text-sm uppercase tracking-[0.28em] text-emerald-300">Quick Links</p>
-          <div class="mt-6 grid gap-3">
-            <a href="#home" class="footer-quick-link">Home</a>
-            <a href="#about" class="footer-quick-link">About Us</a>
-            <a href="#services" class="footer-quick-link">Services</a>
-            <a href="#projects" class="footer-quick-link">Projects</a>
-            <a href="#ai" class="footer-quick-link">AI Consultant</a>
-            <a href="#contact" class="footer-quick-link">Contact</a>
-          </div>
-          <div class="mt-8 border-t border-white/10 pt-6">
-            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">Contact channel</p>
+            <h3 class="font-semibold text-slate-900" data-key="videoCard4Heading">Oil & Gas Safety Consulting</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard4Copy">Energy sector HSE training, permits, and regulatory support.</p>
+            <a href="#home" class="footer-quick-link" data-key="footerQuickHome">Home</a>
+            <a href="#about" class="footer-quick-link" data-key="footerQuickAbout">About Us</a>
+            <h3 class="font-semibold text-slate-900" data-key="videoCard5Heading">Hospital & Clinical Safety</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard5Copy">Clinical safety audits, infection control, and patient protection strategies.</p>
+            <a href="#ai" class="footer-quick-link" data-key="footerQuickAI">AI Consultant</a>
+            <a href="#contact" class="footer-quick-link" data-key="footerQuickContact">Contact</a>
+            <h3 class="font-semibold text-slate-900" data-key="videoCard6Heading">Restaurant & Kitchen Safety</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard6Copy">Food safety, kitchen hazard control, and restaurant staff training.</p>
+            <p class="text-sm uppercase tracking-[0.28em] text-slate-400" data-key="contactChannelLabel">Contact channel</p>
             <div class="mt-4 space-y-3">
-              <a href="mailto:contact@nahdasafety.com" class="block rounded-2xl bg-slate-900/80 px-4 py-3 text-sm text-slate-100 transition hover:bg-slate-800">Email: contact@nahdasafety.com</a>
-              <a href="https://wa.me/96892500747" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">WhatsApp: +968 9250 0747</a>
+            <h3 class="font-semibold text-slate-900" data-key="videoCard7Heading">Manufacturing & Industrial Safety</h3>
+            <p class="mt-2 text-sm text-slate-600" data-key="videoCard7Copy">Factory and workshop safety, machine guarding, and permit systems.</p>
             </div>
           </div>
         </div>
@@ -1112,13 +1173,13 @@
   <footer class="bg-slate-950 text-slate-400">
     <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
       <div class="flex flex-col gap-4 border-t border-slate-800 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <p class="footer-small">© <span id="year"></span> Nahda Safety & Health. All rights reserved.</p>
+        <p class="footer-small">© <span id="year"></span> <span data-key="footerCopyrightText">Nahda Safety & Health. All rights reserved.</span></p>
         <div class="flex flex-wrap items-center gap-4">
-          <a href="#home" class="footer-quick-link">Home</a>
-          <a href="#services" class="footer-quick-link">Services</a>
-          <a href="#projects" class="footer-quick-link">Projects</a>
-          <a href="#contact" class="footer-quick-link">Contact</a>
-          <a href="assets/Nahda_Catalogue.pdf" target="_blank" rel="noopener noreferrer" class="footer-quick-link">Brochure</a>
+          <a href="#home" class="footer-quick-link" data-key="footerQuickHome">Home</a>
+          <a href="#services" class="footer-quick-link" data-key="footerQuickServices">Services</a>
+          <a href="#projects" class="footer-quick-link" data-key="footerQuickProjects">Projects</a>
+          <a href="#contact" class="footer-quick-link" data-key="footerQuickContact">Contact</a>
+          <a href="assets/Nahda_Catalogue.pdf" target="_blank" rel="noopener noreferrer" class="footer-quick-link" data-key="footerBrochure">Brochure</a>
         </div>
       </div>
     </div>
@@ -1133,8 +1194,8 @@
           <p class="font-semibold" id="wa-title">Welcome to Nahda Safety</p>
           <p class="text-sm text-slate-600 mt-1" id="wa-msg">Hello! How can we help?</p>
           <div class="mt-3 flex gap-2">
-            <a id="wa-open" class="inline-flex items-center gap-2 rounded bg-green-600 px-3 py-2 text-sm text-white" target="_blank">Chat on WhatsApp</a>
-            <button id="wa-close" class="rounded bg-slate-100 px-3 py-2 text-sm">Close</button>
+            <a id="wa-open" class="inline-flex items-center gap-2 rounded bg-green-600 px-3 py-2 text-sm text-white" target="_blank" data-key="waOpen">Chat on WhatsApp</a>
+            <button id="wa-close" class="rounded bg-slate-100 px-3 py-2 text-sm" data-key="waClose">Close</button>
           </div>
         </div>
       </div>
@@ -1145,11 +1206,241 @@
     const translations = {
       en: {
         navHome: 'Home', navAbout: 'About Us', navServices: 'Services', navProjects: 'Projects', navAI: 'AI Consultant', navContact: 'Contact',
-        heroBadge: 'Trusted Oman Safety Partner', heroHeading: 'Premium safety and health consultancy for Oman businesses.', heroCopy: 'Nahda Safety & Health combines AI-driven insights with expert compliance support for schools, hospitals, construction, oil & gas and hospitality companies.', heroPrimaryButton: 'Get a Free Consultation', heroSecondaryButton: 'Watch Safety Video', heroPanelTitle: 'Built for modern teams', heroPanelCopy: 'High-impact safety plans, regulatory documents, and AI-assisted hazard reviews tailored to Oman markets.', heroBenefit1: 'On-site safety inspections', heroBenefit2: 'Compliance and training support', heroQuoteTitle: 'CEO Talks', heroQuoteText: 'At Nahda Safety, we believe every inspection, every training session, and every dialogue should make Oman safer today — not just on paper. We deliver practical, local safety solutions that work in real workplaces.', heroQuoteAuthor: '— CEO - Ali Al Balushi', statTitle1: 'Active Projects', statValue1: '42+', statCopy1: 'Local safety programs in schools, hospitals, and construction sites.', statTitle2: 'Happy Clients', statValue2: '120+', statCopy2: 'Trusted by quality teams across Oman for reliable HSE services.', statTitle3: 'Fast Response', statValue3: '24h', statCopy3: 'Rapid safety advice and estimates when you need immediate support.', statTitle4: 'Expert Hours', statValue4: '2500+', statCopy4: 'Combined safety experience from certified Oman-based professionals.'
+        heroBadge: 'Trusted Oman Safety Partner', heroHeading: 'Premium safety and health consultancy for Oman businesses.', heroCopy: 'Nahda Safety & Health combines AI-driven insights with expert compliance support for schools, hospitals, construction, oil & gas and hospitality companies.', heroPrimaryButton: 'Get a Free Consultation', heroSecondaryButton: 'Watch Safety Video', heroPanelTitle: 'Built for modern teams', heroPanelCopy: 'High-impact safety plans, regulatory documents, and AI-assisted hazard reviews tailored to Oman markets.', heroBenefit1: 'On-site safety inspections', heroBenefit2: 'Compliance and training support',
+        brandName: 'Nahda Safety', brandSubtitle: 'Health & AI Consulting', headerWaButton: 'WhatsApp',
+        heroQuoteTitle: 'CEO Talks', heroQuoteText: 'At Nahda Safety, we believe every inspection, every training session, and every dialogue should make Oman safer today — not just on paper. We deliver practical, local safety solutions that work in real workplaces.', heroQuoteAuthor: '— CEO - Ali Al Balushi',
+        statTitle1: 'Active Projects', statValue1: '42+', statCopy1: 'Local safety programs in schools, hospitals, and construction sites.', statTitle2: 'Happy Clients', statValue2: '120+', statCopy2: 'Trusted by quality teams across Oman for reliable HSE services.', statTitle3: 'Fast Response', statValue3: '24h', statCopy3: 'Rapid safety advice and estimates when you need immediate support.', statTitle4: 'Expert Hours', statValue4: '2500+', statCopy4: 'Combined safety experience from certified Oman-based professionals.',
+
+        /* About / Services / Projects */
+        aboutSectionTitle: 'About Us', aboutSectionHeading: 'Nahda Safety & Health: Local expertise with modern AI advantage', aboutSectionCopy: 'We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.',
+        servicesSectionTitle: 'Our Services', servicesSectionHeading: 'Health, safety and compliance services for every sector.', servicesSectionCopy: 'From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.',
+        projectsSectionTitle: 'Projects', projectsSectionHeading: 'Major safety consultancy sectors delivered', projectsSectionCopy: 'Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by static HD visuals for stronger SEO and visitor trust.',
+        statsSectionTitle: 'Trusted by Oman teams', statsSectionHeading: 'Safety metrics that build trust and keep teams moving.', statsSectionCopy: 'From compliance audits to employee training, these results show how Nahda turns safety promises into practical outcomes for local businesses.',
+        aboutCard1Label: 'Our mission', aboutCard1Heading: 'Make Oman workplaces safer now', aboutCard1Copy: 'We combine on-the-ground safety expertise with easy-to-use systems and clear guidance so every client can improve performance, reduce risk, and stay compliant without extra complexity.',
+        aboutCard2Label: 'Why choose us', aboutCard2Heading: 'Trusted, responsive, Oman-based', aboutCard2Copy: 'Our local team understands Omani regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.',
+        aboutCard3Label: 'How we help', aboutCard3Heading: 'Practical consulting, training, and AI insight', aboutCard3Copy: 'From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.',
+        videoSectionTitle: 'Safety Videos', videoSectionHeading: 'Sector safety briefings', videoSectionCopy: 'Short, focused safety videos for schools, hospitals, construction and oil & gas.',
+        serviceCard1Label: 'Audit & Inspection', serviceCard1Heading: 'Safety audit programs', serviceCard1Copy: 'Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.',
+        serviceCard2Label: 'Compliance Support', serviceCard2Heading: 'Documentation & systems', serviceCard2Copy: 'Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.',
+        serviceCard3Label: 'Training', serviceCard3Heading: 'Workplace training', serviceCard3Copy: 'Hands-on staff training, emergency drills and awareness workshops for safer operations.',
+        serviceCard4Label: 'AI Advisory', serviceCard4Heading: 'AI-driven risk review', serviceCard4Copy: 'Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.',
+        serviceCard5Label: 'Emergency Planning', serviceCard5Heading: 'Evacuation & crisis', serviceCard5Copy: 'Emergency response plans, evacuation drills and crisis management support for fast recovery.',
+        serviceCard6Label: 'Industry Safety', serviceCard6Heading: 'Sector-specific programs', serviceCard6Copy: 'Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.',
+        projectsSectionFooter: 'Slide pause on hover. Discover the full range of HSE sector services with visual project highlights.',
+        faqSectionTitle: 'FAQ', faqSectionHeading: 'Common questions about our HSE services',
+        faqQuestion1: 'What services does Nahda Safety offer?', faqAnswer1: 'We offer audits, compliance documentation, training, emergency planning, and AI-enabled risk advisory tailored for schools, hospitals, construction and oil & gas sites.',
+        faqQuestion2: 'How do you support hospital safety?', faqAnswer2: 'We provide infection control audits, patient handling guidance, clinical area risk assessments and staff training to improve patient and staff safety.',
+        faqQuestion3: 'Can you help with construction site safety?', faqAnswer3: 'Yes. We perform site inspections, toolbox talks, PPE selection, and permit-to-work systems for safe site operations.',
+        faqQuestion4: 'Do you provide emergency & evacuation planning?', faqAnswer4: 'We develop evacuation plans, run drills, and prepare emergency response procedures aligned with Omani regulations.',
+        faqQuestion5: 'How do your AI safety insights work?', faqAnswer5: 'Our AI tools analyse incident trends, compliance gaps and training needs to generate prioritised recommendations and action plans.',
+        faqQuestion6: 'How can I get a quotation?', faqAnswer6: 'Contact us via WhatsApp or email with your site details and we will provide a tailored proposal and timeline.',
+        footerQuickHome: 'Home', footerQuickAbout: 'About Us', footerQuickServices: 'Services', footerQuickProjects: 'Projects', footerQuickAI: 'AI Consultant', footerQuickContact: 'Contact', footerBrochure: 'Brochure',
+
+        /* AI section */
+        aiSectionTitle: 'AI Consultant', aiSectionHeading: 'Convert safety questions into faster decisions and stronger sales.', aiHeroPillText: 'Oman-first AI safety scoring with WhatsApp-ready action plans.', aiSectionCopy: 'Our AI assistant turns urgent safety queries into practical recommendations, compliance checkpoints, and sales-ready WhatsApp follow-up—so your team can close more clients with confidence.', aiExtraText: 'Integrated score, action and WhatsApp follow-up for faster client closing.',
+        aiFeature1: 'Instant risk guidance', aiFeature2: 'WhatsApp-ready safety replies', aiFeature3: 'Trusted by Oman teams',
+        aiMetric1Label: 'Speed', aiMetric1Value: '10x faster', aiMetric2Label: 'Response', aiMetric2Value: '24h', aiMetric2Suffix: 'follow-up', aiMetric3Label: 'Confidence', aiMetric3Value: '100%', aiMetric3Suffix: 'compliant insight', aiScoreLabel: 'AI Safety Score', aiScoreHeading: 'Risk-rated safety advice in seconds', aiScoreCopy: 'A quick AI score plus a clear next-step safety action plan.',
+
+        /* Video cards */
+        videoCard1Heading: 'Hotel Safety & Legal Compliance', videoCard1Copy: 'Top hospitality safety consulting and legal documentation for hotels in Oman.',
+        videoCard2Heading: 'Construction Safety Consultants', videoCard2Copy: 'Expert site safety, toolbox talks, and contractor compliance programs.',
+        videoCard3Heading: 'School Safety Consulting', videoCard3Copy: 'Child safety plans, evacuation training, and school risk audits.',
+        videoCard4Heading: 'Oil & Gas Safety Consulting', videoCard4Copy: 'Energy sector HSE training, permits, and regulatory support.',
+        videoCard5Heading: 'Hospital & Clinical Safety', videoCard5Copy: 'Clinical safety audits, infection control, and patient protection strategies.',
+        videoCard6Heading: 'Restaurant & Kitchen Safety', videoCard6Copy: 'Food safety, kitchen hazard control, and restaurant staff training.',
+        videoCard7Heading: 'Manufacturing & Industrial Safety', videoCard7Copy: 'Factory and workshop safety, machine guarding, and permit systems.',
+        videoCard8Heading: 'Warehouse & Logistics Safety', videoCard8Copy: 'Loading, storage, and forklift safety for efficient warehouse operations.',
+        videoCard9Heading: 'Retail & Commercial Safety', videoCard9Copy: 'Floor safety, emergency exits, and customer-facing risk prevention.',
+        videoCard10Heading: 'HSE Compliance Documentation', videoCard10Copy: 'Safety manuals, legal reports, and documentation for Oman regulators.',
+        videoCard11Heading: 'Chemical Plant & Hazard Safety', videoCard11Copy: 'Process hazard reviews, emergency response and chemical handling best practices.',
+        videoCard12Heading: 'Office & Facilities Safety', videoCard12Copy: 'Ergonomics, office hazard checks, and facility evacuation planning.',
+
+        /* Projects */
+        project1Heading: 'Oil & Gas Safety Audit', project1Copy: 'Regulatory-ready HSE program development and hazard control for energy operations.',
+        project2Heading: 'School Safety Program', project2Copy: 'Child protection risk assessments, lockdown plans, and teacher training.',
+        project3Heading: 'Construction Site Control', project3Copy: 'Site inspections, toolbox talks and permit-to-work systems for safe builds.',
+        project4Heading: 'Hospital Safety Improvements', project4Copy: 'Clinical safety audits, infection control, and patient protection strategies.',
+        project5Heading: 'Hotel Fire & Emergency Planning', project5Copy: 'Emergency evacuation paths and hospitality safety compliance for hotels.',
+        project6Heading: 'Warehouse & Logistics Safety', project6Copy: 'Forklift safety, storage risk controls and loading dock process improvements.',
+        project7Heading: 'Manufacturing Plant Safety', project7Copy: 'Machine guarding, process hazard analysis and industrial safety systems.',
+        project8Heading: 'Office & Facilities Safety', project8Copy: 'Ergonomics, office hazard checks and facility evacuation planning.',
+        project9Heading: 'Retail & Hospitality Safety', project9Copy: 'Customer zone safety, food hygiene checks and public area crowd control.',
+        project10Heading: 'Chemical Plant & Hazard Safety', project10Copy: 'Process safety reviews, emergency response plans and hazardous materials control.',
+        project11Heading: 'Emergency Response Planning', project11Copy: 'Evacuation drills and crisis response procedures for faster incident recovery.',
+        project12Heading: 'Industrial Hygiene Monitoring', project12Copy: 'Air quality surveys, chemical exposure checks and worker health protection.',
+
+        /* Project badges */
+        project1Badge1: 'HSE Audit', project1Badge2: 'Field Operations',
+        project2Badge1: 'Education Safety', project2Badge2: 'Training',
+        project3Badge1: 'Construction', project3Badge2: 'Contractor Safety',
+        project4Badge1: 'Healthcare', project4Badge2: 'Clinical HSE',
+        project5Badge1: 'Hospitality', project5Badge2: 'Fire Safety',
+        project6Badge1: 'Logistics', project6Badge2: 'Material Handling',
+        project7Badge1: 'Manufacturing', project7Badge2: 'Process Safety',
+        project8Badge1: 'Office Safety', project8Badge2: 'Ergonomics',
+        project9Badge1: 'Retail', project9Badge2: 'Customer Safety',
+        project10Badge1: 'Chemical Safety', project10Badge2: 'Hazard Control',
+        project11Badge1: 'Emergency Response', project11Badge2: 'Drills',
+        project12Badge1: 'Industrial Hygiene', project12Badge2: 'Exposure Monitoring',
+
+        /* Testimonials (EN) */
+        testimonialsSectionTitle: 'Client Testimonials', testimonialsSectionHeading: 'What our clients say',
+        testimonial1Text: '"Nahda Safety provided a clear, practical safety plan and helped our hospital pass the regulatory audit."', testimonial1Author: '– Healthcare Compliance Manager',
+        testimonial2Text: '"Their construction site audits prevented major incidents and reduced our insurance costs."', testimonial2Author: '– Site Operations Lead',
+        testimonial3Text: '"Professional, fast and local expertise — great for SMEs needing affordable support."', testimonial3Author: '– Small Business Owner',
+        testimonial4Text: '"Their AI risk reports helped prioritise our training agenda effectively."', testimonial4Author: '– Safety Officer',
+        testimonial5Text: '"Clear documentation and friendly support during government inspections."', testimonial5Author: '– Facility Manager',
+        testimonial6Text: '"The training sessions were engaging and immediately useful for our staff."', testimonial6Author: '– School Principal',
+        testimonial7Text: '"Highly recommended for oilfield contractors needing specific HSE guidance."', testimonial7Author: '– Oil & Gas Supervisor',
+        testimonial8Text: '"The training sessions were engaging and immediately useful for our teams."', testimonial8Author: '– HR & Training Lead',
+        testimonial9Text: '"Reliable safety audits with clear corrective actions and timelines."', testimonial9Author: '– Operations Director',
+        testimonial10Text: '"Great value packages for small hotels and restaurants in Muscat."', testimonial10Author: '– Hotel Manager',
+
+        /* Footer badges and clients (EN) */
+        footerBadge1: 'ISO 45001', footerBadge2: 'ISO 9001', footerBadge3: 'ISO 14001',
+        footerClient1: 'Oman Hospital Group', footerClient2: 'National Construction Firm', footerClient3: 'Hotel & Hospitality Chain', footerClient4: 'Oil & Gas Operations',
+        socialFacebook: 'Facebook', socialLinkedIn: 'LinkedIn', socialYouTube: 'YouTube', contactChannelLabel: 'Contact channel', footerCopyrightText: 'Nahda Safety & Health. All rights reserved.',
+
+        /* Contact / form */
+        contactBadge: 'Contact & support', contactPanelHeading: 'Contact Nahda Safety', contactPanelCopy: 'Reach our health and safety team for fast compliance guidance, onsite risk checks, or AI-driven safety planning. We respond promptly on WhatsApp and email.',
+        contactLabelEmail: 'Email', contactLabelWhatsApp: 'WhatsApp', contactWaButton: 'Chat on WhatsApp', contactEmailButton: 'Email us', waOpen: 'Chat on WhatsApp', waClose: 'Close',
+        contactFormTitle: 'Send a message', contactFormHeading: 'Share your project details', formLabelName: 'Name', formLabelEmail: 'Email', formLabelMessage: 'Message', contactFormSubmit: 'Send message', contactFormReply: 'We typically reply within one business day.', aiQueryPlaceholder: 'e.g. fire drill frequency, PPE audit, hospital safety', formNamePlaceholder: 'Your name', formEmailPlaceholder: 'Your email', formMessagePlaceholder: 'Tell us about your project',
+
+        /* AI controls */
+        aiRiskLabel: 'AI risk assistant', aiRiskHeading: 'Ask a safety question, get a sales-ready recommendation.', aiGoldenBadge: 'Fast estimate', aiSectionNotice: 'Instant risk score, local HSE guidance, and WhatsApp-ready action steps in one answer.',
+        aiAskButton: 'Ask now', aiResetButton: 'Reset', aiWaButton: 'Discuss on WhatsApp',
+        aiResponseTitle: 'Instant insight', aiResponseIntro: 'Our assistant has reviewed your query and prepared a practical safety recommendation.', aiResponseRecommended: 'Recommended',
+
+        /* Footer */
+        footerTrusted: 'Trusted by Oman enterprises', footerIsoLabel: 'ISO Certified Safety', footerIsoHeading: 'ISO-certified quality built into every consultation.', footerIsoCopy: 'Nahda Safety & Health follows ISO 45001 health and safety management best practices for risk control, incident reduction, and operational compliance—so your organization can move faster, safer, and with greater client trust.',
+
+        /* AI responses (English) */
+        aiResponses: [
+          { q:['fire','evacuation'], a:'A strong fire safety system includes a clear evacuation plan, marked escape routes, fire drill schedules, and easy access to extinguishers. For a fast, site-specific review, contact Nahda Safety on WhatsApp.'},
+          { q:['ppe','personal protective'], a:'PPE must match the actual hazards on site and include training, inspection checks, and fit testing. For quick advice and a practical PPE checklist, message Nahda Safety on WhatsApp.'},
+          { q:['construction','site'], a:'Construction safety relies on daily hazard walk-throughs, toolbox talks, permit-to-work controls, and supervision. For immediate support tailored to your project, chat with Nahda Safety on WhatsApp.'},
+          { q:['hospital','clinical'], a:'Hospital safety requires patient flow controls, infection prevention, emergency response plans, and clear waste handling procedures. For faster guidance on your facility, reach out to Nahda Safety on WhatsApp.'},
+          { q:['school','students'], a:'School safety should cover entry/exit management, playground supervision, lockdown drills, and staff awareness. For quick school safety recommendations, connect with Nahda Safety on WhatsApp.'}
+        ]
       },
       ar: {
         navHome: 'الرئيسية', navAbout: 'من نحن', navServices: 'الخدمات', navProjects: 'المشاريع', navAI: 'استشاري الذكاء', navContact: 'تواصل',
-        heroBadge: 'شريك السلامة الموثوق في عمان', heroHeading: 'استشارات سلامة وصحة متميزة للشركات في عمان.', heroCopy: 'نهضة للسلامة والصحة تقدم حلول استشارية مدعومة بالذكاء الاصطناعي.', heroPrimaryButton: 'احصل على استشارة مجانية', heroSecondaryButton: 'شاهد فيديو السلامة', heroPanelTitle: 'مصمم للفرق الحديثة', heroPanelCopy: 'خطط سلامة فعالة ووثائق امتثال ومراجعات مخاطر ذكية.', heroBenefit1: 'تفتيشات في الموقع', heroBenefit2: 'دعم الامتثال والتدريب', heroQuoteTitle: 'كلام الرئيس التنفيذي', heroQuoteText: 'في نهضة للسلامة، نؤمن أن كل تفتيش، وكل تدريب، وكل حوار يجب أن يجعل عمان أكثر أماناً اليوم ــ وليس فقط على الورق. نقدم حلولًا عملية ومحلية تعمل في بيئات العمل الحقيقية.', heroQuoteAuthor: '— الرئيس التنفيذي، نهضة السلامة والصحة', statTitle1: 'المشاريع النشطة', statValue1: '42+', statCopy1: 'برامج السلامة المحلية في المدارس والمستشفيات ومواقع البناء.', statTitle2: 'عملاء راضون', statValue2: '120+', statCopy2: 'موثوق بها من قبل فرق الجودة في جميع أنحاء عمان.', statTitle3: 'استجابة سريعة', statValue3: '24 ساعة', statCopy3: 'نصائح وسرعات تقدير فورية عندما تحتاج إلى دعم عاجل.', statTitle4: 'ساعات خبرة', statValue4: '2500+', statCopy4: 'خبرة سلامة مجمعة من محترفين معتمدين في عمان.'
+        heroBadge: 'شريك السلامة الموثوق في عمان', heroHeading: 'استشارات سلامة وصحة متميزة للشركات في عمان.', heroCopy: 'نهضة للسلامة والصحة تقدم حلول استشارية مدعومة بالذكاء الاصطناعي.', heroPrimaryButton: 'احصل على استشارة مجانية', heroSecondaryButton: 'شاهد فيديو السلامة', heroPanelTitle: 'مصمم للفرق الحديثة', heroPanelCopy: 'خطط سلامة فعالة ووثائق امتثال ومراجعات مخاطر ذكية.', heroBenefit1: 'تفتيشات في الموقع', heroBenefit2: 'دعم الامتثال والتدريب',
+        brandName: 'نهضة للسلامة', brandSubtitle: 'الاستشارات الصحية والذكاء', headerWaButton: 'واتساب',
+        heroQuoteTitle: 'كلام الرئيس التنفيذي', heroQuoteText: 'في نهضة للسلامة، نؤمن أن كل تفتيش، وكل تدريب، وكل حوار يجب أن يجعل عمان أكثر أماناً اليوم ــ وليس فقط على الورق. نقدم حلولًا عملية ومحلية تعمل في بيئات العمل الحقيقية.', heroQuoteAuthor: '— الرئيس التنفيذي، نهضة السلامة والصحة',
+        statTitle1: 'المشاريع النشطة', statValue1: '42+', statCopy1: 'برامج السلامة المحلية في المدارس والمستشفيات ومواقع البناء.', statTitle2: 'عملاء راضون', statValue2: '120+', statCopy2: 'موثوق بها من قبل فرق الجودة في جميع أنحاء عمان.', statTitle3: 'استجابة سريعة', statValue3: '24 ساعة', statCopy3: 'نصائح وسرعات تقدير فورية عندما تحتاج إلى دعم عاجل.', statTitle4: 'ساعات خبرة', statValue4: '2500+', statCopy4: 'خبرة سلامة مجمعة من محترفين معتمدين في عمان.',
+
+        /* About / Services / Projects Arabic */
+        aboutSectionTitle: 'من نحن', aboutSectionHeading: 'نهضة للسلامة والصحة: خبرة محلية مع ميزة الذكاء الحديث', aboutSectionCopy: 'نقدّم خدمات استشارية في السلامة والصحة لمؤسسات عمانية من خلال برامج HSE عملية، استعداد تنظيمي سريع، ومراجعات مخاطر مدعومة بالذكاء—كل ذلك لحماية الفرق، وتحسين الامتثال، وتقليل الحوادث المكلفة.',
+        servicesSectionTitle: 'خدماتنا', servicesSectionHeading: 'خدمات الصحة والسلامة والامتثال لكل قطاع.', servicesSectionCopy: 'من التدقيق والوثائق إلى التدريب، وتخطيط الطوارئ، واستشارات المخاطر المدعومة بالذكاء، تدعم نهضة المستشفيات والمدارس ومواقع البناء والنفط والضيافة في عمان.',
+        projectsSectionTitle: 'المشاريع', projectsSectionHeading: 'قطاعات استشارات السلامة الرئيسية المنفذة', projectsSectionCopy: 'مشاريع استشارات سلامة متميزة عبر المستشفيات والمدارس ومواقع البناء والنفط والتصنيع والتجزئة والمكاتب — مدعومة بصور ثابتة عالية الدقة لتعزيز تحسين محركات البحث وثقة الزوار.',
+        statsSectionTitle: 'موثوق به من فرق عمان', statsSectionHeading: 'مقاييس السلامة التي تبني الثقة وتبقي الفرق متقدمة.', statsSectionCopy: 'من تدقيقات الامتثال إلى تدريب الموظفين، تُظهر هذه النتائج كيف تحول نهضة وعود السلامة إلى نتائج عملية للشركات المحلية.',
+        aboutCard1Label: 'مهمتنا', aboutCard1Heading: 'اجعل أماكن العمل في عمان أكثر أمانًا الآن', aboutCard1Copy: 'نجمع بين خبرة السلامة على أرض الواقع وأنظمة سهلة الاستخدام وإرشادات واضحة حتى يتمكن كل عميل من تحسين الأداء وتقليل المخاطر والالتزام دون تعقيد إضافي.',
+        aboutCard2Label: 'لماذا تختارنا', aboutCard2Heading: 'موثوقون وسريعون ومقرّون في عمان', aboutCard2Copy: 'يفهم فريقنا المحلي اللوائح العمانية والعادات الثقافية والمخاطر الخاصة بالقطاع، لذلك نتمكن من تقديم حلول سلامة أكثر عملية وفعالية من المستشارين البعيدين.',
+        aboutCard3Label: 'كيف نساعد', aboutCard3Heading: 'استشارات عملية وتدريب ورؤى ذكاء', aboutCard3Copy: 'من تدقيقات HSE والاستعداد إلى ISO إلى تقييم المخاطر المدعوم بالذكاء والتدريب المستمر، نساعد الفرق على العمل بثقة على أولويات السلامة يوميًا.',
+        videoSectionTitle: 'فيديوهات السلامة', videoSectionHeading: 'ملخصات سلامة حسب القطاع', videoSectionCopy: 'فيديوهات سلامة قصيرة ومركزة للمدارس والمستشفيات والبناء والنفط والغاز.',
+        serviceCard1Label: 'التدقيق والفحص', serviceCard1Heading: 'برامج تدقيق السلامة', serviceCard1Copy: 'تدقيقات سلامة مفصلة، وخطط للإجراءات التصحيحية، وتحليل الفجوات التنظيمية للمواقع والمنشآت.',
+        serviceCard2Label: 'دعم الامتثال', serviceCard2Heading: 'الوثائق والأنظمة', serviceCard2Copy: 'أدلة HSE مخصصة وسياسات وأنظمة تصاريح ووثائق جاهزة لـ ISO لتلبية اللوائح العمانية.',
+        serviceCard3Label: 'التدريب', serviceCard3Heading: 'تدريب مكان العمل', serviceCard3Copy: 'تدريب عملي للموظفين، وتمارين طوارئ، وورش توعية لعمليات أكثر أمانًا.',
+        serviceCard4Label: 'استشارات الذكاء', serviceCard4Heading: 'مراجعة المخاطر بالذكاء', serviceCard4Copy: 'رؤى سلامة سريعة، وتقييم المخاطر، وتوصيات عملية لقرارات أكثر ذكاءً.',
+        serviceCard5Label: 'تخطيط الطوارئ', serviceCard5Heading: 'الإخلاء والأزمات', serviceCard5Copy: 'خطط الاستجابة للطوارئ، وتمارين الإخلاء، ودعم إدارة الأزمات للاسترداد السريع.',
+        serviceCard6Label: 'سلامة القطاع', serviceCard6Heading: 'برامج حسب القطاع', serviceCard6Copy: 'برامج متخصصة للمدارس والمستشفيات والبناء والنفط والغاز والضيافة واللوجستيات.',
+        projectsSectionFooter: 'توقف التمرير عند الت hovering. اكتشف النطاق الكامل لخدمات قطاع HSE مع أبرز المشاريع بصريًا.',
+        faqSectionTitle: 'الأسئلة الشائعة', faqSectionHeading: 'الأسئلة الشائعة حول خدمات HSE لدينا',
+        faqQuestion1: 'ما هي خدمات نهضة للسلامة؟', faqAnswer1: 'نقدّم تدقيقات ووثائق امتثال وتدريبًا وتخطيطًا للطوارئ واستشارات مخاطر مدعومة بالذكاء المخصص للمدارس والمستشفيات ومواقع البناء والنفط والغاز.',
+        faqQuestion2: 'كيف تدعمون سلامة المستشفيات؟', faqAnswer2: 'نقدّم تدقيقات مكافحة العدوى، وإرشادات التعامل مع المرضى، وتقييمات مخاطر المناطق السريرية، وتدريبًا للموظفين لتحسين سلامة المرضى والموظفين.',
+        faqQuestion3: 'هل يمكنكم المساعدة في سلامة مواقع البناء؟', faqAnswer3: 'نعم. نقوم بإجراء تفتيشات للمواقع، ومحادثات صندوق الأدوات، واختيار معدات الوقاية الشخصية، وأنظمة تصاريح العمل لعمليات مواقع آمنة.',
+        faqQuestion4: 'هل تقدمون تخطيطًا للإخلاء والطوارئ؟', faqAnswer4: 'نطوّر خطط إخلاء، ونجرّب التدريبات، ونعدّ إجراءات الاستجابة للطوارئ بما يتماشى مع اللوائح العمانية.',
+        faqQuestion5: 'كيف تعمل رؤى الذكاء لدينا للسلامة؟', faqAnswer5: 'تحلل أدوات الذكاء لدينا اتجاهات الحوادث وثغرات الامتثال واحتياجات التدريب لتوليد توصيات وخطط عمل ذات أولوية.',
+        faqQuestion6: 'كيف يمكنني الحصول على عرض سعر؟', faqAnswer6: 'تواصل معنا عبر واتساب أو البريد الإلكتروني مع تفاصيل موقعك وسنوفر لك مقترحًا مخصصًا وجدولًا زمنيًا.',
+        footerQuickHome: 'الرئيسية', footerQuickAbout: 'من نحن', footerQuickServices: 'الخدمات', footerQuickProjects: 'المشاريع', footerQuickAI: 'استشاري الذكاء', footerQuickContact: 'تواصل', footerBrochure: 'كتيب',
+
+        /* AI section Arabic */
+        aiSectionTitle: 'استشاري الذكاء', aiSectionHeading: 'حوّل أسئلة السلامة إلى قرارات أسرع ومبيعات أقوى.', aiHeroPillText: 'تقييم سلامة محلي مدعوم بالذكاء مع خطوات متابعة جاهزة للواتساب.', aiSectionCopy: 'ساعد مساعدنا الذكي في تحويل استفسارات السلامة العاجلة إلى توصيات عملية ونقاط امتثال وخطوات متابعة جاهزة للواتساب—مما يساعد فريقك على الفوز بثقة العملاء.', aiExtraText: 'تقييم وإجراءات ومتابعة عبر واتساب لإغلاق أسرع للعملاء.',
+        aiFeature1: 'إرشاد فوري للمخاطر', aiFeature2: 'ردود جاهزة للواتساب', aiFeature3: 'موثوق به من فرق عمان',
+        aiMetric1Label: 'السرعة', aiMetric1Value: 'أسرع 10 مرات', aiMetric2Label: 'الاستجابة', aiMetric2Value: '24 ساعة', aiMetric2Suffix: 'متابعة', aiMetric3Label: 'الثقة', aiMetric3Value: '100%', aiMetric3Suffix: 'رؤية امتثال', aiScoreLabel: 'درجة السلامة بالذكاء', aiScoreHeading: 'نصائح سلامة مصنفة حسب المخاطر خلال ثوان', aiScoreCopy: 'درجة ذكاء سريعة وخطة عمل واضحة للخطوات التالية.',
+
+        /* Video cards Arabic */
+        videoCard1Heading: 'سلامة الفنادق والامتثال القانوني', videoCard1Copy: 'استشارات سلامة الضيافة ووثائق الامتثال لفنادق عمان.',
+        videoCard2Heading: 'استشارات سلامة البناء', videoCard2Copy: 'أمان المواقع، محادثات صندوق الأدوات، وبرامج امتثال المقاولين.',
+        videoCard3Heading: 'سلامة المدارس', videoCard3Copy: 'خطط سلامة الطلاب، تدريبات الإخلاء، وتدقيقات مخاطر المدارس.',
+        videoCard4Heading: 'سلامة النفط والغاز', videoCard4Copy: 'تدريب HSE للقطاع الطاقي، تصاريح ودعم امتثال تنظيمي.',
+        videoCard5Heading: 'سلامة المستشفيات والعيادات', videoCard5Copy: 'تدقيقات السلامة السريرية، مكافحة العدوى، وحماية المرضى.',
+        videoCard6Heading: 'سلامة المطاعم والمطابخ', videoCard6Copy: 'سلامة الغذاء، ضبط مخاطر المطبخ، وتدريب طاقم المطاعم.',
+        videoCard7Heading: 'سلامة التصنيع والصناعات', videoCard7Copy: 'سلامة المصانع وورش العمل، حماية الآلات، وأنظمة التصاريح.',
+        videoCard8Heading: 'سلامة المستودعات واللوجستيات', videoCard8Copy: 'سلامة التخزين والرفع والرافعات الشوكية لعمليات مستودعات فعالة.',
+        videoCard9Heading: 'سلامة التجزئة والتجارة', videoCard9Copy: 'سلامة الأرضيات ومخارج الطوارئ والوقاية من المخاطر التي تواجه العملاء.',
+        videoCard10Heading: 'وثائق امتثال HSE', videoCard10Copy: 'أدلة سلامة وتقارير قانونية ووثائق للجهات التنظيمية في عمان.',
+        videoCard11Heading: 'سلامة المصانع الكيميائية والمخاطر', videoCard11Copy: 'مراجعات مخاطر العمليات، والاستجابة للطوارئ، وأفضل ممارسات التعامل مع المواد الكيميائية.',
+        videoCard12Heading: 'سلامة المكاتب والمنشآت', videoCard12Copy: 'الأرغونوميّة وفحوصات المخاطر ورفع خطط الإخلاء.',
+
+        /* Projects Arabic */
+        project1Heading: 'تدقيق سلامة النفط والغاز', project1Copy: 'تطوير برامج HSE جاهزة للامتثال والتحكم في المخاطر لعمليات الطاقة.',
+        project2Heading: 'برنامج سلامة المدارس', project2Copy: 'تقييمات مخاطر حماية الطفل، خطط الإغلاق، وتدريب المعلمين.',
+        project3Heading: 'التحكم في مواقع البناء', project3Copy: 'تفتيشات المواقع، محادثات صندوق الأدوات، وأنظمة تصاريح العمل للبناء الآمن.',
+        project4Heading: 'تحسينات سلامة المستشفيات', project4Copy: 'تدقيقات السلامة السريرية، مكافحة العدوى، واستراتيجيات حماية المرضى.',
+        project5Heading: 'تخطيط الحرائق والطوارئ للفنادق', project5Copy: 'مسارات إخلاء الطوارئ والامتثال لسلامة الضيافة للفنادق.',
+        project6Heading: 'سلامة المستودعات واللوجستيات', project6Copy: 'سلامة الرافعات الشوكية، ضوابط مخاطر التخزين وتحسين عمليات الأرصفة.',
+        project7Heading: 'سلامة مصانع التصنيع', project7Copy: 'حماية الآلات، تحليل مخاطر العمليات وأنظمة السلامة الصناعية.',
+        project8Heading: 'سلامة المكاتب والمنشآت', project8Copy: 'العمل على الأرغونومية، فحوصات مخاطر المكاتب وتخطيط إخلاء المنشآت.',
+        project9Heading: 'سلامة التجزئة والضيافة', project9Copy: 'سلامة مناطق العملاء، فحوصات سلامة الغذاء والتحكم في الحشود.',
+        project10Heading: 'سلامة المصانع الكيميائية والمخاطر', project10Copy: 'مراجعات سلامة العمليات، خطط الاستجابة للطوارئ والتحكم بالمواد الخطرة.',
+        project11Heading: 'تخطيط الاستجابة للطوارئ', project11Copy: 'تدريبات الإخلاء وإجراءات الاستجابة للأزمات لاسترداد أسرع من الحوادث.',
+        project12Heading: 'مراقبة الصحة الصناعية', project12Copy: 'مسوح جودة الهواء، فحوصات التعرض للمواد الكيميائية وحماية صحة العاملين.',
+
+        /* Project badges Arabic */
+        project1Badge1: 'تدقيق HSE', project1Badge2: 'عمليات الميدان',
+        project2Badge1: 'سلامة التعليم', project2Badge2: 'تدريب',
+        project3Badge1: 'البناء', project3Badge2: 'سلامة المقاولين',
+        project4Badge1: 'الرعاية الصحية', project4Badge2: 'HSE سريري',
+        project5Badge1: 'الضيافة', project5Badge2: 'سلامة الحرائق',
+        project6Badge1: 'اللوجستيات', project6Badge2: 'مناولة المواد',
+        project7Badge1: 'التصنيع', project7Badge2: 'سلامة العملية',
+        project8Badge1: 'سلامة المكاتب', project8Badge2: 'الأرغونومية',
+        project9Badge1: 'التجزئة', project9Badge2: 'سلامة العملاء',
+        project10Badge1: 'سلامة المواد الكيميائية', project10Badge2: 'ضبط المخاطر',
+        project11Badge1: 'الاستجابة للطوارئ', project11Badge2: 'تدريبات',
+        project12Badge1: 'الصحة الصناعية', project12Badge2: 'مراقبة التعرض',
+
+        /* Testimonials Arabic */
+        testimonialsSectionTitle: 'آراء العملاء', testimonialsSectionHeading: 'ماذا يقول عملاؤنا',
+        testimonial1Text: '"قدمت نهضة للسلامة خطة واضحة وعملية وساعدت مستشفانا على اجتياز التدقيق التنظيمي."', testimonial1Author: '– مسؤول امتثال المستشفى',
+        testimonial2Text: '"منع تدقيقهم في مواقع البناء حوادث كبيرة وخفض تكاليف التأمين لدينا."', testimonial2Author: '– قائد عمليات الموقع',
+        testimonial3Text: '"محترفون، سريعون ومحليون — رائع للشركات الصغيرة والمتوسطة التي تحتاج دعمًا بتكلفة معقولة."', testimonial3Author: '– صاحب عمل صغير',
+        testimonial4Text: '"ساعدتنا تقارير مخاطر الذكاء على ترتيب جدول أولويات التدريب بفعالية."', testimonial4Author: '– ضابط السلامة',
+        testimonial5Text: '"وثائق واضحة ودعم ودي أثناء التفتيشات الحكومية."', testimonial5Author: '– مدير المرافق',
+        testimonial6Text: '"كانت جلسات التدريب ممتعة ومفيدة فورًا لموظفينا."', testimonial6Author: '– مدير مدرسة',
+        testimonial7Text: '"موصى به بشدة لمقاولي النفط الميداني الذين يحتاجون إلى إرشادات HSE محددة."', testimonial7Author: '– مشرف النفط والغاز',
+        testimonial8Text: '"كانت جلسات التدريب ممتعة ومفيدة فورًا لفرقنا."', testimonial8Author: '– مسؤول الموارد البشرية والتدريب',
+        testimonial9Text: '"تدقيقات السلامة موثوقة مع إجراءات تصحيحية وجداول زمنية واضحة."', testimonial9Author: '– مدير العمليات',
+        testimonial10Text: '"باقات ذات قيمة ممتازة للفنادق والمطاعم الصغيرة في مسقط."', testimonial10Author: '– مدير الفندق',
+
+        /* Footer badges and clients Arabic */
+        footerBadge1: 'ISO 45001', footerBadge2: 'ISO 9001', footerBadge3: 'ISO 14001',
+        footerClient1: 'مجموعة مستشفيات عمان', footerClient2: 'شركة إنشاءات وطنية', footerClient3: 'سلسلة فنادق وضيافة', footerClient4: 'عمليات النفط والغاز',
+        socialFacebook: 'فيسبوك', socialLinkedIn: 'لينكدإن', socialYouTube: 'يوتيوب', contactChannelLabel: 'قناة التواصل', footerCopyrightText: 'نهضة للسلامة والصحة. جميع الحقوق محفوظة.',
+
+        /* Contact / form Arabic */
+        contactBadge: 'التواصل والدعم', contactPanelHeading: 'تواصل مع نهضة للسلامة', contactPanelCopy: 'تواصل مع فريق الصحة والسلامة لدينا للحصول على إرشادات امتثال سريعة، فحوصات مخاطر في الموقع، أو تخطيط سلامة مدعوم بالذكاء. نرد بسرعة عبر الواتساب والبريد الإلكتروني.',
+        contactLabelEmail: 'البريد الإلكتروني', contactLabelWhatsApp: 'واتساب', contactWaButton: 'الدردشة عبر واتساب', contactEmailButton: 'أرسل بريدًا', waOpen: 'الدردشة عبر واتساب', waClose: 'إغلاق',
+        contactFormTitle: 'أرسل رسالة', contactFormHeading: 'شارك تفاصيل مشروعك', formLabelName: 'الاسم', formLabelEmail: 'البريد الإلكتروني', formLabelMessage: 'الرسالة', contactFormSubmit: 'إرسال الرسالة', contactFormReply: 'نرد عادة خلال يوم عمل واحد.', aiQueryPlaceholder: 'مثل: تواتر تدريبات الحريق، تدقيق معدات الوقاية الشخصية، سلامة المستشفيات', formNamePlaceholder: 'اسمك', formEmailPlaceholder: 'بريدك الإلكتروني', formMessagePlaceholder: 'أخبرنا عن مشروعك',
+
+        /* AI controls Arabic */
+        aiRiskLabel: 'مساعد مخاطر الذكاء', aiRiskHeading: 'اطرح سؤالًا عن السلامة واحصل على توصية جاهزة للمبيعات.', aiGoldenBadge: 'تقدير سريع', aiSectionNotice: 'تقييم مخاطر فوري، إرشادات HSE محلية، وخطوات متابعة جاهزة للواتساب في إجابة واحدة.',
+        aiAskButton: 'اسأل الآن', aiResetButton: 'إعادة تعيين', aiWaButton: 'ناقش عبر واتساب',
+        aiResponseTitle: 'ملاحظة فورية', aiResponseIntro: 'راجع مساعدنا استفسارك وأعد توصية عملية للسلامة.', aiResponseRecommended: 'موصى به',
+
+        /* Footer Arabic */
+        footerTrusted: 'موثوق به من مؤسسات عمانية', footerIsoLabel: 'معايير ISO للسلامة', footerIsoHeading: 'جودة مطابقة لمعايير ISO مضمّنة في كل استشارة.', footerIsoCopy: 'تتبع نهضة للسلامة والصحة مبادئ ISO 45001 لإدارة الصحة والسلامة للسيطرة على المخاطر، تقليل الحوادث، والامتثال التشغيلي—لتمكين مؤسستك من العمل بسرعة وأمان وثقة أكبر.',
+
+        /* AI responses (Arabic) */
+        aiResponses: [
+          { q:['fire','evacuation','حريق','إخلاء'], a:'يتضمن نظام السلامة من الحرائق القوي خطة إخلاء واضحة، طرق هروب محددة، جداول لتدريبات الحريق، وإمكانية الوصول إلى مطافئ الحريق. لمراجعة سريعة ومخصصة للموقع، تواصل مع نهضة للسلامة عبر واتساب.'},
+          { q:['ppe','personal protective','معدات'], a:'يجب أن تتطابق معدات الوقاية الشخصية مع المخاطر الفعلية في الموقع وتشمل تدريبًا، وفحوصات تفقدية، واختبارات ملاءمة. للحصول على نصيحة سريعة وقائمة تحقق عملية، راسل نهضة للسلامة على واتساب.'},
+          { q:['construction','site','بناء','موقع'], a:'تعتمد سلامة مواقع البناء على جولات يومية للكشف عن المخاطر، محادثات صندوق الأدوات، ضوابط تصاريح العمل، والإشراف. للدعم الفوري المُفصّل لمشروعك، دردش مع نهضة للسلامة عبر واتساب.'},
+          { q:['hospital','clinical','مستشفى','عيادة'], a:'تتطلب سلامة المستشفيات التحكم في تدفق المرضى، والوقاية من العدوى، وخطط الاستجابة للطوارئ، وإجراءات واضحة للتعامل مع النفايات. للحصول على إرشادات أسرع لمنشأتك، تواصل مع نهضة للسلامة.'},
+          { q:['school','students','مدرسة','طالب'], a:'يجب أن تغطي سلامة المدارس إدارة الدخول والخروج، والإشراف على الملاعب، وتدريبات الإغلاق، وزيادة وعي الموظفين. للحصول على توصيات سريعة لسلامة المدارس، تواصل مع نهضة للسلامة عبر واتساب.'}
+        ]
       }
     };
 
@@ -1159,7 +1450,20 @@
       const locale = translations[lang] ? lang : 'en';
       const dict = translations[locale];
       root.lang = locale; body.classList.toggle('rtl', locale === 'ar'); root.dir = locale === 'ar' ? 'rtl' : 'ltr';
-      document.querySelectorAll('[data-key]').forEach(el=>{ const k = el.getAttribute('data-key'); if(dict[k]) el.textContent = dict[k]; });
+      document.querySelectorAll('[data-key]').forEach(el=>{ const k = el.getAttribute('data-key'); const localeValue = dict[k]; const fallbackValue = translations.en[k]; if(typeof localeValue === 'string' && localeValue.trim()) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = localeValue;
+        } else {
+          el.textContent = localeValue;
+        }
+      } else if(typeof fallbackValue === 'string' && fallbackValue.trim()) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = fallbackValue;
+        } else {
+          el.textContent = fallbackValue;
+        }
+      }
+      });
       document.getElementById('lang-en').classList.toggle('active', locale==='en');
       document.getElementById('lang-ar').classList.toggle('active', locale==='ar');
       // WhatsApp welcome text and link
@@ -1171,15 +1475,15 @@
       localStorage.setItem('siteLanguage', locale);
     }
 
-    // AI consultant simple keyword responder
-    const aiResponses = [
-      { q:['fire','evacuation'], a:'A strong fire safety system includes a clear evacuation plan, marked escape routes, fire drill schedules, and easy access to extinguishers. For a fast, site-specific review, contact Nahda Safety on WhatsApp.'},
-      { q:['ppe','personal protective'], a:'PPE must match the actual hazards on site and include training, inspection checks, and fit testing. For quick advice and a practical PPE checklist, message Nahda Safety on WhatsApp.'},
-      { q:['construction','site'], a:'Construction safety relies on daily hazard walk-throughs, toolbox talks, permit-to-work controls, and supervision. For immediate support tailored to your project, chat with Nahda Safety on WhatsApp.'},
-      { q:['hospital','clinical'], a:'Hospital safety requires patient flow controls, infection prevention, emergency response plans, and clear waste handling procedures. For faster guidance on your facility, reach out to Nahda Safety on WhatsApp.'},
-      { q:['school','students'], a:'School safety should cover entry/exit management, playground supervision, lockdown drills, and staff awareness. For quick school safety recommendations, connect with Nahda Safety on WhatsApp.'}
-    ];
-    function aiConsult(query){ const q = (query||'').toLowerCase(); for(const it of aiResponses){ if(it.q.some(k=>q.includes(k))) return it.a; } return 'This is a general safety guideline. For a rapid, customized response and next-step recommendations, contact Nahda Safety directly on WhatsApp at +968 9250 0747.'; }
+    // AI consultant simple keyword responder (uses localized responses from translations when available)
+    const aiResponses = [];
+    function aiConsult(query){
+      const q = (query||'').toLowerCase();
+      const locale = document.documentElement.lang || 'en';
+      const responses = (translations[locale] && translations[locale].aiResponses) ? translations[locale].aiResponses : aiResponses;
+      for(const it of responses){ if(it.q.some(k=>q.includes(k))) return it.a; }
+      return locale === 'ar' ? 'هذه إرشادات عامة للسلامة. لمزيد من الاستجابة المخصصة والتوصيات خطوة بخطوة، تواصل مع نهضة للسلامة مباشرة عبر واتساب على +968 9250 0747.' : 'This is a general safety guideline. For a rapid, customized response and next-step recommendations, contact Nahda Safety directly on WhatsApp at +968 9250 0747.';
+    }
 
     window.addEventListener('DOMContentLoaded', ()=>{
       const saved = localStorage.getItem('siteLanguage') || 'en'; setLanguage(saved);
