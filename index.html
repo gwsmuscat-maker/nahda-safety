@@ -36,20 +36,8 @@
         }
       }
     };
-
-    // Ensure Arabic translations include all keys present in English to avoid missing keys
-    (function ensureArKeys(){
-      try{
-        if(translations.en && translations.ar){
-          Object.keys(translations.en).forEach(k=>{
-            if(!(k in translations.ar)){
-              translations.ar[k] = translations.en[k];
-            }
-          });
-        }
-      }catch(e){ console.warn('translation normalization failed', e); }
-    })();
   </script>
+
   <style>
     :root{
       --primary: #0f766e;
@@ -92,6 +80,17 @@
     .rtl .nav-link { margin-left: 0; margin-right: 1rem; }
     .lang-switcher button.active { background: linear-gradient(90deg, var(--accent), #fb923c); color: white; }
 
+    /* visually-hidden utility for screen-readers */
+    .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+    /* Skip link: hidden by default, visible when focused for keyboard users */
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: 0.5rem 0.75rem; background: var(--primary); color: white; z-index: 9999; border-radius: 6px; text-decoration: none; box-shadow: 0 8px 30px rgba(2,6,23,0.2); }
+
+    /* Visible focus outlines for keyboard users (prefer focus-visible when supported) */
+    a:focus-visible, button:focus-visible { outline: 3px solid rgba(15,23,42,0.12); outline-offset: 3px; box-shadow: 0 8px 24px rgba(2,6,23,0.08); }
+    a:focus, button:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+
     .video-card{ position:relative; overflow:hidden }
     .video-card::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 40%); pointer-events:none; }
 
@@ -111,8 +110,64 @@
     .service-card::after{ content:''; position:absolute; inset:1px; background:#ffffff; border-radius:2rem; z-index:0; }
     .service-card > *{ position:relative; z-index:1; }
     .service-card:hover::before{ opacity:1; transform: scale(1.01); }
-    .service-card p:first-child{ text-transform: uppercase; letter-spacing: .25em; }
-    .service-card h4{ margin-top:1rem; margin-bottom:0.75rem; }
+    /* Service label styling: sentence-case labels (no small-caps) for a cleaner, modern look */
+    .service-card p:first-child{ text-transform: none; font-variant: normal; letter-spacing: 0.06em; color: rgba(15,23,42,0.72); font-weight:600; font-size:0.86rem; margin:0; }
+
+    /* About cards: justify copy and make label uppercase+colored; keep card headings sentence-case */
+    #about .service-card p.mt-3 { text-align: justify; text-justify: inter-word; }
+    /* make the first small label uppercase and let its utility color show through */
+    #about .service-card > p:first-child { text-transform: uppercase; }
+    /* ensure label color utilities remain authoritative (explicit mapping for consistency) */
+    #about .service-card > p.text-emerald-600 { color: #065f46; } /* darker emerald for contrast */
+    #about .service-card > p.text-cyan-600 { color: #0369a1; } /* darker cyan for contrast */
+    #about .service-card > p.text-violet-600 { color: #7c3aed; }
+    #about .service-card > p.text-amber-600 { color: #b45309; } /* darker amber */
+    #about .service-card > p.text-primary { color: var(--primary); }
+    /* keep the card h3 headings in normal sentence-case and neutral color */
+    #about .service-card h3 { text-transform: none; color: #0f172a; } 
+
+    /* Make the top SEO intro paragraph and the first paragraph of service copy use normal weight and justified alignment for smoother, professional appearance */
+    .service-seo-intro{ color: #0f172a; font-weight:400; font-size:0.98rem; line-height:1.5; margin-top:0.25rem; text-align:justify; text-justify:inter-word; }
+    /* Ensure SEO intro text is regular weight across all service cards (override stronger rules if any) */
+    .service-card .service-seo-intro, .service-card .service-seo-intro * { font-weight:400 !important; }
+    .service-copy > p:first-child { font-weight:400; color: #0f172a; text-align:justify; text-justify:inter-word; }
+    .text-justify { text-align: justify; text-justify: inter-word; }
+    .service-card h4{ margin-top:1rem; margin-bottom:0.75rem; font-weight:600; text-transform:none; letter-spacing:0.01em; }
+
+    /* Apply justified alignment to other main paragraph areas for a polished, professional layout */
+    /* Targets: hero intro (excluding tiny utility lines), video section copy, projects descriptions, testimonials, FAQ answers, AI section copy, project card copy */
+    .hero-background p:not(.text-sm):not(.text-xs), #video p:not(.text-sm):not(.text-xs), #projects p:not(.text-sm):not(.text-xs), .project-body p:not(.text-sm):not(.text-xs), .testimonial-card p:not(.text-sm):not(.text-xs), #faq p:not(.text-sm):not(.text-xs), #ai p:not(.text-sm):not(.text-xs), .ai-section-notice p:not(.text-sm):not(.text-xs), #wa-welcome p:not(.text-sm):not(.text-xs) { text-align: justify; text-justify: inter-word; }
+    /* Keep small utility text left/center where intentionally designed (hero badges, small labels) */
+    .hero-background p.text-sm, .hero-background p.text-xs, #video p.text-sm, #projects p.text-sm, .project-body p.text-sm, .testimonial-card p.text-sm { text-align: left; }
+    /* Keep intentionally centered larger intro blocks centered */
+    #projects .text-center p, .text-center .max-w-3xl { text-align: center !important; }
+    /* QHSE card tweaks */
+    .service-card.qhse h4{ color: var(--primary); }
+    /* Ensure h4 headings pick up their label's accent color where applicable */
+    .service-card > p.text-emerald-600 + h4 { color: #065f46; }
+    .service-card > p.text-cyan-600 + h4 { color: #0369a1; }
+    .service-card > p.text-violet-600 + h4 { color: #7c3aed; }
+    .service-card > p.text-amber-600 + h4 { color: #b45309; }
+    .service-card.iso h4{ color: var(--primary); }
+        /* configurable clamp for expandable service copy (tunable via CSS variable) */
+        :root { --service-clamp: 104px; }
+        @media (max-width: 640px) { :root { --service-clamp: 88px; } }
+        .service-copy.expandable{ max-height: var(--service-clamp); overflow: hidden; transition: max-height 0.35s ease; }
+        .service-copy.expandable.expanded{ max-height: 9999px; }
+        .expand-toggle{ display:inline-block; border: none; cursor: pointer; }
+        .expand-toggle[aria-expanded="true"]{ box-shadow: 0 20px 40px rgba(15,23,42,0.07); }
+
+        /* QHSE SEO intro and CTA styling */
+    /* reduce heavy bolding for highlighted phrases in the SEO intro - color accent remains */
+    .service-seo-intro strong, .service-seo-intro .seo-accent{ color: var(--primary); font-weight:400; }
+    /* ensure service copy strong text is not overly bold */
+    .service-copy strong{ font-weight:400; color: var(--primary); }
+    .service-seo-intro small{ color: #6b7280; display:block; margin-top:0.35rem; font-weight:400; }
+    .service-badges { margin-top: 0.5rem; }
+    .service-badges .badge{ font-size:0.78rem; padding:6px 10px; }
+    @media (max-width: 640px) { .service-badges .badge{ font-size:0.72rem; padding:5px 8px; } }
+    .service-cta a{ text-decoration:none; }
+    .service-cta .bg-green-600{ background: linear-gradient(90deg,#059669,#10b981); }
 
     .testimonial-card{ position:relative; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.16); }
     .testimonial-card::before{ content:''; position:absolute; inset:0; background: linear-gradient(135deg, rgba(56,189,248,0.22), rgba(16,185,129,0.22), rgba(124,58,237,0.22), rgba(245,158,11,0.22)); opacity:0.75; filter: blur(16px); transform: scale(1.02); transition: opacity .35s ease, transform .35s ease; }
@@ -140,10 +195,29 @@
     .ai-card::after { content:''; position:absolute; top:0; left:50%; width:16rem; height:16rem; transform: translateX(-50%); background: radial-gradient(circle at center, rgba(56,189,248,0.22), transparent 60%); pointer-events:none; filter: blur(54px); opacity:0.9; }
     .ai-card > * { position: relative; z-index:1; }
     .ai-card-body { display: flex; flex-direction: column; gap: 1.5rem; max-width: 44rem; width: 100%; margin: 0 auto; }
-    .ai-input-row { min-width: 0; }
+    .ai-input-row { min-width: 0; display: grid; gap: 1rem; grid-template-columns: 1fr; align-items: stretch; }
     .ai-input-row input { box-shadow: inset 0 2px 16px rgba(15,23,42,0.08); border-color: rgba(14,165,233,0.16); min-width: 0; }
-    .ai-input-row button, .ai-input-row a { min-width: 12rem; }
-    .ai-golden-badge { white-space: nowrap; z-index: 2; padding: .75rem 1.15rem; font-size: 0.82rem; }
+    .ai-input-row button, .ai-input-row a { min-width: 0; width: 100%; justify-self: stretch; }
+    .ai-button-row { display: grid; gap: 1rem; grid-template-columns: 1fr; align-items: stretch; }
+    .ai-button-row button, .ai-button-row a { width: 100%; min-width: 0; justify-self: stretch; }
+    .ai-section-notice { max-width: 100%; white-space: normal; }
+    .ai-score-panel { min-width: 0; }
+    @media (min-width: 640px) {
+      .ai-input-row { grid-template-columns: minmax(0, 1fr) auto; }
+      .ai-input-row button, .ai-input-row a { width: auto; justify-self: end; }
+      .ai-button-row { grid-template-columns: 10rem minmax(0, 1fr); }
+      .ai-button-row button, .ai-button-row a { width: auto; }
+      .ai-golden-badge { white-space: nowrap; }
+    }
+    @media (max-width: 1024px) {
+      .ai-golden-badge { white-space: normal; }
+    }
+    @media (max-width: 768px) {
+      .ai-button-row { grid-template-columns: 1fr !important; }
+      .ai-button-row button, .ai-button-row a { width: 100% !important; justify-self: stretch; }
+      .ai-input-row { grid-template-columns: 1fr !important; }
+      .ai-input-row button, .ai-input-row a { width: 100% !important; justify-self: stretch; }
+    }
     .ai-section-notice { width: 100%; display: flex; justify-content: center; }
     .ai-response-card { position: relative; border-radius: 1.75rem; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)); border: 1px solid rgba(56,189,248,0.18); box-shadow: 0 16px 40px rgba(56,189,248,0.08); }
     .ai-feature { display: inline-flex; align-items:center; gap:0.5rem; padding:1rem 1.15rem; border-radius:1.5rem; background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(59,130,246,0.08)); color: #065f46; font-size:0.95rem; font-weight:700; border: 1px solid rgba(59,130,246,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.48); }
@@ -151,7 +225,7 @@
     .ai-hero-pill { display:flex; flex-wrap:wrap; align-items:center; gap:.85rem; padding:1rem 1.25rem; border-radius:1.75rem; background: linear-gradient(135deg, rgba(14,165,233,0.14), rgba(16,185,129,0.12)); border: 1px solid rgba(14,165,233,0.2); color: #075985; font-weight:700; box-shadow: 0 18px 40px rgba(14,165,233,0.08); max-width: min(38rem,100%); }
     .ai-hero-pill span:first-child { width:2.25rem; height:2.25rem; display:grid; place-items:center; border-radius:9999px; background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(14,165,233,0.25)); color: #0c4a6e; font-size:1rem; }
     .ai-hero-pill span:last-child { flex: 1 1 auto; min-width: 0; display:block; }
-    .ai-golden-badge { white-space: nowrap; position: relative; overflow: hidden; display: inline-flex; align-items: center; align-self: flex-start; }
+    .ai-golden-badge { white-space: nowrap; position: relative; overflow: visible; display:inline-flex; align-items:center; justify-content:center; align-self: flex-start; padding:.85rem 1.3rem; border-radius:999px; background: linear-gradient(135deg, rgba(255,210,76,0.22), rgba(245, 158, 11, 0.18)); color: #92400e; font-size:0.84rem; font-weight:800; text-transform: uppercase; letter-spacing:0.14em; border: 1px solid rgba(245, 158, 11, 0.24); box-shadow: 0 20px 30px rgba(245,158,11,0.14), inset 0 1px 0 rgba(255,255,255,0.6); min-width: 0; max-width: fit-content; }
     .ai-score-panel { display:flex; align-items:center; gap:1.5rem; padding: 1.35rem 1.5rem; min-height: 13rem; border-radius: 1.75rem; background: rgba(255,255,255,0.98); border: 1px solid rgba(245,158,11,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 26px rgba(245,158,11,0.08); flex-wrap: wrap; }
     .ai-score-panel .ai-score-badge { width:3.75rem; height:3.75rem; display:grid; place-items:center; flex-shrink:0; border-radius:1.75rem; background: linear-gradient(135deg, #f59e0b, #d97706); color:white; font-size:1.25rem; font-weight:800; letter-spacing:0.04em; box-shadow: 0 18px 42px rgba(245, 158, 11, 0.32); transition: transform .3s ease, box-shadow .3s ease; animation: pulseGlow 4s ease-in-out infinite; }
     .ai-score-panel .ai-score-badge:hover { transform: scale(1.1); box-shadow: 0 24px 44px rgba(245, 158, 11, 0.38); }
@@ -159,7 +233,7 @@
     .ai-score-details p { margin: 0; }
     .ai-score-details p + p { margin-top: 0.75rem; }
     .ai-score-details p:first-child { letter-spacing: 0.24em; text-transform: uppercase; color: #ca8a04; font-size: 0.75rem; }
-    .ai-golden-badge { position: relative; overflow: hidden; display:inline-flex; align-items:center; justify-content:center; padding:.85rem 1.3rem; border-radius:999px; background: linear-gradient(135deg, rgba(255,210,76,0.22), rgba(245, 158, 11, 0.18)); color: #92400e; font-size:0.84rem; font-weight:800; text-transform: uppercase; letter-spacing:0.14em; border: 1px solid rgba(245, 158, 11, 0.24); box-shadow: 0 20px 30px rgba(245,158,11,0.14), inset 0 1px 0 rgba(255,255,255,0.6); }
+    .ai-golden-badge { position: relative; overflow: visible; display:inline-flex; align-items:center; justify-content:center; padding:.85rem 1.3rem; border-radius:999px; background: linear-gradient(135deg, rgba(255,210,76,0.22), rgba(245, 158, 11, 0.18)); color: #92400e; font-size:0.84rem; font-weight:800; text-transform: uppercase; letter-spacing:0.14em; border: 1px solid rgba(245, 158, 11, 0.24); box-shadow: 0 20px 30px rgba(245,158,11,0.14), inset 0 1px 0 rgba(255,255,255,0.6); min-width: 0; max-width: fit-content; }
     .ai-golden-badge::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 45%); pointer-events:none; }
     .ai-golden-badge::after { content:''; position:absolute; right:-25%; top:-25%; width:70%; height:120%; background: radial-gradient(circle, rgba(255,255,255,0.32), transparent 60%); transform: rotate(25deg); pointer-events:none; }
     .ai-badge { display:inline-flex; align-items:center; gap:0.4rem; padding:0.55rem 0.95rem; border-radius:9999px; background: linear-gradient(90deg, rgba(16,185,129,0.16), rgba(14,165,233,0.12)); color: #0f766e; font-size:0.78rem; font-weight:700; text-transform: uppercase; letter-spacing:0.12em; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
@@ -173,6 +247,18 @@
     .ai-extra { display:inline-flex; align-items:center; gap:0.5rem; padding:0.9rem 1rem; border-radius:1.5rem; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.18); color: #0f577b; font-weight:700; }
     .ai-section-notice { display: inline-flex; align-items:center; gap:0.65rem; padding: 0.85rem 1rem; border-radius: 1.75rem; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.16); color: #0c4a6e; font-weight: 700; }
     .footer-badge { display:inline-flex; align-items:center; gap:.55rem; padding:.7rem 1rem; border-radius:999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; font-size:.78rem; letter-spacing:.06em; text-transform: uppercase; }
+    @media (min-width: 1024px) {
+      .mx-auto.max-w-7xl,
+      .mx-auto.max-w-6xl,
+      .mx-auto.max-w-5xl,
+      .mx-auto.max-w-4xl {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: clamp(1rem, 2vw, 2.5rem) !important;
+        padding-right: clamp(1rem, 2vw, 2.5rem) !important;
+      }
+      .lg\:px-8 { padding-left: clamp(1rem, 2vw, 2.5rem) !important; padding-right: clamp(1rem, 2vw, 2.5rem) !important; }
+    }
     @media (max-width: 640px) {
       header .mx-auto { flex-wrap: wrap; row-gap: .75rem; }
       header .brand-link { flex: 1 1 100%; }
@@ -180,6 +266,18 @@
       .hero-buttons { width: 100%; }
       .hero-buttons > a { width: 100%; min-width: 0; justify-content: center; }
       .hero-background { padding-top: 5rem; padding-bottom: 5rem; }
+      .contact-panel .contact-gradient > .relative { padding: 1.25rem; }
+      .contact-panel .rounded-3xl { min-width: 0; }
+      .contact-panel .rounded-3xl p { word-break: break-word; overflow-wrap: anywhere; white-space: normal; }
+      .contact-panel .grid { min-width: 0; }
+      .contact-panel .flex.flex-wrap.items-center.gap-3 { display: flex; flex-wrap: wrap; gap: 1rem; }
+      .contact-panel .flex.flex-wrap.items-center.gap-3 a { min-width: 0; width: auto; }
+    }
+    @media (max-width: 768px) {
+      .contact-panel .grid.gap-3 { grid-template-columns: 1fr !important; }
+      .contact-panel .grid.gap-3 > div { width: 100%; }
+      .contact-panel .flex.flex-wrap.items-center.gap-3 { flex-direction: column; align-items: stretch; }
+      .contact-panel .flex.flex-wrap.items-center.gap-3 a { width: 100%; flex: 1 1 100%; }
       .contact-panel .contact-gradient > .relative { padding: 1.25rem; }
     }
     .footer-client-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(10rem,1fr)); gap:1rem; }
@@ -441,6 +539,7 @@
   </style>
 </head>
 <body class="bg-surface text-slate-900 antialiased" id="page-root">
+    <a href="#main" class="skip-link">Skip to content</a>
   <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6 lg:px-8">
       <a href="#home" class="brand-link flex items-center gap-3 text-slate-900">
@@ -449,7 +548,7 @@
         </div>
         <div>
           <p class="text-sm font-bold uppercase tracking-[0.28em] text-slate-700" data-key="brandName">Nahda Safety</p>
-          <p class="text-xs text-slate-500" data-key="brandSubtitle">Health & AI Consulting</p>
+          <p class="text-xs text-slate-500" data-key="brandSubtitle">Health & Safety Consulting</p>
         </div>
       </a>
       <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-700 md:flex" id="main-nav">
@@ -465,7 +564,7 @@
           <button id="lang-en" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('en')">EN</button>
           <button id="lang-ar" class="rounded-full px-3 py-2 text-xs font-semibold transition" onclick="setLanguage('ar')">ع</button>
         </div>
-        <a href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg" data-key="headerWaButton">WhatsApp</a>
+        <a id="header-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." target="_blank" class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg" data-key="headerWaButton">WhatsApp</a>
       </div>
     </div>
   </header>
@@ -539,8 +638,8 @@
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
           <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="aboutSectionTitle">About Us</p>
-          <h2 class="mt-3 text-3xl font-bold" data-key="aboutSectionHeading">Nahda Safety & Health: Local expertise with modern AI advantage</h2>
-          <p class="mx-auto mt-4 max-w-3xl text-slate-600" data-key="aboutSectionCopy">We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.</p>
+          <h2 class="mt-3 text-3xl font-bold" data-key="aboutSectionHeading">Practical QHSE consulting for Oman businesses</h2>
+          <p class="mx-auto mt-4 max-w-3xl text-slate-600 text-justify" data-key="aboutSectionCopy">Nahda QHSE Solutions journey started in 2025 under founder Mr. Ali Amur Al Balushi to elevate Oman’s safety, health, and compliance performance with practical, regulation-ready support. With over 17 years of construction safety leadership across the Middle East, he helps organizations grow sustainably through expert coaching, hands-on consultation, and strong QHSE systems.</p>
         </div>
         <div class="grid gap-6 lg:grid-cols-3">
           <div class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
@@ -555,8 +654,8 @@
           </div>
           <div class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
             <p class="text-sm uppercase tracking-[0.24em] text-violet-600" data-key="aboutCard3Label">How we help</p>
-            <h3 class="mt-4 text-xl font-semibold text-slate-900" data-key="aboutCard3Heading">Practical consulting, training, and AI insight</h3>
-            <p class="mt-3 text-slate-600" data-key="aboutCard3Copy">From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.</p>
+            <h3 class="mt-4 text-xl font-semibold text-slate-900" data-key="aboutCard3Heading">Hands-on consulting, workforce training, & data-driven insights.</h3>
+            <p class="mt-3 text-slate-600" data-key="aboutCard3Copy">From HSE audits and ISO readiness to hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.</p>
           </div>
         </div>
       </div>
@@ -565,27 +664,27 @@
     <!-- Video gallery (autoplay-friendly embed suggestions) -->
     <section id="video" class="bg-slate-50 py-16">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div class="text-center mb-8">
-          <p class="text-sm uppercase tracking-[0.28em] text-primary" data-key="videoSectionTitle">Safety Videos</p>
+        <div class="text-center mb-10">
+          <p class="mx-auto max-w-3xl text-sm uppercase tracking-[0.28em] text-primary" data-key="videoSectionTitle">Safety Videos</p>
           <h2 class="mt-3 text-3xl font-bold" data-key="videoSectionHeading">Sector safety briefings</h2>
-          <p class="mt-2 text-slate-600" data-key="videoSectionCopy">Short, focused safety videos for schools, hospitals, construction and oil & gas.</p>
+          <p class="mx-auto mt-4 max-w-3xl text-slate-600 text-justify" data-key="videoSectionCopy">Short, focused safety videos for schools, hospitals, construction and oil & gas.</p>
         </div>
         <div class="video-slider">
           <div class="slider-track" id="video-track">
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/hotel.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/hotel.png')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
               <div class="bg-white p-4">
                 <h3 class="font-semibold text-slate-900" data-key="videoCard1Heading">Hotel Safety & Legal Compliance</h3>
-                <p class="mt-2 text-sm text-slate-600" data-key="videoCard1Copy">Top hospitality safety consulting and legal documentation for hotels in Oman.</p>
+                <p class="mt-2 text-sm text-slate-600" data-key="videoCard1Copy">Hospitality safety consulting and regulatory documentation for hotels across Oman.</p>
               </div>
             </div>
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/construction.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/construction.jpg')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
@@ -594,9 +693,9 @@
                 <p class="mt-2 text-sm text-slate-600" data-key="videoCard2Copy">Expert site safety, toolbox talks, and contractor compliance programs.</p>
               </div>
             </div>
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/school.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1523580846011-d3a5bc25703b?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/school.jpg')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
@@ -605,9 +704,9 @@
                 <p class="mt-2 text-sm text-slate-600" data-key="videoCard3Copy">Child safety plans, evacuation training, and school risk audits.</p>
               </div>
             </div>
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/oilgas.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1504712598893-24159a89200e?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/oilgas.jpg')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
@@ -616,9 +715,9 @@
                 <p class="mt-2 text-sm text-slate-600" data-key="videoCard4Copy">Energy sector HSE training, permits, and regulatory support.</p>
               </div>
             </div>
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/hospital.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1580281657521-7f7db0fce801?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/hospital.jpg')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
@@ -627,9 +726,9 @@
                 <p class="mt-2 text-sm text-slate-600" data-key="videoCard5Copy">Clinical safety audits, infection control, and patient protection strategies.</p>
               </div>
             </div>
-            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+            <div class="slider-card rounded-xl overflow-hidden shadow-lg transition-shadow hover:shadow-2xl" data-full-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-video-url="https://www.youtube.com/watch?v=M7lc1UVf-VE" data-local-src="assets/videos/manufacture.mp4">
               <div class="card-media">
-                <div class="card-poster" style="background-image:url('https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&w=1200&q=80')"></div>
+                <div class="card-poster" style="background-image:url('assets/manufacturer.jpg')"></div>
                 <div class="card-iframe" aria-hidden="true"></div>
                 <div class="card-overlay"><div class="play-circle">▶</div></div>
               </div>
@@ -642,6 +741,10 @@
           <div class="slider-nav">
             <button class="slider-arrow left" data-dir="left" aria-label="Previous video">‹</button>
             <button class="slider-arrow right" data-dir="right" aria-label="Next video">›</button>
+          </div>
+          <div class="mt-6 text-center">
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">Visit our YouTube channel</a>
+            <p class="mt-2 text-xs text-slate-500">Autoplay occurs muted on hover. Click a card (or use the channel link) to open a video with sound in a new tab.</p>
           </div>
         </div>
        
@@ -656,38 +759,175 @@
           <p class="mx-auto mt-3 max-w-3xl text-slate-600" data-key="servicesSectionCopy">From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600" data-key="serviceCard1Label">Audit & Inspection</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard1Heading">Safety audit programs</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard1Copy">Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.</p>
+          <article class="service-card enhanced rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="Safety Audit & Inspection" />
+            <p class="text-sm uppercase tracking-[0.24em] text-emerald-600" data-key="serviceCard1Label" itemprop="name">Audit & Inspection</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard1Heading">Safety Audit Programs</h4>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard1SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard1CopyHtml" data-html="true" itemprop="description"></div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard1Badge1">Corrective actions</span>
+              <span class="badge" data-key="serviceCard1Badge2">Regulatory gap analysis</span>
+              <span class="badge" data-key="serviceCard1Badge3">Certified auditors</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-audit-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard1CtaWa" aria-label="Chat about audits on WhatsApp">Book an audit</a>
+              <a id="service-audit-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard1CtaEmail">Request audit proposal</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard1Toggle">Read more</button>
           </article>
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600" data-key="serviceCard2Label">Compliance Support</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard2Heading">Documentation & systems</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard2Copy">Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.</p>
+          <article class="service-card enhanced rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="Compliance Support" />
+            <p class="text-sm uppercase tracking-[0.24em] text-cyan-600" data-key="serviceCard2Label" itemprop="name">Compliance Support</p>
+            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard2Heading">Documentation & Data Management</h4>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard2SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard2CopyHtml" data-html="true" itemprop="description"></div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard2Badge1">ISO-ready</span>
+              <span class="badge" data-key="serviceCard2Badge2">Documentation</span>
+              <span class="badge" data-key="serviceCard2Badge3">Tender support</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-comp-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard2CtaWa" aria-label="Chat about compliance on WhatsApp">Get compliance support</a>
+              <a id="service-comp-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard2CtaEmail">Request documents</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard2Toggle">Read more</button>
           </article>
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-violet-600" data-key="serviceCard3Label">Training</p>
+          <article class="service-card enhanced rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="Workplace Training" />
+            <p class="text-sm uppercase tracking-[0.24em] text-violet-600" data-key="serviceCard3Label" itemprop="name">Training</p>
             <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard3Heading">Workplace training</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard3Copy">Hands-on staff training, emergency drills and awareness workshops for safer operations.</p>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard3SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard3CopyHtml" data-html="true" itemprop="description"></div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard3Badge1">Hands-on</span>
+              <span class="badge" data-key="serviceCard3Badge2">Emergency drills</span>
+              <span class="badge" data-key="serviceCard3Badge3">Certification</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-train-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard3CtaWa" aria-label="Chat about training on WhatsApp">Schedule training</a>
+              <a id="service-train-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard3CtaEmail">Request training proposal</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard3Toggle">Read more</button>
           </article>
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-slate-600" data-key="serviceCard4Label">AI Advisory</p>
+          <article class="service-card iso enhanced rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="ISO Certification Support" />
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-600" data-key="serviceCard4Label" itemprop="name">AI Advisory</p>
             <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard4Heading">AI-driven risk review</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard4Copy">Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.</p>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard4SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard4CopyHtml" data-html="true" itemprop="description"></div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard4Badge1">AI scoring</span>
+              <span class="badge" data-key="serviceCard4Badge2">WhatsApp actions</span>
+              <span class="badge" data-key="serviceCard4Badge3">Fast insights</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-ai-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard4CtaWa" aria-label="Chat about AI advisory on WhatsApp">Ask AI now</a>
+              <a id="service-ai-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard4CtaEmail">Request AI demo</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard4Toggle">Read more</button>
           </article>
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-amber-600" data-key="serviceCard5Label">Emergency Planning</p>
+          <article class="service-card enhanced rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="Emergency & Evacuation Planning" />
+            <p class="text-sm uppercase tracking-[0.24em] text-amber-600" data-key="serviceCard5Label" itemprop="name">Emergency Planning</p>
             <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard5Heading">Evacuation & crisis</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard5Copy">Emergency response plans, evacuation drills and crisis management support for fast recovery.</p>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard5SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard5CopyHtml" data-html="true" itemprop="description"></div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard5Badge1">Evacuation plans</span>
+              <span class="badge" data-key="serviceCard5Badge2">Crisis drills</span>
+              <span class="badge" data-key="serviceCard5Badge3">Rapid recovery</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-emer-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard5CtaWa" aria-label="Chat about emergency planning on WhatsApp">Plan an evacuation</a>
+              <a id="service-emer-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard5CtaEmail">Request emergency plan</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard5Toggle">Read more</button>
           </article>
-          <article class="service-card rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <p class="text-sm uppercase tracking-[0.24em] text-slate-600" data-key="serviceCard6Label">Industry Safety</p>
-            <h4 class="mt-4 text-xl font-semibold text-slate-900" data-key="serviceCard6Heading">Sector-specific programs</h4>
-            <p class="mt-3 text-slate-600" data-key="serviceCard6Copy">Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.</p>
+          <article class="service-card qhse rounded-[2rem] p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" itemscope itemtype="https://schema.org/Service">
+            <meta itemprop="serviceType" content="QHSE Consultation" />
+            <p class="text-sm uppercase tracking-[0.24em] text-primary" data-key="serviceCard6Label" itemprop="name">QHSE Consultation</p>
+            <h4 class="mt-4 text-xl font-semibold" data-key="serviceCard6Heading">Quality, Health, Safety & Environment</h4>
+            <div class="mt-3 text-slate-700 service-seo-intro" data-key="serviceCard6SeoIntro" data-html="true"></div>
+            <div class="mt-3 service-copy text-slate-600 expandable" data-key="serviceCard6CopyHtml" data-html="true" itemprop="description">
+              <!-- localized HTML content will be inserted here -->
+            </div>
+            <div class="mt-4 flex flex-wrap items-center gap-3 service-badges">
+              <span class="badge" data-key="serviceCard6Badge1">ISO-ready</span>
+              <span class="badge" data-key="serviceCard6Badge2">On-site audits</span>
+              <span class="badge" data-key="serviceCard6Badge3">Tailored HSE plans</span>
+            </div>
+            <div class="mt-4 flex gap-3 service-cta">
+              <a id="service-qhse-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex items-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md" target="_blank" rel="noopener noreferrer" data-key="serviceCard6CtaWa" aria-label="Chat about QHSE on WhatsApp">Chat on WhatsApp</a>
+              <a id="service-qhse-email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting" class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white" data-key="serviceCard6CtaEmail">Request a proposal</a>
+            </div>
+            <button class="mt-4 px-4 py-2 text-sm font-semibold rounded-full btn-gradient expand-toggle" aria-expanded="false" data-key="serviceCard6Toggle">Read more</button>
           </article>
         </div>
       </div>
+
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "QHSE Consultation",
+          "description": "Comprehensive QHSE consultation in Oman: audits, ISO-ready documentation, HIRA, project HSE plans, and on-site training to improve compliance and reduce incidents.",
+          "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+          "areaServed": "OM",
+          "serviceType": ["QHSE Consultation","HSE Audits","HSE Documentation"]
+        }
+      </script>
+
+          <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Service",
+                "name": "Safety Audit & Inspection",
+                "description": "Regulator-ready safety audits, corrective action plans and certified auditor support across hospitals, schools, construction and oil & gas in Oman.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              },
+              {
+                "@type": "Service",
+                "name": "Compliance Support (Documentation & Data Management)",
+                "description": "ISO-ready HSE documentation, legal registers, permit systems and tender support to ensure consistent compliance in Oman.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              },
+              {
+                "@type": "Service",
+                "name": "Workplace Training Programs",
+                "description": "Hands-on safety training, emergency drills and awareness workshops to build workforce competency and reduce incidents.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              },
+              {
+                "@type": "Service",
+                "name": "ISO Certification Support",
+                "description": "End-to-end support for ISO 9001, ISO 14001 and ISO 45001 including gap analysis, system build and certification preparation.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              },
+              {
+                "@type": "Service",
+                "name": "Skilled Professional Manpower Supply",
+                "description": "Provision of qualified HSE professionals, emergency response teams and on-site supervisors for project delivery.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              },
+              {
+                "@type": "Service",
+                "name": "QHSE Consultation",
+                "description": "Comprehensive QHSE consultation: audits, ISO-ready documentation, HIRA, project HSE plans and on-site training to improve compliance and reduce incidents.",
+                "provider": { "@type": "Organization", "name": "Nahda Safety & Health", "url": "https://www.nahdasafety.com" },
+                "areaServed": "OM"
+              }
+            ]
+          }
+          </script>
+
     </section>
 
     <!-- Projects carousel -->
@@ -953,13 +1193,13 @@
               </div>
               <div class="ai-section-notice" data-key="aiSectionNotice">Instant risk score, local HSE guidance, and WhatsApp-ready action steps in one answer.</div>
               <div class="grid gap-5 mt-6">
-              <div class="ai-input-row grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] items-center">
+              <div class="ai-input-row grid gap-3 items-center">
                 <input id="ai-query" data-key="aiQueryPlaceholder" placeholder="e.g. fire drill frequency, PPE audit, hospital safety" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" />
                 <button id="ai-ask" class="justify-self-end inline-flex h-14 min-w-[10rem] items-center justify-center rounded-3xl bg-gradient-to-r from-emerald-600 to-cyan-500 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-cyan-600" data-key="aiAskButton">Ask now</button>
               </div>
-              <div class="grid gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] items-center">
+              <div class="ai-button-row grid gap-3 items-center">
                 <button type="button" id="ai-reset" class="inline-flex h-14 items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" data-key="aiResetButton">Reset</button>
-                <a id="ai-wa" href="https://wa.me/96892500747?text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex h-14 items-center justify-center rounded-3xl bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-700" target="_blank" rel="noopener noreferrer" data-key="aiWaButton">Discuss on WhatsApp</a>
+                <a id="ai-wa" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello%2C%20I%20need%20information%20about%20your%20safety%20services." class="inline-flex h-14 items-center justify-center rounded-3xl bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-700" target="_blank" rel="noopener noreferrer" data-key="aiWaButton">Discuss on WhatsApp</a>
               </div>
               <div id="ai-response" class="ai-response-card hidden p-5">
                 <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
@@ -1002,7 +1242,7 @@
                     </div>
                   </div>
                   <div class="flex flex-wrap items-center gap-3">
-                    <a id="contact-wa" href="https://wa.me/96892500747" target="_blank" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/10 transition hover:bg-slate-100" data-key="contactWaButton">Chat on WhatsApp</a>
+                    <a id="contact-wa" href="https://web.whatsapp.com/send?phone=96892500747" target="_blank" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/10 transition hover:bg-slate-100" data-key="contactWaButton">Chat on WhatsApp</a>
                     <a id="contact-email" href="mailto:contact@nahdasafety.com" class="inline-flex items-center justify-center rounded-full bg-white/20 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 transition hover:bg-white/30" data-key="contactEmailButton">Email us</a>
                   </div>
                   <div class="grid gap-3 sm:grid-cols-3">
@@ -1108,7 +1348,7 @@
           <a href="#services" class="footer-quick-link" data-key="footerQuickServices">Services</a>
           <a href="#projects" class="footer-quick-link" data-key="footerQuickProjects">Projects</a>
           <a href="#contact" class="footer-quick-link" data-key="footerQuickContact">Contact</a>
-          <a href="assets/Nahda_Catalogue.pdf" target="_blank" rel="noopener noreferrer" class="footer-quick-link" data-key="footerBrochure">Brochure</a>
+          <a href="brochure.html" target="_blank" rel="noopener noreferrer" class="footer-quick-link" data-key="footerBrochure">Brochure</a>
         </div>
       </div>
     </div>
@@ -1136,25 +1376,70 @@
       en: {
         navHome: 'Home', navAbout: 'About Us', navServices: 'Services', navProjects: 'Projects', navAI: 'AI Consultant', navContact: 'Contact',
         heroBadge: 'Trusted Oman Safety Partner', heroHeading: 'Premium safety and health consultancy for Oman businesses.', heroCopy: 'Nahda Safety & Health combines AI-driven insights with expert compliance support for schools, hospitals, construction, oil & gas and hospitality companies.', heroPrimaryButton: 'Get a Free Consultation', heroSecondaryButton: 'Watch Safety Video', heroPanelTitle: 'Built for modern teams', heroPanelCopy: 'High-impact safety plans, regulatory documents, and AI-assisted hazard reviews tailored to Oman markets.', heroBenefit1: 'On-site safety inspections', heroBenefit2: 'Compliance and training support',
-        brandName: 'Nahda Safety', brandSubtitle: 'Health & AI Consulting', headerWaButton: 'WhatsApp',
+        brandName: 'Nahda Safety', brandSubtitle: 'Health & Safety Consulting', headerWaButton: 'WhatsApp',
         heroQuoteTitle: 'CEO Talks', heroQuoteText: 'At Nahda Safety, we believe every inspection, every training session, and every dialogue should make Oman safer today — not just on paper. We deliver practical, local safety solutions that work in real workplaces.', heroQuoteAuthor: '— CEO - Ali Al Balushi',
         statTitle1: 'Active Projects', statValue1: '42+', statCopy1: 'Local safety programs in schools, hospitals, and construction sites.', statTitle2: 'Happy Clients', statValue2: '120+', statCopy2: 'Trusted by quality teams across Oman for reliable HSE services.', statTitle3: 'Fast Response', statValue3: '24h', statCopy3: 'Rapid safety advice and estimates when you need immediate support.', statTitle4: 'Expert Hours', statValue4: '2500+', statCopy4: 'Combined safety experience from certified Oman-based professionals.',
 
         /* About / Services / Projects */
-        aboutSectionTitle: 'About Us', aboutSectionHeading: 'Nahda Safety & Health: Local expertise with modern AI advantage', aboutSectionCopy: 'We deliver safety and health consulting for Oman companies through grounded, practical HSE programs, fast regulatory readiness, and AI-enhanced risk review — all designed to protect teams, improve compliance, and cut costly workplace incidents.',
+        aboutSectionTitle: 'About Us', aboutSectionHeading: 'Practical QHSE consulting for Oman businesses', aboutSectionCopy: 'Nahda QHSE Solutions journey started in 2025 under founder Mr. Ali Amur Al Balushi to elevate Oman’s safety, health, and compliance performance with practical, regulation-ready support. With over 17 years of construction safety leadership across the Middle East, he helps organizations grow sustainably through expert coaching, hands-on consultation, and strong QHSE systems.',
         servicesSectionTitle: 'Our Services', servicesSectionHeading: 'Health, safety and compliance services for every sector.', servicesSectionCopy: 'From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.',
         projectsSectionTitle: 'Projects', projectsSectionHeading: 'Major safety consultancy sectors delivered', projectsSectionCopy: 'Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by static HD visuals for stronger SEO and visitor trust.',
         statsSectionTitle: 'Trusted by Oman teams', statsSectionHeading: 'Safety metrics that build trust and keep teams moving.', statsSectionCopy: 'From compliance audits to employee training, these results show how Nahda turns safety promises into practical outcomes for local businesses.',
         aboutCard1Label: 'Our mission', aboutCard1Heading: 'Make Oman workplaces safer now', aboutCard1Copy: 'We combine on-the-ground safety expertise with easy-to-use systems and clear guidance so every client can improve performance, reduce risk, and stay compliant without extra complexity.',
-        aboutCard2Label: 'Why choose us', aboutCard2Heading: 'Trusted, responsive, Oman-based', aboutCard2Copy: 'Our local team understands Omani regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.',
-        aboutCard3Label: 'How we help', aboutCard3Heading: 'Practical consulting, training, and AI insight', aboutCard3Copy: 'From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.',
+        aboutCard2Label: 'Why choose us', aboutCard2Heading: 'Trusted, responsive, Oman-based', aboutCard2Copy: 'Our local team understands Omani regulations & International regulations, cultural norms, and sector-specific hazards so we can deliver faster, more practical safety solutions than distant consultants.',
+        aboutCard3Label: 'How we help', aboutCard3Heading: 'Hands-on consulting, workforce training, & data-driven insights.', aboutCard3Copy: 'From HSE audits and ISO readiness to AI-powered hazard scoring and ongoing training, we help teams act confidently on safety priorities every day.',
         videoSectionTitle: 'Safety Videos', videoSectionHeading: 'Sector safety briefings', videoSectionCopy: 'Short, focused safety videos for schools, hospitals, construction and oil & gas.',
-        serviceCard1Label: 'Audit & Inspection', serviceCard1Heading: 'Safety audit programs', serviceCard1Copy: 'Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.',
-        serviceCard2Label: 'Compliance Support', serviceCard2Heading: 'Documentation & systems', serviceCard2Copy: 'Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.',
-        serviceCard3Label: 'Training', serviceCard3Heading: 'Workplace training', serviceCard3Copy: 'Hands-on staff training, emergency drills and awareness workshops for safer operations.',
-        serviceCard4Label: 'AI Advisory', serviceCard4Heading: 'AI-driven risk review', serviceCard4Copy: 'Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.',
-        serviceCard5Label: 'Emergency Planning', serviceCard5Heading: 'Evacuation & crisis', serviceCard5Copy: 'Emergency response plans, evacuation drills and crisis management support for fast recovery.',
-        serviceCard6Label: 'Industry Safety', serviceCard6Heading: 'Sector-specific programs', serviceCard6Copy: 'Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.',
+        serviceCard1Label: 'Audit & Inspection', serviceCard1Heading: 'Safety Audit Programs', serviceCard1SeoIntro: `<strong>Safety audits in Oman</strong> — regulator-ready site inspections, ISO-readiness checks and prioritized corrective action plans for hospitals, schools, construction and oil & gas.`,  serviceCard1CopyHtml: `<p>Our safety audit programs provide detailed, actionable reports and corrective action plans that help organisations meet Omani and international HSE standards.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Audit scheduling & scoping</strong> — tailored site audit plans to cover critical operations and regulatory checkpoints.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Internal & external audits</strong> — independent assessments and client-side compliance checks with clear findings.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Audit reporting & close-out</strong> — prioritised corrective actions, timelines and verification for regulatory readiness.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>Auditor training & third-party support</strong> — upskilling client auditors and representing you during external inspections.</span></li>
+          </ul>`, serviceCard1Badge1: 'Corrective actions', serviceCard1Badge2: 'Gap analysis', serviceCard1Badge3: 'Certified auditors', serviceCard1CtaWa: 'Book an audit', serviceCard1CtaEmail: 'Request audit proposal', serviceCard1Toggle: 'Read more',
+
+        serviceCard2Label: 'Compliance Support', serviceCard2Heading: 'Documentation & Data Management', serviceCard2SeoIntro: 'ISO-ready HSE documentation and data systems for consistent compliance and easier audits in Oman.', serviceCard2CopyHtml: `<p>From bespoke HSE manuals to permit systems and legal registers, we produce documentation designed to pass regulator review and support safe operations.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Gap analysis & site visit</strong> — identify documentation shortfalls and critical controls to prioritize updates.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>ISO-ready manuals & policies</strong> — clear procedures, permit systems and work instructions mapped to ISO clauses.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Project HSE & EMP plans</strong> — integrated safety and environmental planning for bids and delivery phases.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>Tender & legal support</strong> — pre/post bid documentation and compliance mapping for stronger proposals.</span></li>
+          </ul>`, serviceCard2Badge1: 'ISO-ready', serviceCard2Badge2: 'Documentation', serviceCard2Badge3: 'Tender support', serviceCard2CtaWa: 'Get compliance support', serviceCard2CtaEmail: 'Request documents', serviceCard2Toggle: 'Read more',
+
+        serviceCard3Label: 'Training', serviceCard3Heading: 'Workplace Training Programs', serviceCard3SeoIntro: 'Hands-on safety training in Oman: competency-focused courses, emergency drills and awareness programs to reduce incidents.', serviceCard3CopyHtml: `<p>Practical, locally-relevant training for frontline staff and supervisors — designed to change behaviour and improve day-to-day safety performance.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Hands-on staff training</strong> — practical workshops and toolbox talks tailored to your site.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Emergency drills & evacuation</strong> — scenario-based exercises and learnings for faster recovery.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Competency assessments</strong> — measurable outcomes and certification-ready attendance records.</span></li>
+          </ul>`, serviceCard3Badge1: 'Hands-on', serviceCard3Badge2: 'Emergency drills', serviceCard3Badge3: 'Certification', serviceCard3CtaWa: 'Schedule training', serviceCard3CtaEmail: 'Request training proposal', serviceCard3Toggle: 'Read more',
+
+        serviceCard4Label: 'ISO Certification Support', serviceCard4Heading: 'ISO-9001: ISO-45001: ISO-14001:', serviceCard4SeoIntro: 'End-to-end ISO support in Oman: gap analysis, documentation, implementation and certification assistance for QMS, EMS and OHSMS.', serviceCard4CopyHtml: `<p>Support through the full ISO lifecycle — from gap analysis and system design to internal audits and certification support.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>ISO gap analysis</strong> — map current systems to ISO clauses and prioritise changes.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Implementation & training</strong> — system build, process mapping and staff readiness for audit.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Internal audits & certification prep</strong> — practice audits and corrective action tracking.</span></li>
+          </ul>`, serviceCard4Badge1: 'ISO guidance', serviceCard4Badge2: 'System implementation', serviceCard4Badge3: 'Certification prep', serviceCard4CtaWa: 'Request ISO support', serviceCard4CtaEmail: 'Request ISO proposal', serviceCard4Toggle: 'Read more',
+
+        serviceCard5Label: 'Skilled Professional Manpower supply', serviceCard5Heading: 'Hiring/ Supply of Manpower', serviceCard5SeoIntro: 'Supply of trained HSE professionals and emergency response teams for projects across Oman.', serviceCard5CopyHtml: `<p>Provision of experienced safety professionals, emergency responders and supervisors to support project delivery and rapid incident response.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Qualified HSE staff supply</strong> — safety officers, supervisors and trainers available for contracts.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Emergency response teams</strong> — trained responders and evacuation leaders for immediate deployment.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Project supervisors</strong> — on-site HSE supervision and permit-to-work oversight.</span></li>
+          </ul>`, serviceCard5Badge1: 'Evacuation plans', serviceCard5Badge2: 'Crisis drills', serviceCard5Badge3: 'Rapid recovery', serviceCard5CtaWa: 'Plan an evacuation', serviceCard5CtaEmail: 'Request emergency plan', serviceCard5Toggle: 'Read more',
+        serviceCard6Label: 'QHSE Consultation',
+        serviceCard6Heading: 'Quality, Health, Safety & Environment',
+        serviceCard6Copy: 'Protecting your workforce and ensuring environmental compliance is the foundation of a sustainable operation.',
+        serviceCard6CopyHtml: `<p>Protecting your workforce and ensuring environmental compliance is the foundation of a sustainable operation. Nahda's QHSE consultation helps Oman businesses reduce incidents, meet regulator expectations, and prepare for ISO audits.</p>
+        <ul class="mt-3 list-none space-y-3 text-slate-600">
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Team building & discussion</strong> — collaborative safety workshops and leadership alignment to embed safer behaviours.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10l5 5L22 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Gap analysis & site visits</strong> — practical, site-specific audits and clear corrective action plans.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>QHSE documentation</strong> — ISO-ready manuals, permit systems and control procedures that stand up to regulator inspection.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>Project HSE & EMP plans</strong> — integrated safety and environmental management for construction and operations.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3 8 4-14 3 6h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>HIRA / EAISR & Risk Register</strong> — structured hazard identification, scoring and prioritisation.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l4 7H8l4-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Legal & tender support</strong> — compliance mapping, tender review and pre/post bid documentation to win contracts confidently.</span></li>
+        </ul>`,
+        serviceCard6SeoIntro: 'QHSE consultation in Oman: expert audits, ISO-ready documentation, and practical HSE plans tailored for hospitals, schools, construction and hospitality.',
+        serviceCard6Badge1: 'ISO-ready', serviceCard6Badge2: 'On-site audits', serviceCard6Badge3: 'Tailored HSE plans', serviceCard6CtaWa: 'Chat on WhatsApp', serviceCard6CtaEmail: 'Request a proposal', serviceCard6Toggle: 'Read more',
+
         projectsSectionFooter: 'Slide pause on hover. Discover the full range of HSE sector services with visual project highlights.',
         faqSectionTitle: 'FAQ', faqSectionHeading: 'Common questions about our HSE services',
         faqQuestion1: 'What services does Nahda Safety offer?', faqAnswer1: 'We offer audits, compliance documentation, training, emergency planning, and AI-enabled risk advisory tailored for schools, hospitals, construction and oil & gas sites.',
@@ -1268,12 +1553,57 @@
         aboutCard2Label: 'لماذا تختارنا', aboutCard2Heading: 'موثوقون وسريعون ومقرّون في عمان', aboutCard2Copy: 'يفهم فريقنا المحلي اللوائح العمانية والعادات الثقافية والمخاطر الخاصة بالقطاع، لذلك نتمكن من تقديم حلول سلامة أكثر عملية وفعالية من المستشارين البعيدين.',
         aboutCard3Label: 'كيف نساعد', aboutCard3Heading: 'استشارات عملية وتدريب ورؤى ذكاء', aboutCard3Copy: 'من تدقيقات HSE والاستعداد إلى ISO إلى تقييم المخاطر المدعوم بالذكاء والتدريب المستمر، نساعد الفرق على العمل بثقة على أولويات السلامة يوميًا.',
         videoSectionTitle: 'فيديوهات السلامة', videoSectionHeading: 'ملخصات سلامة حسب القطاع', videoSectionCopy: 'فيديوهات سلامة قصيرة ومركزة للمدارس والمستشفيات والبناء والنفط والغاز.',
-        serviceCard1Label: 'التدقيق والفحص', serviceCard1Heading: 'برامج تدقيق السلامة', serviceCard1Copy: 'تدقيقات سلامة مفصلة، وخطط للإجراءات التصحيحية، وتحليل الفجوات التنظيمية للمواقع والمنشآت.',
-        serviceCard2Label: 'دعم الامتثال', serviceCard2Heading: 'الوثائق والأنظمة', serviceCard2Copy: 'أدلة HSE مخصصة وسياسات وأنظمة تصاريح ووثائق جاهزة لـ ISO لتلبية اللوائح العمانية.',
-        serviceCard3Label: 'التدريب', serviceCard3Heading: 'تدريب مكان العمل', serviceCard3Copy: 'تدريب عملي للموظفين، وتمارين طوارئ، وورش توعية لعمليات أكثر أمانًا.',
-        serviceCard4Label: 'استشارات الذكاء', serviceCard4Heading: 'مراجعة المخاطر بالذكاء', serviceCard4Copy: 'رؤى سلامة سريعة، وتقييم المخاطر، وتوصيات عملية لقرارات أكثر ذكاءً.',
-        serviceCard5Label: 'تخطيط الطوارئ', serviceCard5Heading: 'الإخلاء والأزمات', serviceCard5Copy: 'خطط الاستجابة للطوارئ، وتمارين الإخلاء، ودعم إدارة الأزمات للاسترداد السريع.',
-        serviceCard6Label: 'سلامة القطاع', serviceCard6Heading: 'برامج حسب القطاع', serviceCard6Copy: 'برامج متخصصة للمدارس والمستشفيات والبناء والنفط والغاز والضيافة واللوجستيات.',
+        serviceCard1Label: 'التدقيق والفحص', serviceCard1Heading: 'برامج تدقيق السلامة', serviceCard1SeoIntro: `<strong>تدقيقات السلامة في عمان</strong> — تفتيشات ميدانية جاهزة للجهات الرقابية، فحوصات استعداد الـ ISO وخطط إجراءات تصحيحية ذات أولوية للمستشفيات والمدارس ومواقع البناء وقطاع النفط والغاز.`,  serviceCard1CopyHtml: `<p>نقدّم برامج تدقيق عملية توفر تقارير قابلة للتنفيذ وخطط إجراءات تصحيحية تساعد مؤسستك على الامتثال للمتطلبات المحلية والدولية.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>جدولة وتحديد نطاق التدقيق</strong> — خطط تدقيق مخصصة تغطي العمليات الحرجة ونقاط الامتثال.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تدقيقات داخلية وخارجية</strong> — تقييم مستقل مع نتائج واضحة وقابلة للقياس.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>تقرير الإغلاق والمتابعة</strong> — أولويات الإجراءات وجداول زمنية للتحقق من التنفيذ.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>تدريب المدققين ودعم الأطراف الثالثة</strong> — رفع كفاءة فرقك وتمثيلك خلال الفحوصات الخارجية.</span></li>
+          </ul>`, serviceCard1Badge1: 'إجراءات تصحيحية', serviceCard1Badge2: 'تحليل الفجوات', serviceCard1Badge3: 'مدققون معتمدون', serviceCard1CtaWa: 'حجز تدقيق', serviceCard1CtaEmail: 'اطلب عرضًا', serviceCard1Toggle: 'عرض المزيد',
+
+        serviceCard2Label: 'دعم الامتثال', serviceCard2Heading: 'الوثائق والأنظمة', serviceCard2SeoIntro: 'توثيق جاهز للـ ISO وأنظمة بيانات لضمان امتثال منظّم وأسهل أثناء المراجعات الرقابية.', serviceCard2CopyHtml: `<p>نعد أدلة HSE مخصصة وأنظمة تصاريح ووثائق مشاريع مصممة لتجاوز ملاحظات الجهات الرقابية ودعم عمليات آمنة.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تحليل الفجوات وزيارات الموقع</strong> — تحديد نقاط النقص وتوصية بالتحسينات.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>أدلة وإجراءات جاهزة للـ ISO</strong> — سياسات وإجراءات ومصفوفات مسؤوليات قابلة للتطبيق مباشرة.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>خطط HSE وEMP للمشروعات</strong> — تخطيط متكامل للسلامة والبيئة للمناقصات والتنفيذ.</span></li>
+          </ul>`, serviceCard2Badge1: 'جاهز للـ ISO', serviceCard2Badge2: 'توثيق', serviceCard2Badge3: 'دعم المناقصات', serviceCard2CtaWa: 'دعم الامتثال', serviceCard2CtaEmail: 'اطلب الوثائق', serviceCard2Toggle: 'عرض المزيد',
+
+        serviceCard3Label: 'التدريب', serviceCard3Heading: 'تدريب مكان العمل', serviceCard3SeoIntro: 'برامج تدريب عملي في عمان: دورات مركزة على الكفاءة، وتمارين الطوارئ، وورش توعية لتحسين الأداء والسلامة.', serviceCard3CopyHtml: `<p>تدريب عملي ومحدد محليًا للموظفين والمشرفين، يهدف لتغيير السلوك وتحسين الامتثال اليومي للسلامة.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تدريب عملي للموظفين</strong> — ورش وتمارين ملائمة لمخاطر موقعك.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تمارين الطوارئ والإخلاء</strong> — سيناريوهات قابلة للتطبيق لتعزيز الاستجابة.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>تقييم الكفاءات والشهادات</strong> — نتائج قابلة للقياس وسجلات حضور جاهزة للاعتماد.</span></li>
+          </ul>`, serviceCard3Badge1: 'عملي', serviceCard3Badge2: 'تمارين الطوارئ', serviceCard3Badge3: 'شهادات', serviceCard3CtaWa: 'حجز تدريب', serviceCard3CtaEmail: 'اطلب عرضًا', serviceCard3Toggle: 'عرض المزيد',
+
+        serviceCard4Label: 'استشارات الذكاء', serviceCard4Heading: 'مراجعة المخاطر بالذكاء', serviceCard4SeoIntro: 'دعم شامل لشهادات ISO في عمان: تحليل الفجوات، وتوثيق النظام، والتدريب، والاستعداد للمراجعة.', serviceCard4CopyHtml: `<p>نقدم دعماً كاملاً لمسيرة الامتثال ISO من التحليل وحتى التدقيق الداخلي والاستعداد للمراجعة الخارجية.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تحليل فجوات ISO</strong> — تحديد الفروق وخطة التنفيذ.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تنفيذ وتدريب النظام</strong> — تصميم العمليات وتدريب الموظفين استعدادًا للتدقيق.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>تدقيقات داخلية وتحضير للشهادة</strong> — محاكاة فحوصات وتصحيح ملاحظات قبل المراجعة الخارجية.</span></li>
+          </ul>`, serviceCard4Badge1: 'توجيه ISO', serviceCard4Badge2: 'تنفيذ النظام', serviceCard4Badge3: 'تحضير الشهادة', serviceCard4CtaWa: 'طلب دعم ISO', serviceCard4CtaEmail: 'اطلب عرضًا', serviceCard4Toggle: 'عرض المزيد',
+
+        serviceCard5Label: 'تخطيط الطوارئ', serviceCard5Heading: 'الإخلاء والأزمات', serviceCard5SeoIntro: 'خدمات فرق طوارئ ومدربين متخصصين لإعداد خطط إخلاء واستجابة للأزمات عبر عمان.', serviceCard5CopyHtml: `<p>نطوّر خطط استجابة وفرق تنفيذية مدربة لتقليل تأثير الحوادث وتسريع التعافي.</p>
+          <ul class="mt-3 list-none space-y-3 text-slate-600">
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>خطط إخلاء مفصلة</strong> — مسارات هروب واضحة ومهاوي المسؤوليات للفرق.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تمارين واستجابة للأزمات</strong> — تدريبات عملية لتحسين التنسيق وتقليل الأخطاء.</span></li>
+            <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>دعم استعادة سير العمل</strong> — خطوات واستراتيجيات لاستئناف العمل بسرعة بعد الحوادث.</span></li>
+          </ul>`, serviceCard5Badge1: 'خطط الإخلاء', serviceCard5Badge2: 'تدريبات الأزمات', serviceCard5Badge3: 'استرداد سريع', serviceCard5CtaWa: 'خطة إخلاء', serviceCard5CtaEmail: 'اطلب الخطة', serviceCard5Toggle: 'عرض المزيد',
+        serviceCard6Label: 'استشارات الجودة والسلامة والبيئة',
+        serviceCard6Heading: 'الجودة والصحة والسلامة والبيئة',
+        serviceCard6Copy: 'حماية القوى العاملة والامتثال البيئي هي أساس أي عملية مستدامة.',
+        serviceCard6CopyHtml: `<p>حماية القوى العاملة والامتثال البيئي هي أساس أي عملية مستدامة. تقدّم نهضة استشارات QHSE في عمان تدقيقات عملية، وثائق جاهزة للـ ISO، وخطط HSE قابلة للتنفيذ للقطاع الصحي والتعليمي والبنّي والضيافة.</p>
+        <ul class="mt-3 list-none space-y-3 text-slate-600">
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>ورش وبناء فرق</strong> — جلسات عمل تعاونية لتبني سلوكيات أمان فعالة.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10l5 5L22 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>تحليل الفجوات وزيارات الموقع</strong> — تدقيقات ميدانية مع خطط تصحيح واضحة.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>توثيق QHSE</strong> — أدلة وإجراءات جاهزة للاختبار والامتثال.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>خطط HSE وEMP للمشروعات</strong> — إدارة متكاملة للسلامة والبيئة للمشروعات والعمليات.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3 8 4-14 3 6h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>HIRA/EAISR وسجل المخاطر</strong> — تحديد وتصنيف المخاطر وتوصيف الضوابط.</span></li>
+          <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l4 7H8l4-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>دعم قانوني والمناقصات</strong> — مراجعة الامتثال والمناقصات لتقديم عروض قوية.</span></li>
+        </ul>`,
+        serviceCard6SeoIntro: 'استشارات QHSE في عمان: تدقيقات معتمدة، توثيق جاهز للـ ISO، وخطط HSE قابلة للتنفيذ للمستشفيات والمدارس ومواقع البناء والضيافة.',
+        serviceCard6Badge1: 'جاهز للـ ISO', serviceCard6Badge2: 'زيارات ميدانية', serviceCard6Badge3: 'خطط مخصصة', serviceCard6CtaWa: 'دردشة عبر واتساب', serviceCard6CtaEmail: 'اطلب عرضًا', serviceCard6Toggle: 'عرض المزيد',
+
+
         projectsSectionFooter: 'توقف التمرير عند الت hovering. اكتشف النطاق الكامل لخدمات قطاع HSE مع أبرز المشاريع بصريًا.',
         faqSectionTitle: 'الأسئلة الشائعة', faqSectionHeading: 'الأسئلة الشائعة حول خدمات HSE لدينا',
         faqQuestion1: 'ما هي خدمات نهضة للسلامة؟', faqAnswer1: 'نقدّم تدقيقات ووثائق امتثال وتدريبًا وتخطيطًا للطوارئ واستشارات مخاطر مدعومة بالذكاء المخصص للمدارس والمستشفيات ومواقع البناء والنفط والغاز.',
@@ -1373,35 +1703,104 @@
       }
     };
 
+    // Override / enhance specific translations (improved SEO and customer-focused QHSE copy)
+    // These runtime assignments ensure the enhanced HTML is applied without editing the large literal block above.
+    translations.en = translations.en || {};
+    translations.ar = translations.ar || {};
+    translations.en.serviceCard6SeoIntro = `<strong>QHSE consultation in Oman</strong> — practical, audit-ready QHSE solutions: site inspections, ISO-ready documentation and measurable corrective action plans.`;
+    translations.en.serviceCard6CopyHtml = `<p>Protecting your workforce and maintaining environmental compliance is the foundation of a resilient organisation. Nahda's QHSE consultation in Oman combines field-proven inspections, ISO-aligned documentation and focused training to reduce incidents, demonstrate regulator readiness and strengthen operational performance.</p>
+      <ul class="mt-3 list-none space-y-3 text-slate-600">
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Documentation & data management</strong> — company policies, SOPs, HSE manuals, KPI dashboards, permit systems, and tender-ready legal documentation.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Auditing</strong> — internal and external audits (onsite or remote) with clear findings, prioritised corrective actions and formal close‑out support.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>Training & competency</strong> — hands‑on workshops, emergency drills and competency checks to embed safer behaviours.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>ISO certification support</strong> — gap analysis, system design, internal audits and certification readiness for ISO 9001, ISO 45001 and ISO 14001.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3 8 4-14 3 6h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Inspections & HIRA</strong> — scheduled facility inspections, HIRA/EAISR, environmental aspect & impact studies and structured risk registers.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l4 7H8l4-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Skilled manpower supply</strong> — vetted HSE officers, supervisors and emergency responders for project support and rapid deployment.</span></li>
+      </ul>
+      <p class="mt-3 text-slate-700"><strong>Outcome-focused:</strong> We deliver clear action trackers, KPI targets and measurable results so your organisation achieves faster regulator readiness, fewer incidents and improved operational resilience.</p>`;
+
+    translations.ar.serviceCard6SeoIntro = `<strong>استشارات QHSE في عمان</strong> — حلول عملية جاهزة للتدقيق: تفتيشات ميدانية، توثيق مطابق للـ ISO، وخطط إجراء تصحيحية قابلة للقياس.`;
+    translations.ar.serviceCard6CopyHtml = `<p>حماية القوى العاملة والالتزام البيئي أساس التشغيل المستدام. تقدّم نهضة لحلول QHSE في عمان تفتيشات ميدانية عملية، توثيق مطابق للمعايير، وتدريبًا مخصّصًا لتقليل الحوادث وتحسين جاهزية الفحوصات الرقابية.</p>
+      <ul class="mt-3 list-none space-y-3 text-slate-600">
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>التوثيق وإدارة البيانات</strong> — سياسات الشركة، إجراءات التشغيل القياسية، أدلة HSE، مؤشرات الأداء وأنظمة التصاريح والمناقصات.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>التدقيق</strong> — تدقيقات داخلية وخارجية (موقعية أو عن بُعد) مع نتائج واضحة وخطط تصحيحية ذات أولوية ودعم للإغلاق.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/></svg><span><strong>التدريب والكفاءة</strong> — ورش عملية، تمارين طوارئ وقياس كفاءات لتعزيز السلوك الآمن في الموقع.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><strong>دعم شهادات ISO</strong> — تحليل الفجوات، تصميم النظام، تدقيقات داخلية وتحضير للمراجعات الخارجية (ISO 9001, ISO 45001, ISO 14001).</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3 8 4-14 3 6h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>التفتيشات وتقييم المخاطر</strong> — زيارات مجدولة، HIRA/EAISR، ودراسات الأثر البيئي وسجلات مخاطر منظمة.</span></li>
+        <li class="flex items-start gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l4 7H8l4-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>توريد كوادر مهنية</strong> — مهندسو HSE، مشرفون ومستجيبون للطوارئ جاهزون للدعم والتوظيف الفوري.</span></li>
+      </ul>
+      <p class="mt-3 text-slate-700"><strong>نتائج مرتكزة على العميل:</strong> خرائط إجراءات قابلة للتنفيذ، مؤشرات أداء قابلة للقياس وتتبع يضمن جاهزية أسرع أمام الجهات الرقابية، حوادث أقل ومرونة تشغيلية أكبر.</p>`;
+
+    (function ensureArKeys(){
+      try {
+       if (typeof translations !== 'undefined' && translations.en && translations.ar) {
+         Object.keys(translations.en).forEach(k => {
+           if (!(k in translations.ar)) {
+             translations.ar[k] = translations.en[k];
+           }
+         });
+       }
+      } catch (e) {
+       console.warn('translation normalization failed', e);
+      }
+    })();
+
     function setLanguage(lang='en'){
       const root = document.documentElement;
       const body = document.body;
       const locale = translations[lang] ? lang : 'en';
       const dict = translations[locale];
       root.lang = locale; body.classList.toggle('rtl', locale === 'ar'); root.dir = locale === 'ar' ? 'rtl' : 'ltr';
-      document.querySelectorAll('[data-key]').forEach(el=>{ const k = el.getAttribute('data-key'); const localeValue = dict[k]; const fallbackValue = translations.en[k]; if(typeof localeValue === 'string' && localeValue.trim()) {
+      document.querySelectorAll('[data-key]').forEach(el=>{
+        const k = el.getAttribute('data-key');
+        const localeValue = dict[k];
+        const fallbackValue = translations.en[k];
+        const useHtml = el.getAttribute('data-html') === 'true' || /Html$/.test(k);
+        const finalValue = (typeof localeValue === 'string' && localeValue.trim()) ? localeValue : ((typeof fallbackValue === 'string' && fallbackValue.trim()) ? fallbackValue : '');
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = localeValue;
+          el.placeholder = finalValue;
+        } else if (useHtml) {
+          el.innerHTML = finalValue;
         } else {
-          el.textContent = localeValue;
+          el.textContent = finalValue;
         }
-      } else if(typeof fallbackValue === 'string' && fallbackValue.trim()) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = fallbackValue;
-        } else {
-          el.textContent = fallbackValue;
-        }
-      }
       });
+
       document.getElementById('lang-en').classList.toggle('active', locale==='en');
       document.getElementById('lang-ar').classList.toggle('active', locale==='ar');
       // WhatsApp welcome text and link
       const waTitle = locale === 'ar' ? 'مرحباً في نهضة للسلامة' : 'Welcome to Nahda Safety';
       const waMsg = locale === 'ar' ? 'أهلاً! كيف نساعدك اليوم؟' : 'Hello! How can we help today?';
       document.getElementById('wa-title').textContent = waTitle; document.getElementById('wa-msg').textContent = waMsg + ' \nEmail: contact@nahdasafety.com';
-      const pre = encodeURIComponent(locale === 'ar' ? 'مرحباً، أحتاج معلومات عن خدمات السلامة.' : 'Hello, I need information about your safety services.');
-      document.getElementById('wa-open').href = `https://wa.me/96892500747?text=${pre}`;
+      const preText = locale === 'ar' ? 'مرحباً، أحتاج معلومات عن خدمات السلامة.' : 'Hello, I need information about your safety services.';
+      const whatsAppUrl = getWhatsAppUrl(preText);
+      document.getElementById('wa-open').href = whatsAppUrl;
+      document.getElementById('header-wa').href = whatsAppUrl;
+      document.getElementById('contact-wa').href = whatsAppUrl;
+      document.getElementById('ai-wa').href = whatsAppUrl;
       localStorage.setItem('siteLanguage', locale);
+      // refresh expand/collapse UI for localized content
+      if(typeof initExpandableServices === 'function') initExpandableServices();
+    }
+
+    function isMobileDevice(){
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const hasTouch = (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+      const smallScreen = window.matchMedia ? window.matchMedia('(max-width: 960px)').matches : false;
+      return mobileRegex.test(ua) || (hasTouch && smallScreen);
+    }
+
+    function getWhatsAppUrl(text){
+      const encoded = encodeURIComponent(text);
+      if(isMobileDevice()){
+        return `https://api.whatsapp.com/send?phone=96892500747&text=${encoded}`;
+      }
+      return `https://web.whatsapp.com/send?phone=96892500747&text=${encoded}`;
+    }
+
+    function getEmailUrl(){
+      return 'mailto:contact@nahdasafety.com?subject=' + encodeURIComponent('Request for Safety Consulting');
     }
 
     // AI consultant simple keyword responder (uses localized responses from translations when available)
@@ -1414,43 +1813,124 @@
       return locale === 'ar' ? 'هذه إرشادات عامة للسلامة. لمزيد من الاستجابة المخصصة والتوصيات خطوة بخطوة، تواصل مع نهضة للسلامة مباشرة عبر واتساب على +968 9250 0747.' : 'This is a general safety guideline. For a rapid, customized response and next-step recommendations, contact Nahda Safety directly on WhatsApp at +968 9250 0747.';
     }
 
+    /* Expand/collapse helper for long service cards (all enhanced cards) */
+    function initExpandableServices(){
+      const locale = document.documentElement.lang || 'en';
+      // read clamp height from CSS variable (allows responsive tuning)
+      const clampVar = getComputedStyle(document.documentElement).getPropertyValue('--service-clamp') || '104px';
+      const clampHeight = parseInt(clampVar, 10) || 104; // px (tuneable via CSS)
+      document.querySelectorAll('.service-card.enhanced, .service-card.qhse').forEach((card, idx)=>{
+        const content = card.querySelector('.service-copy.expandable');
+        const btn = card.querySelector('.expand-toggle');
+        if(!content || !btn) return;
+
+        // ensure content has an id so aria-controls can reference it
+        if(!content.id) content.id = content.getAttribute('data-key') ? (content.getAttribute('data-key') + '-content') : ('service-copy-' + (idx+1));
+        btn.setAttribute('aria-controls', content.id);
+
+        // add a polite live region for announcements if not present
+        let announce = card.querySelector('.service-announce');
+        if(!announce){
+          announce = document.createElement('div');
+          announce.className = 'service-announce sr-only';
+          announce.setAttribute('aria-live','polite');
+          card.appendChild(announce);
+        }
+
+        // reset styles
+        content.style.transition = 'max-height 0.35s ease';
+        content.style.overflow = 'hidden';
+        content.classList.remove('expanded');
+        content.style.maxHeight = clampHeight + 'px';
+        btn.setAttribute('aria-expanded','false');
+
+        // compute localized labels
+        const toggleKey = btn.getAttribute('data-key');
+        const moreLabel = (window.translations && translations[locale] && translations[locale][toggleKey]) ? translations[locale][toggleKey] : (locale === 'ar' ? 'عرض المزيد' : 'Read more');
+        const lessLabel = (locale === 'ar' ? 'عرض أقل' : 'Show less');
+
+        // helper to set button text without losing HTML attributes
+        const setBtnLabel = (text)=>{ btn.textContent = text; };
+
+        // measure after render
+        setTimeout(()=>{
+          const full = content.scrollHeight;
+          if(full <= clampHeight + 8){
+            btn.style.display = 'none';
+            content.style.maxHeight = 'none';
+          } else {
+            btn.style.display = 'inline-block';
+            // remove existing listeners to avoid duplication
+            btn.onclick = null;
+            btn.addEventListener('click', ()=>{
+              const expanded = btn.getAttribute('aria-expanded') === 'true';
+              if(expanded){
+                content.style.maxHeight = clampHeight + 'px';
+                content.classList.remove('expanded');
+                btn.setAttribute('aria-expanded','false');
+                setBtnLabel(moreLabel);
+                announce.textContent = locale === 'ar' ? 'تم طي المحتوى' : 'Content collapsed';
+              } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.classList.add('expanded');
+                btn.setAttribute('aria-expanded','true');
+                setBtnLabel(lessLabel);
+                announce.textContent = locale === 'ar' ? 'تم توسيع المحتوى' : 'Content expanded';
+              }
+            });
+            // initial label
+            setBtnLabel(moreLabel);
+          }
+        }, 40);
+
+        // set contact CTA links if present (generic for all cards)
+        const waBtn = card.querySelector('[id$="-wa"]') || document.getElementById('wa-open');
+        if(waBtn){
+          const waText = (document.documentElement.lang === 'ar') ? 'مرحباً، أحتاج معلومات عن خدمات السلامة.' : 'Hello, I need information about your safety services.';
+          waBtn.href = getWhatsAppUrl(waText);
+        }
+        const emailBtn = card.querySelector('[id$="-email"]');
+        if(emailBtn){ emailBtn.href = getEmailUrl(); }
+      });
+    }
+
+
     window.addEventListener('DOMContentLoaded', ()=>{
       const saved = localStorage.getItem('siteLanguage') || 'en'; setLanguage(saved);
       document.getElementById('year').textContent = new Date().getFullYear();
       // show WA welcome once
       setTimeout(()=>{ if(!localStorage.getItem('nahda_wa_shown')){ document.getElementById('wa-welcome').classList.remove('hidden'); localStorage.setItem('nahda_wa_shown','1'); } }, 2000);
+      function openWhatsAppLink(url){
+        const popup = window.open(url, '_blank', 'noopener,noreferrer');
+        if(!popup){ window.location.href = url; }
+      }
+
       document.getElementById('wa-close').addEventListener('click', ()=>document.getElementById('wa-welcome').classList.add('hidden'));
-      document.getElementById('wa-open').addEventListener('click', ()=> window.open(document.getElementById('wa-open').href,'_blank'));
+      document.getElementById('wa-open').addEventListener('click', (event)=>{
+        event.preventDefault();
+        openWhatsAppLink(document.getElementById('wa-open').href);
+      });
 
-      function isMobileDevice(){
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-        return mobileRegex.test(ua) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
-      }
-
-      function getWhatsAppUrl(text){
-        const encoded = encodeURIComponent(text);
-        if(isMobileDevice()){
-          return `https://wa.me/96892500747?text=${encoded}`;
-        }
-        return `https://web.whatsapp.com/send?phone=96892500747&text=${encoded}`;
-      }
-
-      function getEmailUrl(){
-        return 'mailto:contact@nahdasafety.com?subject=' + encodeURIComponent('Request for Safety Consulting');
-      }
 
       function setupContactButtons(){
+        const headerWa = document.getElementById('header-wa');
         const contactWa = document.getElementById('contact-wa');
-        const contactEmail = document.getElementById('contact-email');
         const aiWa = document.getElementById('ai-wa');
         const defaultText = 'Hello, I need information about your safety services.';
-        if(contactWa){ contactWa.href = getWhatsAppUrl(defaultText); }
+        const whatsAppUrl = getWhatsAppUrl(defaultText);
+        if(headerWa){ headerWa.href = whatsAppUrl; }
+        if(contactWa){ contactWa.href = whatsAppUrl; }
+        if(aiWa){ aiWa.href = whatsAppUrl; }
+        const contactEmail = document.getElementById('contact-email');
         if(contactEmail){ contactEmail.href = getEmailUrl(); }
-        if(aiWa){ aiWa.href = getWhatsAppUrl(defaultText); }
       }
 
       setupContactButtons();
+
+      // Ensure QHSE CTA labels are localized (they use data-key and will be set by setLanguage)
+      // But ensure WA/email hrefs are initialized now as a fallback
+      const qhseWa = document.getElementById('service-qhse-wa'); if(qhseWa && !qhseWa.href){ qhseWa.href = getWhatsAppUrl('Hello, I need information about QHSE consultation.'); }
+      const qhseEmail = document.getElementById('service-qhse-email'); if(qhseEmail && (!qhseEmail.href || qhseEmail.href === '#')){ qhseEmail.href = getEmailUrl(); }
 
       // AI consultant handlers
       document.getElementById('ai-ask').addEventListener('click', ()=>{
@@ -1609,8 +2089,44 @@
           });
         };
 
+        // New: support local video files via data-local-src attribute (relative path)
+        const getLocalSrc = ()=>{
+          const src = card.dataset.localSrc || '';
+          if(!src) return '';
+          // normalize to relative path (don't force https for local files)
+          return src;
+        };
+
         const loadEmbed = ()=>{
-          if(!iframeHost || iframeHost.querySelector('iframe')) return;
+          if(!iframeHost) return;
+
+          // If a local video source is provided, prefer it and create an inline <video>
+          const localSrc = getLocalSrc();
+          if(localSrc){
+            // If video already inserted, do nothing
+            if(iframeHost.querySelector('video')) return;
+            const video = document.createElement('video');
+            video.src = localSrc;
+            video.setAttribute('playsinline','true');
+            video.setAttribute('muted','true'); // muted to allow autoplay in modern browsers
+            video.autoplay = true;
+            video.controls = true;
+            video.loop = false;
+            video.style.width = '100%';
+            video.title = card.querySelector('h3')?.textContent || 'Safety video';
+            iframeHost.innerHTML = '';
+            iframeHost.appendChild(video);
+            // try to play (some browsers require user gesture; having muted helps)
+            const playPromise = video.play();
+            if(playPromise && typeof playPromise.then === 'function'){
+              playPromise.catch(()=>{ /* ignore play errors */ });
+            }
+            card.classList.add('is-playing');
+            return;
+          }
+
+          // Fallback: remote embeddable URLs (YouTube etc.)
+          if(iframeHost.querySelector('iframe')) return;
           const embedUrl = getEmbedUrl();
           if(!embedUrl) return;
           const iframe = document.createElement('iframe');
@@ -1626,6 +2142,7 @@
 
         const playCard = (event)=>{
           const fullUrl = card.dataset.fullUrl || card.dataset.videoUrl;
+          const localSrc = getLocalSrc();
           if(event && (event.ctrlKey || event.metaKey || event.shiftKey)){
             if(fullUrl) window.open(fullUrl, '_blank', 'noopener,noreferrer');
             return;
@@ -1633,7 +2150,9 @@
           if(event){ event.preventDefault(); event.stopPropagation(); }
           resetOtherCards();
           loadEmbed();
-          if(fullUrl){
+
+          // For remote URLs we still open the full watch page in a new window/tab
+          if(!localSrc && fullUrl){
             const watchUrl = fullUrl.includes('youtube.com') ? `${fullUrl}${fullUrl.includes('?') ? '&' : '?'}autoplay=1` : fullUrl;
             window.open(watchUrl, '_blank', 'noopener,noreferrer');
           }
@@ -1645,9 +2164,19 @@
         });
         card.addEventListener('pointerenter', ()=>{
           card.classList.add('is-hovered');
+          // autoplay muted on hover: stop others and load this card's embed/local video
+          resetOtherCards();
+          loadEmbed();
         });
         card.addEventListener('pointerleave', ()=>{
           card.classList.remove('is-hovered');
+          // stop and cleanup any inserted media to conserve resources
+          try{
+            const v = iframeHost?.querySelector('video');
+            if(v){ v.pause(); v.currentTime = 0; iframeHost.replaceChildren(); card.classList.remove('is-playing'); return; }
+            const ifr = iframeHost?.querySelector('iframe');
+            if(ifr){ iframeHost.replaceChildren(); card.classList.remove('is-playing'); }
+          }catch(e){ /* ignore cleanup errors */ }
         });
       });
 
