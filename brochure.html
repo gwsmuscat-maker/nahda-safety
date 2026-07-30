@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nahda Safety & Health Brochure</title>
+  <style>
+    :root {
+      --bg: #eef6fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #0f766e;
+      --primary-strong: #0d9488;
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.14);
+      --blue: #2563eb;
+      --border: rgba(15,23,42,0.1);
+      --shadow: 0 30px 90px rgba(15,23,42,0.12);
+      --radius: 32px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; background: radial-gradient(circle at top left, rgba(14,165,233,0.18), transparent 32%), linear-gradient(180deg, var(--bg) 0%, #ffffff 100%); color: var(--text); font-family: var(--font); }
+    body { padding: 18px; }
+
+    .brochure { max-width: 1180px; width: 100%; margin: 0 auto; background: var(--surface); border: 1px solid rgba(15,23,42,0.06); border-radius: 42px; overflow: hidden; box-shadow: var(--shadow); }
+    .sheet { padding: 42px 44px; position: relative; max-width: 1120px; margin: 0 auto; }
+    .hero-decor { position: absolute; right: -60px; top: -20px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(14,165,233,0.24), transparent 55%); border-radius: 50%; pointer-events: none; }
+    .hero-decor-2 { position: absolute; left: -48px; bottom: 120px; width: 210px; height: 210px; background: radial-gradient(circle, rgba(249,115,22,0.24), transparent 55%); border-radius: 50%; pointer-events: none; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+    .brand-mark { display: inline-flex; align-items: center; gap: 18px; }
+    .brand-logo { width: 70px; height: 70px; border-radius: 24px; background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%); display: grid; place-items: center; box-shadow: 0 20px 50px rgba(15,23,42,0.16); overflow: hidden; }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-title h1 { margin: 0; font-size: 1.4rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--primary); }
+    .brand-title p { margin: 4px 0 0; font-size: 0.95rem; color: var(--muted); }
+    .section-label, .panel-tag { display: inline-flex; padding: 10px 16px; border-radius: 999px; background: rgba(14,165,233,0.12); color: var(--primary); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.76rem; font-weight: 700; }
+    .btn-print { padding: 14px 26px; min-width: 210px; border-radius: 999px; background: linear-gradient(90deg, #0f766e, #10b981); color: white; border: none; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; box-shadow: 0 18px 40px rgba(15,23,42,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .btn-print:hover { transform: translateY(-1px); box-shadow: 0 22px 46px rgba(15,23,42,0.18); }
+
+    .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 28px; align-items: stretch; position: relative; }
+    .hero-copy { padding: 40px; border-radius: 32px; background: var(--surface-soft); border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 24px 60px rgba(15,23,42,0.08); z-index: 1; max-width: 46rem; }
+    .hero-copy .eyebrow { display: inline-flex; padding: 10px 16px; background: rgba(16,185,129,0.14); border-radius: 999px; color: #065f46; text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.75rem; font-weight: 700; }
+    .hero-copy h2 { margin: 24px 0 0; font-size: clamp(3rem, 4.5vw, 4.8rem); line-height: 1.02; letter-spacing: -0.05em; }
+    .hero-copy p { margin: 24px 0 0; max-width: 42rem; font-size: 1.05rem; line-height: 1.95; color: var(--muted); }
+    .hero-copy ul { margin: 32px 0 0; padding-left: 20px; color: var(--text); line-height: 1.9; }
+    .hero-copy li { margin-bottom: 14px; }
+    .hero-copy li::marker { color: var(--accent); }
+    .hero-copy .hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 34px; }
+
+    .meta-card { padding: 22px 24px; border-radius: 22px; background: #ffffff; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 18px 40px rgba(15,23,42,0.06); }
+    .meta-card strong { display: block; font-size: 1.45rem; color: var(--primary); }
+    .meta-card span { display: block; margin-top: 8px; color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
+
+    .hero-panel { position: relative; border-radius: 36px; padding: 34px; background: linear-gradient(180deg, #2563eb 0%, #0f766e 100%); color: white; overflow: hidden; min-height: 380px; display: grid; align-items: center; }
+    .hero-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 28%); pointer-events: none; }
+    .hero-panel-content { position: relative; z-index: 1; }
+    .hero-panel h3 { margin: 0 0 16px; font-size: 1.6rem; line-height: 1.1; letter-spacing: 0.04em; }
+    .hero-panel p { margin: 0; color: rgba(255,255,255,0.92); line-height: 1.85; }
+    .hero-panel .panel-tag { display: inline-flex; margin-top: 26px; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.16); font-weight: 700; letter-spacing: 0.16em; font-size: 0.78rem; }
+
+    .section { margin-top: 64px; }
+    .section-headline { display: grid; gap: 14px; max-width: 760px; }
+    .section-headline span { font-size: 0.82rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--primary); font-weight: 800; }
+    .section-headline h3 { margin: 0; font-size: 2.1rem; line-height: 1.08; }
+    .section-headline p { margin: 0; color: var(--muted); line-height: 1.85; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 26px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 22px; }
+    .card { border-radius: 28px; padding: 28px; background: white; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 20px 50px rgba(15,23,42,0.06); }
+    .card .label { display: inline-flex; padding: 10px 16px; border-radius: 999px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700; margin-bottom: 16px; }
+    .label.audit { color: #047857; background: rgba(16,185,129,0.12); }
+    .label.compliance { color: #0ea5e9; background: rgba(14,165,233,0.12); }
+    .label.training { color: #7c3aed; background: rgba(124,58,237,0.12); }
+    .label.ai { color: #0f766e; background: rgba(16,118,110,0.12); }
+    .label.emergency { color: #c2410c; background: rgba(245,158,11,0.12); }
+    .label.industry { color: #334155; background: rgba(100,116,139,0.12); }
+    .card h4 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.85; }
+
+    .highlight { display: flex; flex-direction: column; gap: 24px; margin-top: 18px; }
+    .highlight-card { padding: 36px; border-radius: 32px; background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(14,165,233,0.14)); border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 26px 70px rgba(15,23,42,0.08); }
+    .highlight-card h4 { margin: 0 0 18px; font-size: 1.8rem; }
+    .highlight-card p { margin: 0; color: #0f3d3a; line-height: 1.85; }
+    .highlight-card ul { margin: 24px 0 0; padding-left: 20px; color: var(--text); line-height: 1.9; }
+    .highlight-card li { margin-bottom: 14px; }
+
+    .highlight-meta { display: flex; flex-direction: column; gap: 18px; margin-top: 16px; }
+    .highlight-value { padding: 24px 26px; border-radius: 24px; background: white; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 18px 45px rgba(15,23,42,0.06); }
+    .highlight-value strong { display: block; font-size: 1.6rem; color: var(--primary); }
+    .highlight-value span { margin-top: 10px; display: block; color: var(--muted); font-size: 0.98rem; line-height: 1.7; }
+
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 26px; }
+    .project-card { border-radius: 32px; overflow: hidden; background: white; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 24px 70px rgba(15,23,42,0.08); }
+    .project-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .project-content { padding: 26px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+    .project-card h4 { margin-bottom: 14px; }
+    .project-card p { color: var(--muted); }
+    .badge { display: inline-flex; padding: 8px 12px; border-radius: 999px; background: rgba(15,23,42,0.06); color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .project-card h4 { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.25; }
+    .project-card p { margin: 0; color: var(--muted); line-height: 1.75; }
+
+    .contact-panel { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; margin-top: 38px; align-items: stretch; }
+    .contact-card { position: relative; overflow: hidden; border-radius: 32px; padding: 36px; background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(249,115,22,0.08)); border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 30px 90px rgba(15,23,42,0.08); }
+    .contact-card::after { content: ''; position: absolute; bottom: -20px; right: -20px; width: 180px; height: 180px; background: rgba(255,255,255,0.45); border-radius: 50%; }
+    .contact-card h4 { margin: 0 0 16px; font-size: 1.75rem; color: var(--primary); }
+    .contact-card p { margin: 0 0 24px; color: #0f3d3a; line-height: 1.85; }
+    .contact-info { display: grid; gap: 16px; }
+    .contact-info div { padding: 20px; border-radius: 24px; background: white; border: 1px solid rgba(15,23,42,0.08); }
+    .contact-info strong { display: block; color: var(--primary); margin-bottom: 6px; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+    .contact-links a { flex: 1 1 160px; display: inline-flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 999px; text-decoration: none; font-weight: 700; box-shadow: 0 18px 40px rgba(15,23,42,0.12); transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease; }
+    .contact-links a:hover { transform: translateY(-1px); }
+    .contact-links a.whatsapp { background: var(--primary); color: white; }
+    .contact-links a.email { background: white; color: var(--text); border: 1px solid rgba(15,23,42,0.12); }
+
+    .values-card { border-radius: 32px; padding: 30px; background: white; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 20px 50px rgba(15,23,42,0.08); }
+    .values-card h4 { margin: 0 0 14px; font-size: 1.6rem; }
+    .values-card p { margin: 0 0 20px; color: var(--muted); line-height: 1.85; }
+    .value-list { display: grid; gap: 16px; }
+    .value-list li { position: relative; padding-left: 30px; line-height: 1.8; color: var(--text); }
+    .value-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: var(--accent); font-size: 1.25rem; line-height: 1; }
+
+    .footer { margin-top: 58px; padding: 28px 0 12px; border-top: 1px solid rgba(15,23,42,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    @media (max-width: 1080px) {
+      .hero, .highlight, .contact-panel, .project-grid, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .hero-panel { min-height: 320px; }
+      .hero-copy .hero-meta, .highlight-meta { grid-template-columns: 1fr; }
+      .project-card img { height: 260px; }
+      .contact-panel { align-items: stretch; }
+    }
+    @media (max-width: 760px) {
+      .sheet { padding: 28px 22px; }
+      .brand-mark { width: 100%; justify-content: center; }
+      .brand-logo { width: 58px; height: 58px; }
+      .brand-title { text-align: center; }
+      .hero-copy { padding: 28px 24px; }
+      .hero-copy h2 { font-size: 2.6rem; }
+      .section-headline h3 { font-size: 1.85rem; }
+      .topbar { justify-content: center; }
+      .btn-print { width: 100%; }
+      .project-card img { height: 240px; }
+      .contact-links a { min-width: 100%; }
+    }
+    @media print {
+      html, body { width: 100%; height: 100%; margin: 0; padding: 0; background: white; }
+      body { padding: 0; }
+      .brochure { max-width: 100%; width: 100%; margin: 0; box-shadow: none; border-radius: 0; border: none; }
+      .sheet { width: auto; padding: 18mm; min-height: auto; }
+      .btn-print, .no-print, .hero-decor, .hero-decor-2 { display: none !important; }
+      .hero-panel, .card, .highlight-card, .project-card, .contact-card, .values-card { page-break-inside: avoid; }
+      @page { size: A4 portrait; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="brochure">
+    <div class="sheet">
+      <div class="hero-decor"></div>
+      <div class="hero-decor-2"></div>
+      <div class="topbar">
+        <div class="brand-mark">
+          <div class="brand-logo">
+            <img src="assets/nahda-logo.jpeg" alt="Nahda Safety logo" />
+          </div>
+          <div class="brand-title">
+            <h1>Nahda Safety</h1>
+            <p>Health & Safety Consulting</p>
+          </div>
+        </div>
+        <button class="btn-print no-print" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+
+      <section class="section hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Trusted Oman Safety Partner</span>
+          <h2>Premium safety and health consultancy for Oman businesses.</h2>
+          <p>Nahda Safety & Health combines AI-driven insights with expert compliance support for schools, hospitals, construction, oil & gas and hospitality companies. We create practical safety systems that protect people, speed approvals, and keep operations moving.</p>
+          <ul>
+            <li>On-site safety inspections and regulatory gap analysis.</li>
+            <li>Custom HSE documentation, training, and emergency planning.</li>
+            <li>AI-enabled risk scoring and WhatsApp-ready client follow-up.</li>
+          </ul>
+          <div class="hero-meta">
+            <div class="meta-card"><strong>42+</strong><span>Active projects across Oman</span></div>
+            <div class="meta-card"><strong>120+</strong><span>Happy clients in regulated sectors</span></div>
+            <div class="meta-card"><strong>24h</strong><span>Rapid response for urgent safety needs</span></div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-panel-content">
+            <span class="panel-tag">Built for modern teams</span>
+            <h3>Practical safety solutions for real workplaces.</h3>
+            <p>From compliance documents to AI-assisted hazard review, our team delivers fast, local safety support tailored to Oman’s most demanding sectors.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-headline">
+          <span>Our Services</span>
+          <div>
+            <h3>Health, safety and compliance services for every sector.</h3>
+            <p>From audits and documentation to training, emergency planning and AI-driven risk advisory, Nahda supports hospitals, schools, construction, oil & gas and hospitality teams across Oman.</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="label audit">Audit & Inspection</div>
+            <h4>Safety audit programs</h4>
+            <p>Detailed safety audits, corrective action planning and regulatory gap analysis for sites and facilities.</p>
+          </article>
+          <article class="card">
+            <div class="label compliance">Compliance Support</div>
+            <h4>Documentation & systems</h4>
+            <p>Custom HSE manuals, policies, permit systems and ISO-ready documentation to meet Omani regulations.</p>
+          </article>
+          <article class="card">
+            <div class="label training">Training</div>
+            <h4>Workplace training</h4>
+            <p>Hands-on staff training, emergency drills and awareness workshops for safer operations.</p>
+          </article>
+          <article class="card">
+            <div class="label ai">AI Advisory</div>
+            <h4>AI-driven risk review</h4>
+            <p>Fast safety insights, hazard scoring and practical recommendations for smarter decision-making.</p>
+          </article>
+          <article class="card">
+            <div class="label emergency">Emergency Planning</div>
+            <h4>Evacuation & crisis</h4>
+            <p>Emergency response plans, evacuation drills and crisis management support for fast recovery.</p>
+          </article>
+          <article class="card">
+            <div class="label industry">Industry Safety</div>
+            <h4>Sector-specific programs</h4>
+            <p>Specialised programs for schools, hospitals, construction, oil & gas, hospitality and logistics operations.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section highlight">
+        <div class="highlight-card">
+          <span class="section-label">AI Consultant</span>
+          <h4>Convert safety questions into faster decisions and stronger sales.</h4>
+          <p>Our AI assistant turns urgent safety queries into practical recommendations, compliance checkpoints, and WhatsApp-ready follow-up—so your team can close more clients with confidence.</p>
+          <ul>
+            <li>Instant risk guidance for site safety and compliance.</li>
+            <li>WhatsApp-ready safety replies and action plans.</li>
+            <li>Trusted by Oman teams for rapid, practical insight.</li>
+          </ul>
+          <div class="highlight-meta">
+            <div class="highlight-value"><strong>10x</strong><span>faster safety insight delivery</span></div>
+            <div class="highlight-value"><strong>24h</strong><span>rapid follow-up and response</span></div>
+            <div class="highlight-value"><strong>100%</strong><span>compliant insight for safer action</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-headline">
+          <span>Project impact</span>
+          <div>
+            <h3>Major safety consultancy sectors delivered</h3>
+            <p>Premium safety consulting projects across hospitals, schools, construction, oil & gas, manufacturing, retail and office facilities — backed by clear operational results.</p>
+          </div>
+        </div>
+        <div class="project-grid">
+          <article class="project-card">
+            <img src="assets/oilgas.jpg" alt="Oil and gas safety audit" />
+            <div class="project-content">
+              <div class="project-tags"><span class="badge">HSE Audit</span><span class="badge">Field Operations</span></div>
+              <h4>Oil & Gas Safety Audit</h4>
+              <p>Regulatory-ready HSE program development and hazard control for energy operations.</p>
+            </div>
+          </article>
+          <article class="project-card">
+            <img src="assets/school.jpg" alt="School safety program" />
+            <div class="project-content">
+              <div class="project-tags"><span class="badge">Education Safety</span><span class="badge">Training</span></div>
+              <h4>School Safety Program</h4>
+              <p>Child protection risk assessments, lockdown plans, and teacher training.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section contact-panel">
+        <div class="contact-card">
+          <span class="section-label">Contact & support</span>
+          <h4>Contact Nahda Safety</h4>
+          <p>Reach our health and safety team for fast compliance guidance, onsite risk checks, or AI-driven safety planning. We respond promptly on WhatsApp and email.</p>
+          <div class="contact-info">
+            <div><strong>Email</strong><span>contact@nahdasafety.com</span></div>
+            <div><strong>WhatsApp</strong><span>+968 9250 0747</span></div>
+          </div>
+          <div class="contact-links">
+            <a class="whatsapp" href="https://web.whatsapp.com/send?phone=96892500747&text=Hello,%20I%20need%20information%20about%20your%20safety%20services." target="_blank">Chat on WhatsApp</a>
+            <a class="email" href="mailto:contact@nahdasafety.com?subject=Request%20for%20Safety%20Consulting">Email us</a>
+          </div>
+        </div>
+        <div class="values-card">
+          <h4>Why Nahda?</h4>
+          <p>We combine local Omani regulatory expertise with modern AI safety analysis and practical implementation support. Our team delivers compliance-ready documentation, training, and field-ready safety programs that work in real workplaces.</p>
+          <ul class="value-list">
+            <li>Responsive Oman-based consultancy with fast delivery.</li>
+            <li>AI-enhanced hazard scoring and compliance insights.</li>
+            <li>Clear safety plans for real operational outcomes.</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Brochure prepared by Nahda Safety & Health consulting for Oman & International Clients.</p>
+        <p>Nahda Safety & Health Consulting Oman.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
