@@ -288,20 +288,20 @@
     .footer-trusted-wrap .footer-badge { margin-bottom: 0; }
     .footer-trusted-panel { display:grid; gap:1.5rem; }
     .footer-trusted-panel .grid { gap:1rem; }
-    .ceo-quote-card { display:grid; gap:1.5rem; align-items:start; text-align:left; max-width: 42rem; margin-inline: auto; position: relative; }
+    .ceo-quote-card { display:grid; gap:1.5rem; align-items:stretch; text-align:left; max-width: 42rem; margin-inline: auto; position: relative; }
     .ceo-quote-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(56,189,248,0.08), transparent 30%); pointer-events: none; }
-    .ceo-quote-card img.ceo-quote-image { min-width: 12rem; min-height: 12rem; width: 12rem; height: 12rem; border-radius: 1.75rem; object-fit: cover; box-shadow: 0 28px 70px rgba(0,0,0,0.18); justify-self: center; }
-    .ceo-quote-text { max-width: 38rem; position: relative; }
+    .ceo-quote-card img.ceo-quote-image { width: 12.5rem; min-width: 12.5rem; height: 100%; min-height: 100%; border-radius: 1.75rem; object-fit: cover; object-position: center top; box-shadow: 0 28px 70px rgba(0,0,0,0.18); }
+    .ceo-quote-text { max-width: 38rem; position: relative; display: flex; flex-direction: column; justify-content: center; }
     .ceo-quote-title { margin: 0; font-size: 0.82rem; letter-spacing: 0.26em; text-transform: uppercase; color: #facc15; }
     .ceo-quote-body { margin: 1rem 0 0; color: #e2e8f0; line-height: 1.95; font-size: 0.98rem; }
     .ceo-quote-author { margin: 1.25rem 0 0; color: #94a3b8; font-size: 0.95rem; letter-spacing: 0.02em; }
     @media (min-width: 768px) {
-      .ceo-quote-card { grid-template-columns: auto minmax(0,1fr); }
-      .ceo-quote-card img.ceo-quote-image { justify-self: start; }
+      .ceo-quote-card { grid-template-columns: 12.5rem minmax(0,1fr); align-items: stretch; }
+      .ceo-quote-card img.ceo-quote-image { width: 100%; height: 100%; justify-self: stretch; }
     }
     @media (max-width: 767px) {
       .ceo-quote-card { text-align: center; }
-      .ceo-quote-card img.ceo-quote-image { margin:0 auto; }
+      .ceo-quote-card img.ceo-quote-image { margin:0 auto; width: 12rem; height: 15rem; min-height: auto; }
       .ceo-quote-text { max-width: 100%; }
     }
     @media (min-width: 1024px) {
@@ -598,7 +598,7 @@
             </div>
             <!-- CEO placeholder (temporary image) -->
             <div class="mt-6 ceo-quote-card rounded-[2rem] border border-white/10 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
-              <img src="assets/ceo-placeholder.jpeg" alt="CEO portrait placeholder" onerror="this.onerror=null;this.src='assets/ceo-placeholder.png'" class="ceo-quote-image h-32 w-32 rounded-3xl object-cover ring-2 ring-orange-400/30 md:h-36 md:w-36" />
+              <img src="assets/ceo-placeholder.png" alt="CEO portrait placeholder" onerror="this.onerror=null;this.src='assets/ceo-placeholder.jpeg'" class="ceo-quote-image rounded-3xl object-cover object-top ring-2 ring-orange-400/30" />
               <div class="min-w-0 ceo-quote-text">
                 <p class="ceo-quote-title" data-key="heroQuoteTitle"></p>
                 <p class="ceo-quote-body" data-key="heroQuoteText"></p>
